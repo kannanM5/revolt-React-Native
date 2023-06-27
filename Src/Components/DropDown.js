@@ -1,11 +1,16 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
+import {FONTS} from '../Utilities/Fonts';
+import {COLORS} from '../Utilities/Colors';
 
 const DropDown = ({
   label = '',
   DefaultName = '',
   dropdownItems = [],
   isShowTitle = true,
+  customStyles,
+  customStylesDefaultText,
+  customImgStyle,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -22,16 +27,21 @@ const DropDown = ({
     <View style={styles.containerList}>
       {isShowTitle && label ? <Text style={styles.label}>{label}</Text> : null}
 
-      <TouchableOpacity onPress={toggleDropdown} style={styles.dropdownButton}>
-        <Text>{selectedItem || DefaultName}</Text>
+      <TouchableOpacity
+        onPress={toggleDropdown}
+        activeOpacity={0.9}
+        style={[styles.dropdownButton, {...customStyles}]}>
+        <Text style={[styles.DefaultName, {...customStylesDefaultText}]}>
+          {selectedItem || DefaultName}
+        </Text>
         {isOpen ? (
           <Image
-            style={styles.upDown}
+            style={[styles.upDown, {...customImgStyle}]}
             source={require('../Assets/Png/up.png')}
           />
         ) : (
           <Image
-            style={styles.upDown}
+            style={[styles.upDown, {...customImgStyle}]}
             source={require('../Assets/Png/down.png')}
           />
         )}
@@ -39,7 +49,9 @@ const DropDown = ({
       {isOpen && (
         <View>
           {dropdownItems.map(item => (
-            <TouchableOpacity key={item} onPress={() => handleSelectItem(item)}>
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => handleSelectItem(item)}>
               <Text style={styles.dropdownItem}>{item}</Text>
             </TouchableOpacity>
           ))}
@@ -60,35 +72,42 @@ const styles = StyleSheet.create({
     height: 51,
     borderWidth: 1,
     borderRadius: 6,
-    borderColor: 'rgba(0, 0, 0, 0.05)',
+    borderColor: COLORS.borderColor,
     elevation: 2,
     paddingLeft: 20,
     fontSize: 14,
-    backgroundColor: '#ffffff',
-    color: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: COLORS.white,
+    color: COLORS.transparentDimColor,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   dropdownItem: {
-    borderColor: 'rgba(0, 0, 0, 0.05)',
+    borderColor: COLORS.borderColor,
     paddingLeft: 20,
-    backgroundColor: '#ffffff',
+    backgroundColor: COLORS.white,
     paddingVertical: 10,
-    color: 'rgba(0, 0, 0, 0.6)',
+    color: COLORS.transparentDimColor,
     elevation: 2,
   },
   upDown: {
     width: 12,
     height: 12,
     marginRight: 20,
+    alignSelf: 'center',
   },
   label: {
     fontSize: 15,
-    color: 'rgba(0, 0, 0, 0.7)',
+    color: COLORS.labelColor,
     fontWeight: 700,
     alignItems: 'flex-start',
     paddingBottom: 10,
     paddingTop: 10,
+  },
+  DefaultName: {
+    fontSize: 14,
+    fontFamily: FONTS.Andika.regular,
+    color: COLORS.placeHolderColor,
+    alignSelf: 'center',
   },
 });

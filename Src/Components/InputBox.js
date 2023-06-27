@@ -1,5 +1,7 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import React from 'react';
+import {FONTS} from '../Utilities/Fonts';
+import {COLORS} from '../Utilities/Colors';
 
 const InputBox = ({
   label = '',
@@ -7,12 +9,17 @@ const InputBox = ({
   value,
   onChangeText,
   customInputStyles,
+  customLabelStyles,
   errorText = '',
   secureTextEntry,
+  isShownLabel = true,
+  errors,
 }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      {isShownLabel && label ? (
+        <Text style={[styles.label, {...customLabelStyles}]}>{label}</Text>
+      ) : null}
       <TextInput
         placeholder={placeholder}
         value={value}
@@ -20,6 +27,7 @@ const InputBox = ({
         style={[styles.InputBox, {...customInputStyles}]}
         secureTextEntry={secureTextEntry}
       />
+      {errors ? <Text style={styles.error}>{errorText}</Text> : null}
     </View>
   );
 };
@@ -32,19 +40,26 @@ const styles = StyleSheet.create({
     height: 51,
     borderWidth: 1,
     borderRadius: 6,
-    borderColor: 'rgba(0, 0, 0, 0.05)',
+    borderColor: COLORS.borderColor,
     elevation: 2,
     paddingLeft: 20,
     fontSize: 14,
-    backgroundColor: '#ffffff',
+    fontFamily: FONTS.Andika.regular,
+    backgroundColor: COLORS.white,
   },
   label: {
     fontSize: 15,
-    color: 'rgba(0, 0, 0, 0.7)',
-    fontWeight: 700,
-    fontFamily: 'Andika New Basic',
+    color: COLORS.labelColor,
     alignItems: 'flex-start',
     paddingBottom: 10,
     paddingTop: 10,
+    fontFamily: FONTS.Andika.bold,
+  },
+  error: {
+    color: COLORS.red,
+    fontSize: 14,
+    margin: 0,
+    alignSelf: 'flex-start',
+    paddingTop: 3,
   },
 });

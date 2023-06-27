@@ -1,9 +1,22 @@
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React, {useState} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-const DateTimePicker = ({label = ''}) => {
+import {FONTS} from '../Utilities/Fonts';
+import {COLORS} from '../Utilities/Colors';
+
+const DateTimePicker = ({label = '', customStyles, hours}) => {
+  var currentTime = new Date();
+  var hours = currentTime.getHours();
+  var minutes = currentTime.getMinutes();
+
+  var amPm = hours >= 12 ? 'PM' : 'AM';
+  var hours = hours % 12 || 12;
+
+  var minutes = minutes < 10 ? '0' + minutes : minutes;
+  var currentTime = `${hours} : ${minutes} ${amPm}`;
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState(currentTime);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -14,6 +27,11 @@ const DateTimePicker = ({label = ''}) => {
   };
 
   const handleConfirm = time => {
+    const selectedDate = new Date(time);
+    const currentDate = new Date();
+    const timeDiff = Math.abs(selectedDate - currentDate);
+    const minutesDiff = Math.floor((timeDiff / 1000 / 60) % 60);
+    const hoursDiff = Math.floor(timeDiff / 1000 / 60 / 60);
     const formattedTime = time.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: 'numeric',
@@ -23,14 +41,15 @@ const DateTimePicker = ({label = ''}) => {
     hideDatePicker();
   };
   return (
-    <TouchableOpacity onPress={showDatePicker}>
-      <View style={styles.datePiker}>
+    <TouchableOpacity onPress={showDatePicker} activeOpacity={0.9}>
+      <View style={[styles.datePiker, {...customStyles}]}>
         <View>
           <Text style={styles.label}>{label}</Text>
           <Text style={styles.time}>
             Today <Text> {selectedTime}</Text>
           </Text>
         </View>
+        {/* {isShow ? <Text style={styles.differnces}>{differnces}</Text> : null} */}
 
         <View style={styles.separate}>
           <Image
@@ -55,7 +74,7 @@ export default DateTimePicker;
 
 const styles = StyleSheet.create({
   datePiker: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.white,
     width: 130,
     height: 50,
     borderRadius: 10,
@@ -64,19 +83,24 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingHorizontal: 10,
     alignItems: 'center',
+    elevation: 5,
   },
   label: {
     fontSize: 12,
-    fontWeight: 700,
-    color: 'rgba(0, 0, 0, 0.76)',
-    paddingBottom: 4,
+    fontFamily: FONTS.Andika.bold,
+    color: COLORS.labelColor,
   },
   time: {
     fontSize: 11,
-    fontWeight: 400,
-    color: 'rgba(0, 0, 0, 0.65)',
+    fontFamily: FONTS.Andika.regular,
+    color: COLORS.transparentDimColor,
   },
   img: {
     marginTop: 18,
+  },
+  differnces: {
+    fontSize: 12,
+    fontFamily: FONTS.Andika.bold,
+    color: COLORS.red,
   },
 });

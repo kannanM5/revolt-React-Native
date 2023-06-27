@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.6)',
     width: 235,
     lineHeight: 24,
-    marginBottom: -15,
+    paddingVertical: 10,
   },
   buttonContainer: {
     width: '100%',

@@ -1,0 +1,25 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Andika-Bold.ttf",
+      "sha1": "2a911df9e9f00d06e74b29f57c914e0fb0dbd3d4"
+    },
+    {
+      "path": "assets/fonts/Andika-BoldItalic.ttf",
+      "sha1": "2ebfd68abc22d8fc87e998afc08333e98eac1a8e"
+    },
+    {
+      "path": "assets/fonts/Andika-Italic.ttf",
+      "sha1": "15cede97b07ef5bc3477ecc64bd047259b769f43"
+    },
+    {
+      "path": "assets/fonts/Andika-Regular.ttf",
+      "sha1": "64208179209eae98e24f413434bb2b0d536ba07c"
+    },
+    {
+      "path": "assets/fonts/Poppins-Bold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    }
+  ]
+}
