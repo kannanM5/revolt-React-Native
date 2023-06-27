@@ -4,6 +4,7 @@ import Login from '../LayOut/AuthLayout/Login';
 import SignUp from '../LayOut/AuthLayout/SignUp';
 import ForgotPassword from '../LayOut/AuthLayout/ForgotPassword';
 import OtpVerify from '../LayOut/AuthLayout/OtpVerify';
+import ResetPassword from '../LayOut/AuthLayout/ResetPassword';
 
 const RootStack = () => {
   const Stack = createNativeStackNavigator();
@@ -14,6 +15,7 @@ const RootStack = () => {
       <Stack.Screen name="Create Account" component={SignUp} />
       <Stack.Screen name="Forgot Password" component={ForgotPassword} />
       <Stack.Screen name="OTP" component={OtpVerify} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
   );
 };

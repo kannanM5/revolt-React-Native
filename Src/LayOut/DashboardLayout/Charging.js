@@ -9,6 +9,7 @@ import Carosel from '../../Components/Carosel';
 import Header from './Header';
 import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
+import SVGIcons from '../../Components/SVGIcon';
 
 const Charging = props => {
   const navigation = useNavigation();
@@ -36,6 +37,7 @@ const Charging = props => {
         }}
         scrollEnabled={true}
         style={styles.map}></MapView>
+
       <View style={styles.header}>
         <Header
           defaultSource={require('../../Assets/Png/menu.png')}
@@ -75,6 +77,7 @@ const Charging = props => {
               : null,
           ]}>
           <TouchableOpacity
+            activeOpacity={0.7}
             style={[
               styles.button,
               activeItem === 'parking' && styles.activeBtn,
@@ -107,6 +110,7 @@ const Charging = props => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={0.7}
             style={[
               styles.button,
               activeItem === 'charging' && styles.activeBtn,

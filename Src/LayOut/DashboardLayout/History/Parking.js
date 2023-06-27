@@ -1,58 +1,7 @@
 import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
 import React from 'react';
+import {details} from '../../../SharedComponents/Arrays';
 import {FONTS} from '../../../Utilities/Fonts';
-
-const details = [
-  {
-    img: require('../../../Assets/Png/car1.png'),
-    name: 'Phoenix Market City',
-    dur: '26  Nov 2019, 04:03 PM',
-    amount: 'Rs: 100',
-    time: 'DUR : 44425 MIN',
-  },
-  {
-    img: require('../../../Assets/Png/car1.png'),
-    name: 'Phoenix Market City',
-    dur: '26  Nov 2019, 04:03 PM',
-    amount: 'Rs: Null',
-    time: 'DUR : 44425 MIN',
-  },
-  {
-    img: require('../../../Assets/Png/car1.png'),
-    name: 'Phoenix Market City',
-    dur: '26  Nov 2019, 04:03 PM',
-    amount: 'Rs: Null',
-    time: 'DUR : 44425 MIN',
-  },
-  {
-    img: require('../../../Assets/Png/car1.png'),
-    name: 'Phoenix Market City',
-    dur: '26  Nov 2019, 04:03 PM',
-    amount: 'Rs: Null',
-    time: 'DUR : 44425 MIN',
-  },
-  {
-    img: require('../../../Assets/Png/car1.png'),
-    name: 'Phoenix Market City',
-    dur: '26  Nov 2019, 04:03 PM',
-    amount: 'Rs: Null',
-    time: 'DUR : 44425 MIN',
-  },
-  {
-    img: require('../../../Assets/Png/car1.png'),
-    name: 'Phoenix Market City',
-    dur: '26  Nov 2019, 04:03 PM',
-    amount: 'Rs: Null',
-    time: 'DUR : 44425 MIN',
-  },
-  {
-    img: require('../../../Assets/Png/car1.png'),
-    name: 'Phoenix Market City',
-    dur: '26  Nov 2019, 04:03 PM',
-    amount: 'Rs: Null',
-    time: 'DUR : 44425 MIN',
-  },
-];
 
 const BookParking = () => {
   return (

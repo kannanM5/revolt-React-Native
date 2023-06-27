@@ -107,6 +107,7 @@ export const customerrating = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim duis id ipsum vitae natoque augue sed ut non. Risus nulla non.',
     likes: '15 likes',
     wish: require('../Assets/Png/heart.png'),
+    id: 1,
   },
   {
     img: require('../Assets/Png/women.png'),
@@ -115,12 +116,14 @@ export const customerrating = [
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim duis id ipsum vitae natoque augue sed ut non. Risus nulla non.',
     likes: '15 likes',
+    id: 2,
   },
 ];
 
+import {ICONS} from '../Assets/Svg/icons';
 export const items = [
   {
-    img: require('../Assets/Png/image1.png'),
+    img: ICONS.product1,
     name: '15KW DC Charger',
     price: '75,000',
     id: 12,
@@ -129,7 +132,7 @@ export const items = [
     color: '#FDDFCE',
   },
   {
-    img: require('../Assets/Png/image2.png'),
+    img: ICONS.product2,
     name: 'Electric Car Charger',
     price: '63,600',
     id: 23,
@@ -137,7 +140,7 @@ export const items = [
     color: '#D5D5D5',
   },
   {
-    img: require('../Assets/Png/image3.png'),
+    img: ICONS.product3,
     name: 'AC Chargers For EV',
     price: '45,000',
     id: 34,
@@ -145,7 +148,7 @@ export const items = [
     color: '#9BD3EC',
   },
   {
-    img: require('../Assets/Png/image4.png'),
+    img: ICONS.product4,
     name: 'EV Charging Station',
     price: '49,000',
     id: 45,
@@ -154,7 +157,7 @@ export const items = [
     color: '#FFEE86',
   },
   {
-    img: require('../Assets/Png/image5.png'),
+    img: ICONS.product5,
     name: 'EV Charging Cable',
     price: '36,700',
     id: 56,
@@ -163,7 +166,7 @@ export const items = [
     color: '#D0E8D0',
   },
   {
-    img: require('../Assets/Png/image6.png'),
+    img: ICONS.product6,
     name: 'Portable EV Charger',
     price: '44,000',
     id: 67,
@@ -218,5 +221,136 @@ export const newFeed = [
     title: 'The Fiancial Express',
     likes: '120k',
     content: 'Tata Power signs MoU to install 5,000 EV chargers in Maharashtra',
+  },
+];
+
+export const details = [
+  {
+    img: require('../Assets/Png/car1.png'),
+    name: 'Phoenix Market City',
+    dur: '26  Nov 2019, 04:03 PM',
+    amount: 'Rs: 100',
+    time: 'DUR : 44425 MIN',
+    id: 1,
+  },
+  {
+    img: require('../Assets/Png/car1.png'),
+    name: 'Phoenix Market City',
+    dur: '26  Nov 2019, 04:03 PM',
+    amount: 'Rs: Null',
+    time: 'DUR : 44425 MIN',
+    id: 2,
+  },
+  {
+    img: require('../Assets/Png/car1.png'),
+    name: 'Phoenix Market City',
+    dur: '26  Nov 2019, 04:03 PM',
+    amount: 'Rs: Null',
+    time: 'DUR : 44425 MIN',
+    id: 3,
+  },
+  {
+    img: require('../Assets/Png/car1.png'),
+    name: 'Phoenix Market City',
+    dur: '26  Nov 2019, 04:03 PM',
+    amount: 'Rs: Null',
+    time: 'DUR : 44425 MIN',
+    id: 4,
+  },
+  {
+    img: require('../Assets/Png/car1.png'),
+    name: 'Phoenix Market City',
+    dur: '26  Nov 2019, 04:03 PM',
+    amount: 'Rs: Null',
+    time: 'DUR : 44425 MIN',
+    id: 5,
+  },
+  {
+    img: require('../Assets/Png/car1.png'),
+    name: 'Phoenix Market City',
+    dur: '26  Nov 2019, 04:03 PM',
+    amount: 'Rs: Null',
+    time: 'DUR : 44425 MIN',
+    id: 6,
+  },
+  {
+    img: require('../Assets/Png/car1.png'),
+    name: 'Phoenix Market City',
+    dur: '26  Nov 2019, 04:03 PM',
+    amount: 'Rs: Null',
+    time: 'DUR : 44425 MIN',
+    id: 7,
+  },
+];
+
+export const paymentData = [
+  {
+    name: 'Starter Park',
+    timing: '25 Oct 2019 4.00 pm',
+    amount: 'Rs. 250',
+    id: 1,
+  },
+  {
+    name: 'Starter Park',
+    timing: '25 Oct 2019 4.00 pm',
+    amount: 'Rs. 250',
+    id: 2,
+  },
+  {
+    name: 'Starter Park',
+    timing: '25 Oct 2019 4.00 pm',
+    amount: 'Rs. 250',
+    id: 3,
+  },
+  {
+    name: 'Starter Park',
+    timing: '25 Oct 2019 4.00 pm',
+    amount: 'Rs. 250',
+    id: 4,
+  },
+  {
+    name: 'Starter Park',
+    timing: '25 Oct 2019 4.00 pm',
+    amount: 'Rs. 250',
+    id: 5,
+  },
+  {
+    name: 'Starter Park',
+    timing: '25 Oct 2019 4.00 pm',
+    amount: 'Rs. 250',
+    id: 6,
+  },
+];
+
+export const bookingdata = [
+  {
+    found: '3 Booking Found',
+    name: 'Phoenix Market City',
+    time: '26  Nov 2019, 04:03 PM',
+    dur: 'DUR : 44425 MIN',
+    extend: 'Extended Booking',
+    cancel: 'Cancel Booking',
+    img: require('../Assets/Png/car.png'),
+    id: 1,
+  },
+  {
+    found: '3 Booking Found',
+    name: 'Phoenix Market City',
+    time: '26  Nov 2019, 04:03 PM',
+    dur: 'DUR : 44425 MIN',
+    extend: 'Extended Booking',
+    cancel: 'Cancel Booking',
+    img: require('../Assets/Png/car.png'),
+    id: 2,
+  },
+  {
+    found: '3 Booking Found',
+    name: 'Phoenix Market City',
+    time: '26  Nov 2019, 04:03 PM',
+    dur: 'DUR : 44425 MIN',
+    extend: 'Extended Booking',
+    cancel: 'Cancel Booking',
+    img: require('../Assets/Png/car.png'),
+    id: 3,
   },
 ];

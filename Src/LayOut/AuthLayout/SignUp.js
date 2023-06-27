@@ -14,10 +14,10 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {FONTS} from '../../Utilities/Fonts';
 
 const SignUp = () => {
   const navigation = useNavigation();
-  const [showPassword, setShowPassword] = useState(false);
   const [imageSource, setImageSource] = useState(null);
   const [modal, setModal] = useState(false);
 
@@ -71,10 +71,6 @@ const SignUp = () => {
       .min(5, 'Confirm Password must be 5 characters long')
       .max(20, 'Confirm Password must be 20 characters long')
       .required('Confirm Password cannot be blank'),
-    // .matches(/[0-9]/, 'Password requires a number')
-    // .matches(/[a-z]/, 'Password requires a lowercase letter')
-    // .matches(/[A-Z]/, 'Password requires an uppercase letter')
-    // .matches(/[^\w]/, '*Password requires a symbol'),
   });
 
   const {handleChange, handleSubmit, errors, values, touched} = useFormik({
@@ -94,9 +90,6 @@ const SignUp = () => {
     console.log(data.email, data.password, data.name, data.confirmPassword);
   };
 
-  const handlePassword = () => {
-    setShowPassword(!showPassword);
-  };
   return (
     <View style={styles.container}>
       <View style={styles.profileImage}>
@@ -139,11 +132,10 @@ const SignUp = () => {
             placeholder="Enter your Name"
             value={values.name}
             onChangeText={handleChange('name')}
+            errors={errors.name && touched.name ? true : null}
+            errorText={errors.name}
           />
         </View>
-        {errors.name && touched.name ? (
-          <Text style={styles.error}>{errors.name}</Text>
-        ) : null}
 
         <View style={styles.containBox}>
           <InputBox
@@ -151,39 +143,23 @@ const SignUp = () => {
             placeholder="Enter your Email"
             value={values.email}
             onChangeText={handleChange('email')}
+            errors={errors.email && touched.email ? true : null}
+            errorText={errors.email}
           />
         </View>
-        {errors.email && touched.email ? (
-          <Text style={styles.error}>{errors.email}</Text>
-        ) : null}
 
         <View style={styles.containBox}>
           <InputBox
             label="Password"
             placeholder="Enter your Password"
-            secureTextEntry={showPassword ? false : true}
+            customInputStyles={{position: 'relative'}}
             value={values.password}
             onChangeText={handleChange('password')}
+            errors={errors.password && touched.password ? true : null}
+            errorText={errors.password}
+            setPassword={true}
           />
-          {showPassword ? (
-            <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
-              <Image
-                style={styles.eye}
-                source={require('../../Assets/Png/eye.png')}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
-              <Image
-                style={styles.eye}
-                source={require('../../Assets/Png/eye1.png')}
-              />
-            </TouchableOpacity>
-          )}
         </View>
-        {errors.password && touched.password ? (
-          <Text style={styles.error}>{errors.password}</Text>
-        ) : null}
 
         <View style={styles.containBox}>
           <InputBox
@@ -192,11 +168,12 @@ const SignUp = () => {
             secureTextEntry={true}
             value={values.confirmPassword}
             onChangeText={handleChange('confirmPassword')}
+            errors={
+              errors.confirmPassword && touched.confirmPassword ? true : null
+            }
+            errorText={errors.confirmPassword}
           />
         </View>
-        {errors.confirmPassword && touched.confirmPassword ? (
-          <Text style={styles.error}>{errors.confirmPassword}</Text>
-        ) : null}
 
         <View style={styles.buttonContainer}>
           <Button title="Sign up" onPressButton={handleSubmit} />
@@ -254,39 +231,16 @@ const styles = StyleSheet.create({
   AccountSetup: {
     color: 'rgba(0, 0, 0, 0.7)',
     fontSize: 16,
-    fontWeight: 700,
-    marginVertical: 8,
+    fontFamily: FONTS.Andika.bold,
     alignSelf: 'flex-start',
   },
   AccountCreate: {
     color: '#FC3A3A',
-    fontWeight: 700,
+    fontFamily: FONTS.Andika.bold,
     fontSize: 15,
     alignSelf: 'flex-start',
   },
-  error: {
-    color: 'red',
-    fontSize: 14,
-    margin: 0,
-    alignSelf: 'flex-start',
-  },
-  eye: {
-    position: 'absolute',
-    width: 25,
-    height: 16,
-    zIndex: 99,
-  },
-  eyeBtn: {
-    position: 'absolute',
-    top: 60,
-    right: 40,
-  },
-  error: {
-    color: 'red',
-    fontSize: 14,
-    margin: 0,
-    alignSelf: 'flex-start',
-  },
+
   modal: {
     flex: 1,
     backgroundColor: '#ECA405',

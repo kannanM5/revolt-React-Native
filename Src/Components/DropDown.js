@@ -48,10 +48,8 @@ const DropDown = ({
       </TouchableOpacity>
       {isOpen && (
         <View>
-          {dropdownItems.map(item => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => handleSelectItem(item)}>
+          {dropdownItems.map((item, i) => (
+            <TouchableOpacity key={i} onPress={() => handleSelectItem(item)}>
               <Text style={styles.dropdownItem}>{item}</Text>
             </TouchableOpacity>
           ))}

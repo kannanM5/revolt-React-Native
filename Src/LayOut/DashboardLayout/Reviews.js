@@ -35,7 +35,10 @@ const Reviews = ({navigation}) => {
         <View style={styles.rating}>
           {starDataArray.map((e, i) => {
             return (
-              <TouchableOpacity onPress={() => handleStarPress(e.id)} key={i}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => handleStarPress(e.id)}
+                key={i}>
                 <Image
                   source={e.pressed ? e.pressImg : e.img}
                   style={styles.star}

@@ -3,45 +3,7 @@ import React from 'react';
 import DropDown from '../../Components/DropDown';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
-
-const paymentData = [
-  {
-    name: 'Starter Park',
-    timing: '25 Oct 2019 4.00 pm',
-    amount: 'Rs. 250',
-    id: 1,
-  },
-  {
-    name: 'Starter Park',
-    timing: '25 Oct 2019 4.00 pm',
-    amount: 'Rs. 250',
-    id: 2,
-  },
-  {
-    name: 'Starter Park',
-    timing: '25 Oct 2019 4.00 pm',
-    amount: 'Rs. 250',
-    id: 3,
-  },
-  {
-    name: 'Starter Park',
-    timing: '25 Oct 2019 4.00 pm',
-    amount: 'Rs. 250',
-    id: 4,
-  },
-  {
-    name: 'Starter Park',
-    timing: '25 Oct 2019 4.00 pm',
-    amount: 'Rs. 250',
-    id: 5,
-  },
-  {
-    name: 'Starter Park',
-    timing: '25 Oct 2019 4.00 pm',
-    amount: 'Rs. 250',
-    id: 6,
-  },
-];
+import {paymentData} from '../../SharedComponents/Arrays';
 
 const PaymentDetail = ({navigation}) => {
   return (
@@ -55,8 +17,12 @@ const PaymentDetail = ({navigation}) => {
         <FlatList
           data={paymentData}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={[styles.contents]}>
+          renderItem={({item, index}) => (
+            <View
+              style={[
+                styles.contents,
+                index === paymentData.length - 1 && styles.lastItemBorder,
+              ]}>
               <View>
                 <Text style={styles.nameText}>{item.name}</Text>
                 <Text style={styles.timingText}>{item.timing}</Text>
@@ -67,23 +33,6 @@ const PaymentDetail = ({navigation}) => {
             </View>
           )}
         />
-        {/* {paymentData.map((e, i) => {
-          const lastitem = i === paymentData.length - 1;
-
-          return (
-            <View
-              key={i}
-              style={[styles.contents, lastitem && styles.lastItemBorder]}>
-              <View>
-                <Text style={styles.nameText}>{e.name}</Text>
-                <Text style={styles.timingText}>{e.timing}</Text>
-              </View>
-              <View>
-                <Text style={styles.amount}>{e.amount}</Text>
-              </View>
-            </View>
-          );
-        })} */}
       </View>
     </>
   );

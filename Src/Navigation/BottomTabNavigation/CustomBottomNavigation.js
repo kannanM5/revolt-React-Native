@@ -120,7 +120,7 @@ function CustomBottomNavigation({state, descriptors, navigation}) {
                           styles.image,
                           {
                             backgroundColor: isFocused
-                              ? 'rgba(252, 220, 12,1)'
+                              ? 'rgba(252, 220, 12,0.4)'
                               : 'white',
                             borderRadius: 5,
                             padding: 5,

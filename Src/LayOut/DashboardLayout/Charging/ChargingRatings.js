@@ -10,33 +10,17 @@ const ChargingRatings = () => {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.containers}>
         <View style={{flexDirection: 'row'}}>
-          <Text
-            style={{
-              fontFamily: FONTS.Andika.bold,
-              fontSize: 35,
-              color: 'black',
-              marginRight: 10,
-            }}>
-            4.7
-          </Text>
+          <Text style={styles.text}>4.7</Text>
           <View style={{alignSelf: 'center'}}>
-            <Text
-              style={{
-                fontSize: 14,
-                lineHeight: 23,
-                fontFamily: FONTS.Andika.regular,
-              }}>
-              From 25 People
-            </Text>
+            <Text style={styles.peopleText}>From 25 People</Text>
 
             <View style={styles.rating}>
               {starDataArray.map((e, i) => {
                 return (
-                  <View>
+                  <View key={i}>
                     <Image
                       source={e.pressed ? e.img : e.pressImg}
                       style={styles.star}
-                      key={i}
                     />
                   </View>
                 );
@@ -82,5 +66,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 38,
+  },
+  text: {
+    fontFamily: FONTS.Andika.bold,
+    fontSize: 35,
+    color: 'black',
+    marginRight: 10,
+  },
+  peopleText: {
+    fontSize: 14,
+    lineHeight: 23,
+    fontFamily: FONTS.Andika.regular,
   },
 });

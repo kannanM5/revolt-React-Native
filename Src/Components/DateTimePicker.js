@@ -65,6 +65,7 @@ const DateTimePicker = ({label = '', customStyles, hours}) => {
         hourFormat="12"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        style={styles.bgColor}
       />
     </TouchableOpacity>
   );
@@ -102,5 +103,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.Andika.bold,
     color: COLORS.red,
+  },
+  bgColor: {
+    backgroundColor: 'yellow',
   },
 });

@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import {FONTS} from '../Utilities/Fonts';
 import {COLORS} from '../Utilities/Colors';
+import SVGIcons from './SVGIcon';
 
 const Carosel = ({
   dataArray = [],

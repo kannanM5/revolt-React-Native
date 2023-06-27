@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React, {useState} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
@@ -6,14 +13,12 @@ import {useNavigation} from '@react-navigation/native';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import LinearGradientComponent from '../../Components/LinearGradient';
+import {FONTS} from '../../Utilities/Fonts';
+import {COLORS} from '../../Utilities/Colors';
 
 const Login = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
-
-  const handlePassword = () => {
-    setShowPassword(!showPassword);
-  };
 
   const SignupSchema = Yup.object().shape({
     email: Yup.string()
@@ -41,108 +46,90 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require('../../Assets/Png/Revolt-logo.png')}
-      />
-      <Text
-        onPress={() => navigation.navigate('Charging')}
-        style={styles.welcomeMessage}>
-        Welcome Back!
-      </Text>
-      <Text style={styles.LoginMessage}>Login to Continue</Text>
-      <View style={styles.containBox}>
-        <InputBox
-          label="Email"
-          placeholder="Enter your email"
-          value={values.email}
-          onChangeText={handleChange('email')}
-          errors={errors.email && touched.email ? true : null}
-          errorText={errors.email}
+    <ScrollView>
+      <View style={styles.container}>
+        <Image
+          style={styles.logo}
+          source={require('../../Assets/Png/Revolt-logo.png')}
         />
-      </View>
-
-      <View style={styles.containBox}>
-        <InputBox
-          label="Password"
-          placeholder="Enter your Password"
-          secureTextEntry={showPassword ? false : true}
-          value={values.password}
-          onChangeText={handleChange('password')}
-          customInputStyles={{position: 'relative'}}
-        />
-        {showPassword ? (
-          <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
-            <Image
-              style={styles.eye}
-              source={require('../../Assets/Png/eye.png')}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
-            <Image
-              style={styles.eye}
-              source={require('../../Assets/Png/eye1.png')}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
-      {errors.password && touched.password ? (
-        <Text style={styles.error}>{errors.password}</Text>
-      ) : null}
-      <Text
-        onPress={() => navigation.navigate('Forgot Password')}
-        style={styles.forgotPassword}>
-        Forgot Password ?
-      </Text>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Login"
-          onPressButton={handleSubmit}
-          customStyles={{marginTop: 6}}
-        />
-      </View>
-      <View style={styles.lines}>
-        <View style={styles.lineImg}></View>
-        <Text style={{color: '#000000', fontSize: 15, paddingHorizontal: 12}}>
-          or
+        <Text
+          onPress={() => navigation.navigate('Charging')}
+          style={styles.welcomeMessage}>
+          Welcome Back!
         </Text>
-        <View style={styles.lineImg}></View>
-      </View>
+        <Text style={styles.LoginMessage}>Login to Continue</Text>
+        <View style={styles.containBox}>
+          <InputBox
+            label="Email"
+            placeholder="Enter your email"
+            value={values.email}
+            onChangeText={handleChange('email')}
+            errors={errors.email && touched.email ? true : null}
+            errorText={errors.email}
+          />
+        </View>
 
-      <View style={styles.MainButtons}>
-        <Button
-          title="Google"
-          customStyles={styles.btn}
-          customStylesText={{color: 'white', paddingLeft: 20}}
-        />
-        <Image
-          style={styles.image1}
-          source={require('../../Assets/Png/google.png')}
-        />
-        <Button
-          title="Facebook"
-          customStyles={{
-            backgroundColor: '#356AD7',
-            height: 40,
-            width: 130,
-            position: 'relative',
-          }}
-          customStylesText={{color: 'white', paddingLeft: 12}}
-        />
-        <Image
-          style={styles.image2}
-          source={require('../../Assets/Png/fb.png')}
-        />
+        <View style={styles.containBox}>
+          <InputBox
+            label="Password"
+            placeholder="Enter your Password"
+            value={values.password}
+            onChangeText={handleChange('password')}
+            customInputStyles={{position: 'relative'}}
+            errors={errors.password && touched.password ? true : null}
+            errorText={errors.password}
+            setPassword={true}
+          />
+        </View>
+
+        <Text
+          onPress={() => navigation.navigate('Forgot Password')}
+          style={styles.forgotPassword}>
+          Forgot Password ?
+        </Text>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Login"
+            onPressButton={handleSubmit}
+            customStyles={{marginTop: 6}}
+          />
+        </View>
+        <View style={styles.lines}>
+          <View style={styles.lineImg}></View>
+          <Text style={{color: '#000000', fontSize: 15, paddingHorizontal: 12}}>
+            or
+          </Text>
+          <View style={styles.lineImg}></View>
+        </View>
+
+        <View style={styles.MainButtons}>
+          <Button
+            title="Google"
+            customStyles={styles.btn}
+            customStylesText={{color: 'white', paddingLeft: 20}}
+          />
+          <Image
+            style={styles.image1}
+            source={require('../../Assets/Png/google.png')}
+          />
+          <Button
+            title="Facebook"
+            customStyles={styles.customBtn}
+            customStylesText={styles.customTextBtn}
+          />
+          <Image
+            style={styles.image2}
+            source={require('../../Assets/Png/fb.png')}
+          />
+        </View>
+        <Text style={styles.AccountSetup}>Don't have an account ?</Text>
+        <Text
+          onPress={() => navigation.navigate('Create Account')}
+          style={styles.AccountCreate}>
+          Sign up
+        </Text>
       </View>
-      <Text style={styles.AccountSetup}>Don't have an account ?</Text>
-      <Text
-        onPress={() => navigation.navigate('Create Account')}
-        style={styles.AccountCreate}>
-        Sign up
-      </Text>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -153,7 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginHorizontal: 25,
-    marginTop: 20,
+    marginTop: 50,
     marginBottom: 10,
   },
   logo: {
@@ -206,12 +193,11 @@ const styles = StyleSheet.create({
   AccountSetup: {
     color: 'rgba(0, 0, 0, 0.7)',
     fontSize: 16,
-    fontWeight: 700,
-    marginVertical: 8,
+    fontFamily: FONTS.Andika.bold,
   },
   AccountCreate: {
     color: '#FC3A3A',
-    fontWeight: 700,
+    fontFamily: FONTS.Andika.bold,
     fontSize: 15,
   },
   image1: {
@@ -236,17 +222,14 @@ const styles = StyleSheet.create({
     textTransform: 'normal',
     position: 'relative',
   },
-  error: {
-    color: 'red',
-    fontSize: 14,
-    margin: 0,
-    alignSelf: 'flex-start',
+  customBtn: {
+    backgroundColor: '#356AD7',
+    height: 40,
+    width: 130,
+    position: 'relative',
   },
-  eye: {
-    position: 'absolute',
-    width: 25,
-    height: 16,
-    zIndex: 99,
+  customTextBtn: {
+    color: 'white',
+    paddingLeft: 12,
   },
-  eyeBtn: {position: 'absolute', top: 60, right: 40},
 });

@@ -24,6 +24,7 @@ const NewsFeed = () => {
           renderItem={({item}) => (
             <View style={styles.info}>
               <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={() =>
                   navigation.navigate('NewsDetails', {items: item})
                 }>

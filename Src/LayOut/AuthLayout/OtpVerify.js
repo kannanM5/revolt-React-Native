@@ -3,38 +3,43 @@ import React from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import {useNavigation} from '@react-navigation/native';
+import SubHeader from '../../Components/SubHeader';
+import {FONTS} from '../../Utilities/Fonts';
 
 const OtpVerify = () => {
   const navigation = useNavigation();
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <Image
-          style={styles.optImage}
-          source={require('../../Assets/Png/opt.png')}
-        />
-        <Text style={styles.titleName}>Verification Code</Text>
-        <Text style={styles.titleContent}>
-          We send a verification code to lorumipsum@gmail.com
-        </Text>
-        <View style={styles.containBox}>
-          <InputBox placeholder="0" />
-          <InputBox placeholder="1" />
-          <InputBox placeholder="2" />
-          <InputBox placeholder="8" />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Submit"
-            onPressButton={() => navigation.navigate('Reset Password')}
+      <>
+        <SubHeader titleName="OTP" onPress={() => navigation.goBack()} />
+        <View style={styles.container}>
+          <Image
+            style={styles.optImage}
+            source={require('../../Assets/Png/opt.png')}
           />
+          <Text style={styles.titleName}>Verification Code</Text>
+          <Text style={styles.titleContent}>
+            We send a verification code to lorumipsum@gmail.com
+          </Text>
+          <View style={styles.containBox}>
+            <InputBox placeholder="0" customInputStyles={styles.input} />
+            <InputBox placeholder="1" customInputStyles={styles.input} />
+            <InputBox placeholder="2" customInputStyles={styles.input} />
+            <InputBox placeholder="8" customInputStyles={styles.input} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Submit"
+              onPressButton={() => navigation.navigate('ResetPassword')}
+            />
+          </View>
+          <Text style={styles.AccountSet}>
+            Don’t receive code?
+            <Text style={styles.AccountSetup}> Request again</Text>
+          </Text>
         </View>
-        <Text style={styles.AccountSet}>
-          Don’t receive code?
-          <Text style={styles.AccountSetup}> Request again</Text>
-        </Text>
-      </View>
+      </>
     </ScrollView>
   );
 };
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginHorizontal: 25,
-    marginVertical: 40,
+    marginVertical: 25,
   },
   optImage: {
     width: 259,
@@ -68,7 +73,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    marginBottom: 10,
   },
   containBox: {
     marginBottom: 12,
@@ -86,5 +90,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 600,
     marginVertical: 8,
+  },
+  input: {
+    color: '#3D5DF1',
+    fontFamily: FONTS.Andika.bold,
+    fontSize: 15,
   },
 });

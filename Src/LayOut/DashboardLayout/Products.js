@@ -12,6 +12,7 @@ import {items, starDataArray} from '../../SharedComponents/Arrays';
 import {useNavigation} from '@react-navigation/native';
 import Header from './Header';
 import {FONTS} from '../../Utilities/Fonts';
+import SVGIcons from '../../Components/SVGIcon';
 
 const Products = () => {
   const showIndicator = true;
@@ -50,7 +51,9 @@ const Products = () => {
             columnWrapperStyle={styles.columnWrapper}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}) => (
-              <TouchableOpacity onPress={() => handlePress(item)}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => handlePress(item)}>
                 <View style={styles.product}>
                   <View style={styles.top}>
                     {showIndicator && item.indicator ? (
@@ -65,7 +68,7 @@ const Products = () => {
                       styles.imgContainer,
                       {backgroundColor: item.color},
                     ]}>
-                    <Image style={styles.img} source={item.img} />
+                    <SVGIcons width={70} height={76} Icon={item.img} />
                   </View>
                   <Text style={styles.name}>{item.name}</Text>
                   <Text style={styles.price}>₹ {item.price}</Text>

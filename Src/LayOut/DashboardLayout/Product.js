@@ -11,6 +11,7 @@ import Button from '../../Components/Button';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
+import SVGIcons from '../../Components/SVGIcon';
 
 const Product = () => {
   const route = useRoute();
@@ -40,7 +41,12 @@ const Product = () => {
 
       <View style={styles.container}>
         <View style={{backgroundColor: product.color, marginBottom: 10}}>
-          <Image style={styles.image} source={product.img} />
+          <SVGIcons
+            width={230}
+            height={230}
+            Icon={product.img}
+            customImgStyles={{marginHorizontal: 10, marginVertical: 10}}
+          />
         </View>
         <View
           style={{

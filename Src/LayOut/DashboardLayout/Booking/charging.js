@@ -2,36 +2,7 @@ import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
 import React from 'react';
 import Button from '../../../Components/Button';
 import {FONTS} from '../../../Utilities/Fonts';
-
-const bookingdata = [
-  {
-    found: '3 Booking Found',
-    name: 'Phoenix Market City',
-    time: '26  Nov 2019, 04:03 PM',
-    dur: 'DUR : 44425 MIN',
-    extend: 'Extended Booking',
-    cancel: 'Cancel Booking',
-    img: require('../../../Assets/Png/car.png'),
-  },
-  {
-    found: '3 Booking Found',
-    name: 'Phoenix Market City',
-    time: '26  Nov 2019, 04:03 PM',
-    dur: 'DUR : 44425 MIN',
-    extend: 'Extended Booking',
-    cancel: 'Cancel Booking',
-    img: require('../../../Assets/Png/car.png'),
-  },
-  {
-    found: '3 Booking Found',
-    name: 'Phoenix Market City',
-    time: '26  Nov 2019, 04:03 PM',
-    dur: 'DUR : 44425 MIN',
-    extend: 'Extended Booking',
-    cancel: 'Cancel Booking',
-    img: require('../../../Assets/Png/car.png'),
-  },
-];
+import {bookingdata} from '../../../SharedComponents/Arrays';
 
 const Chargings = () => {
   return (

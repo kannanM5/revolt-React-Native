@@ -13,6 +13,7 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {FONTS} from '../../Utilities/Fonts';
+import {COLORS} from '../../Utilities/Colors';
 
 const DrawerDetails = [
   {
@@ -118,11 +119,16 @@ const CustomDrawerNavigation = props => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => handlepress(item)}
-            style={{
-              backgroundColor:
-                activeItem == item.pressFun ? 'rgba(252, 220, 12,1)' : 'white',
-            }}>
-            <View style={styles.section}>
+            style={
+              activeItem == item.pressFun ? styles.Active : styles.Inactive
+            }>
+            <View
+              style={[
+                styles.section,
+                activeItem == item.pressFun
+                  ? styles.activeItem
+                  : styles.InactiveItem,
+              ]}>
               <Image source={item.img} />
               <Text style={styles.text}>{item.label}</Text>
             </View>
@@ -142,7 +148,7 @@ const styles = StyleSheet.create({
   },
   containImg: {
     backgroundColor: '#F3F3F3',
-    paddingLeft: 20,
+    paddingLeft: 27,
     paddingVertical: 15,
     flexDirection: 'row',
     borderBottomRightRadius: 20,
@@ -164,6 +170,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: 'center',
     flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.07)',
   },
   text: {
     fontSize: 16,
@@ -176,5 +184,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(0,0,0,0.6)',
     fontFamily: FONTS.Andika.regular,
+  },
+  Active: {
+    backgroundColor: 'rgba(252, 220, 12,0.2)',
+  },
+  Inactive: {
+    backgroundColor: COLORS.white,
+  },
+  activeItem: {
+    borderLeftWidth: 12,
+    borderLeftColor: 'rgba(252, 220, 12,1)',
+  },
+  InactiveItem: {
+    borderLeftWidth: 12,
+    borderLeftColor: 'white',
   },
 });

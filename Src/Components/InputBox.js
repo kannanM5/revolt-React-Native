@@ -1,5 +1,12 @@
-import {StyleSheet, Text, View, TextInput} from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import React, {useState} from 'react';
 import {FONTS} from '../Utilities/Fonts';
 import {COLORS} from '../Utilities/Colors';
 
@@ -11,12 +18,17 @@ const InputBox = ({
   customInputStyles,
   customLabelStyles,
   errorText = '',
-  secureTextEntry,
   isShownLabel = true,
   errors,
+  setPassword,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
-    <View style={styles.container}>
+    <View>
       {isShownLabel && label ? (
         <Text style={[styles.label, {...customLabelStyles}]}>{label}</Text>
       ) : null}
@@ -25,8 +37,26 @@ const InputBox = ({
         value={value}
         onChangeText={onChangeText}
         style={[styles.InputBox, {...customInputStyles}]}
-        secureTextEntry={secureTextEntry}
+        secureTextEntry={showPassword ? false : true}
       />
+      {setPassword ? (
+        showPassword ? (
+          <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
+            <Image
+              style={styles.eye}
+              source={require('../Assets/Png/eye.png')}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
+            <Image
+              style={styles.eye}
+              source={require('../Assets/Png/eye1.png')}
+            />
+          </TouchableOpacity>
+        )
+      ) : null}
+
       {errors ? <Text style={styles.error}>{errorText}</Text> : null}
     </View>
   );
@@ -46,20 +76,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTS.Andika.regular,
     backgroundColor: COLORS.white,
+    position: 'relative',
   },
   label: {
     fontSize: 15,
     color: COLORS.labelColor,
     alignItems: 'flex-start',
-    paddingBottom: 10,
-    paddingTop: 10,
+    paddingBottom: 3,
+    paddingTop: 5,
     fontFamily: FONTS.Andika.bold,
   },
   error: {
     color: COLORS.red,
     fontSize: 14,
-    margin: 0,
     alignSelf: 'flex-start',
-    paddingTop: 3,
+    fontFamily: FONTS.Andika.regular,
+  },
+  eye: {
+    width: 25,
+    height: 16,
+  },
+  eyeBtn: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
   },
 });

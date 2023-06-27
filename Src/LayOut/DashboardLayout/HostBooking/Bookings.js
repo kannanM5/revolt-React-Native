@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: FONTS.Andika.bold,
     color: '#000000',
+    paddingBottom: 5,
   },
   duration: {
     fontSize: 14,

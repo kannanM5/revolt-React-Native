@@ -2,6 +2,7 @@ import {ScrollView, StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import Button from '../../Components/Button';
 import InputBox from '../../Components/InputBox';
+import {FONTS} from '../../Utilities/Fonts';
 
 const ResetPassword = () => {
   return (
@@ -19,23 +20,23 @@ const ResetPassword = () => {
           <InputBox
             label="New Password"
             placeholder="Enter your New Password"
+            setPassword={true}
           />
         </View>
         <View style={styles.containBox}>
           <InputBox
             label="Confirm Password"
             placeholder="Enter your New Password"
+            setPassword={true}
           />
         </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Reset Password"
-            customStyles={{
-              height: 45,
-              width: '100%',
-            }}
-          />
-        </View>
+        <Button
+          title="Reset Password"
+          customStyles={{
+            height: 45,
+            width: '100%',
+          }}
+        />
       </View>
     </ScrollView>
   );
@@ -48,12 +49,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginHorizontal: 25,
-    marginVertical: 40,
+    marginVertical: 50,
   },
   titleName: {
     fontSize: 24,
     color: 'rgba(0, 0, 0, 0.85)',
-    fontWeight: 700,
+    fontFamily: FONTS.Andika.bold,
   },
   titleContent: {
     textAlign: 'center',
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.6)',
     width: 225,
     lineHeight: 19,
+    fontFamily: FONTS.Andika.regular,
   },
   forgotImage: {
     width: 102,
@@ -69,9 +71,6 @@ const styles = StyleSheet.create({
   },
   containBox: {
     width: '100%',
-    marginBottom: 5,
-  },
-  buttonContainer: {
-    width: '100%',
+    marginBottom: 8,
   },
 });
