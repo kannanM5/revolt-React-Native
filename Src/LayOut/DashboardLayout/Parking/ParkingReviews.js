@@ -24,6 +24,7 @@ const ParkingReviews = () => {
                 fontSize: 14,
                 lineHeight: 23,
                 fontFamily: FONTS.Andika.regular,
+                color: 'rgba(0, 0, 0, 0.8)',
               }}>
               From 25 People
             </Text>
@@ -65,7 +66,8 @@ export default ParkingReviews;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 25,
-    paddingVertical: 10,
+    marginTop: 5,
+    marginBottom: 60,
   },
   rating: {
     flexDirection: 'row',

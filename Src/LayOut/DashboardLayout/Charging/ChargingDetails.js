@@ -9,7 +9,7 @@ const ChargingDetails = () => {
     <View style={styles.container}>
       <Carosel
         dataArray={[...chargingImages]}
-        customImageContainer={{marginRight: 12}}
+        customImageContainer={{marginRight: 12, marginTop: 3}}
         customImage={{width: 283, height: 140}}
         isshowTitle={false}
       />
@@ -65,7 +65,8 @@ export default ChargingDetails;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 25,
-    marginVertical: 10,
+    marginTop: 10,
+    marginBottom: -10,
   },
   shopTitle: {
     fontSize: 24,
@@ -92,5 +93,10 @@ const styles = StyleSheet.create({
   },
   section: {
     flexDirection: 'row',
+  },
+  text: {
+    fontSize: 13,
+    fontFamily: FONTS.Andika.regular,
+    color: 'rgba(0, 0, 0, 0.8)',
   },
 });

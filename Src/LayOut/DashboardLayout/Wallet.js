@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 25,
     marginTop: 20,
-    marginBottom: 65,
+    marginBottom: 70,
   },
   walletImage: {
     width: 195,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginTop: -10,
   },
   paymentDetails: {
-    width: 305,
+    width: '100%',
     height: 75,
     borderBottomWidth: 1,
     borderRightWidth: 1,

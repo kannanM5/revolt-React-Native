@@ -14,81 +14,79 @@ import {FONTS} from '../../../Utilities/Fonts';
 
 export const ChargingAbout = () => {
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <Text
-          style={{
-            fontSize: 14,
-            lineHeight: 23,
-            color: 'rgba(0, 0, 0, 0.6)',
-            fontFamily: FONTS.Andika.regular,
-          }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh a,
-          mattis libero nec etiam. Nisl odio facilisi laoreet scelerisque.
-        </Text>
-        <View style={styles.imgContainer}>
-          <Image source={require('../../../Assets/Png/toilet.png')} />
-          <Image source={require('../../../Assets/Png/wheelchair.png')} />
-          <Image source={require('../../../Assets/Png/shop.png')} />
-          <Image source={require('../../../Assets/Png/apartment.png')} />
-          <Image source={require('../../../Assets/Png/cafe.png')} />
-        </View>
-        <Text style={styles.subTitle}> Timmings</Text>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <Text
+        style={{
+          fontSize: 14,
+          lineHeight: 23,
+          color: 'rgba(0, 0, 0, 0.6)',
+          fontFamily: FONTS.Andika.regular,
+        }}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh a, mattis
+        libero nec etiam. Nisl odio facilisi laoreet scelerisque.
+      </Text>
+      <View style={styles.imgContainer}>
+        <Image source={require('../../../Assets/Png/toilet.png')} />
+        <Image source={require('../../../Assets/Png/wheelchair.png')} />
+        <Image source={require('../../../Assets/Png/shop.png')} />
+        <Image source={require('../../../Assets/Png/apartment.png')} />
+        <Image source={require('../../../Assets/Png/cafe.png')} />
+      </View>
+      <Text style={styles.subTitle}> Timmings</Text>
 
-        <View style={styles.datePicker}>
-          <DateTimePicker
-            label="Start Time"
-            customStyles={styles.customDateStyles}
-          />
-          <Text>14hrs</Text>
-          <DateTimePicker
-            label="End Time"
-            customStyles={styles.customDateStyles}
-          />
-        </View>
-        <Text style={styles.subTitle}> Charger Details</Text>
+      <View style={styles.datePicker}>
+        <DateTimePicker
+          label="Start Time"
+          customStyles={styles.customDateStyles}
+        />
+        <Text style={{color: 'rgba(252, 58, 58, 1)'}}>14hrs</Text>
+        <DateTimePicker
+          label="End Time"
+          customStyles={styles.customDateStyles}
+        />
+      </View>
+      <Text style={styles.subTitle}> Charger Details</Text>
 
-        <View style={styles.buttonGroupContainer}>
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity style={[styles.button]}>
-              <View style={styles.btnContent}>
-                <View style={[styles.imgBox]}>
-                  <Image
-                    style={styles.img}
-                    source={require('../../../Assets/Png/american.png')}
-                  />
-                </View>
-
-                <Text style={styles.BtnText}>AC - AMERICAN</Text>
+      <View style={styles.buttonGroupContainer}>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity style={[styles.button]}>
+            <View style={styles.btnContent}>
+              <View style={[styles.imgBox]}>
+                <Image
+                  style={styles.img}
+                  source={require('../../../Assets/Png/american.png')}
+                />
               </View>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.button]}>
-              <View style={styles.btnContent}>
-                <View style={[styles.imgBox]}>
-                  <Image
-                    style={styles.img}
-                    source={require('../../../Assets/Png/uks.png')}
-                  />
-                </View>
+              <Text style={styles.BtnText}>AC - AMERICAN</Text>
+            </View>
+          </TouchableOpacity>
 
-                <Text style={styles.BtnText}>AC - EUROPEAN</Text>
+          <TouchableOpacity style={[styles.button]}>
+            <View style={styles.btnContent}>
+              <View style={[styles.imgBox]}>
+                <Image
+                  style={styles.img}
+                  source={require('../../../Assets/Png/uks.png')}
+                />
               </View>
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <Button title="Book Parking Spot" customStyles={{marginVertical: 1}} />
-        <View style={{flex: 1, marginVertical: 15}}>
-          <MapView
-            initialRegion={{
-              latitude: 28.701642445689195,
-              longitude: 77.22316070481907,
-              latitudeDelta: 1.09,
-              longitudeDelta: 1.04,
-            }}
-            style={{width: '100%', height: 180}}></MapView>
+              <Text style={styles.BtnText}>AC - EUROPEAN</Text>
+            </View>
+          </TouchableOpacity>
         </View>
+      </View>
+
+      <Button title="Book Parking Spot" customStyles={{marginVertical: 1}} />
+      <View style={{flex: 1, marginVertical: 15}}>
+        <MapView
+          initialRegion={{
+            latitude: 28.701642445689195,
+            longitude: 77.22316070481907,
+            latitudeDelta: 1.09,
+            longitudeDelta: 1.04,
+          }}
+          style={{width: '100%', height: 180}}></MapView>
       </View>
     </ScrollView>
   );
@@ -99,7 +97,8 @@ export default ChargingAbout;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 25,
-    marginVertical: 7,
+    marginTop: 5,
+    marginBottom: 60,
   },
   imgContainer: {
     flexDirection: 'row',
@@ -169,6 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontFamily: FONTS.Andika.bold,
     paddingLeft: 7,
+    color: 'rgba(0, 0, 0, 0.85)',
   },
   btnContent: {
     flexDirection: 'row',

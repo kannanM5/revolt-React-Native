@@ -64,7 +64,6 @@ function CustomBottomNavigation({state, descriptors, navigation}) {
   const handlepress = screenName => {
     setActiveItem(screenName);
     navigation.navigate(screenName);
-    console.log(state);
   };
   return (
     <View style={{flexDirection: 'row'}}>

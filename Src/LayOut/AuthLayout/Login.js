@@ -1,12 +1,5 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import React, {useState} from 'react';
+import {Image, StyleSheet, Text, View, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import {useNavigation} from '@react-navigation/native';
@@ -18,7 +11,6 @@ import {COLORS} from '../../Utilities/Colors';
 
 const Login = () => {
   const navigation = useNavigation();
-  const [showPassword, setShowPassword] = useState(false);
 
   const SignupSchema = Yup.object().shape({
     email: Yup.string()
@@ -52,12 +44,12 @@ const Login = () => {
           style={styles.logo}
           source={require('../../Assets/Png/Revolt-logo.png')}
         />
+        <Text style={styles.welcomeMessage}>Welcome Back!</Text>
         <Text
-          onPress={() => navigation.navigate('Charging')}
-          style={styles.welcomeMessage}>
-          Welcome Back!
+          onPress={() => navigation.navigate('PageScreens')}
+          style={styles.LoginMessage}>
+          Login to Continue
         </Text>
-        <Text style={styles.LoginMessage}>Login to Continue</Text>
         <View style={styles.containBox}>
           <InputBox
             label="Email"
@@ -122,7 +114,11 @@ const Login = () => {
             source={require('../../Assets/Png/fb.png')}
           />
         </View>
-        <Text style={styles.AccountSetup}>Don't have an account ?</Text>
+        <Text
+          onPress={() => navigation.navigate('BottomTabNavigation')}
+          style={styles.AccountSetup}>
+          Don't have an account ?
+        </Text>
         <Text
           onPress={() => navigation.navigate('Create Account')}
           style={styles.AccountCreate}>

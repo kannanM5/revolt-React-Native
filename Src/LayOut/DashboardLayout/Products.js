@@ -48,12 +48,17 @@ const Products = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             numColumns={2}
-            columnWrapperStyle={styles.columnWrapper}
+            // columnWrapperStyle={styles.columnWrapper}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}) => (
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => handlePress(item)}>
+                onPress={() => handlePress(item)}
+                style={{
+                  flex: 1,
+                  marginRight: 5,
+                  marginLeft: 5,
+                }}>
                 <View style={styles.product}>
                   <View style={styles.top}>
                     {showIndicator && item.indicator ? (
@@ -104,16 +109,16 @@ const styles = StyleSheet.create({
   },
   searchBoxContainer: {
     marginBottom: 15,
-    // marginTop: 70,
   },
 
   columnWrapper: {
     justifyContent: 'space-between',
   },
   product: {
-    width: 151,
+    width: '100%',
     height: 220,
     borderBottomWidth: 1,
+    borderTopWidth: 1,
     borderRightWidth: 1,
     borderLeftWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.1)',
@@ -125,6 +130,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     elevation: 1,
+    // flex: 1,
   },
   imgContainer: {
     width: 101,

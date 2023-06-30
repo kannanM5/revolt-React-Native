@@ -27,31 +27,38 @@ const NewsDetails = ({navigation}) => {
         </Text>
 
         <View style={{flexDirection: 'row'}}>
-          <Image
-            style={{height: 240, width: 190, borderRadius: 10}}
-            source={require('../../Assets/Png/one1.png')}
-          />
-          <View>
+          <View style={{width: '63%'}}>
             <Image
-              style={{
-                height: 110,
-                width: 100,
-                marginBottom: 10,
-                marginLeft: 15,
-                borderRadius: 10,
-              }}
-              source={require('../../Assets/Png/one2.png')}
+              style={{height: 240, width: '100%', borderRadius: 10}}
+              source={require('../../Assets/Png/one1.png')}
             />
-            <Image
-              style={{
-                height: 110,
-                width: 100,
-                marginTop: 10,
-                marginLeft: 15,
-                borderRadius: 10,
-              }}
-              source={require('../../Assets/Png/one3.png')}
-            />
+          </View>
+
+          <View style={{width: '33%'}}>
+            <View>
+              <Image
+                style={{
+                  height: 110,
+                  width: '100%',
+                  marginBottom: 10,
+                  marginLeft: 15,
+                  borderRadius: 10,
+                }}
+                source={require('../../Assets/Png/one2.png')}
+              />
+            </View>
+            <View>
+              <Image
+                style={{
+                  height: 110,
+                  width: '100%',
+                  marginTop: 10,
+                  marginLeft: 15,
+                  borderRadius: 10,
+                }}
+                source={require('../../Assets/Png/one3.png')}
+              />
+            </View>
           </View>
         </View>
         <Text
@@ -61,6 +68,7 @@ const NewsDetails = ({navigation}) => {
             lineHeight: 19,
             marginVertical: 10,
             marginBottom: 70,
+            color: 'rgba(0, 0, 0, 0.8)',
           }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec feugiat
           tristique congue scelerisque augue.
@@ -86,6 +94,7 @@ const styles = StyleSheet.create({
   },
   img: {
     marginVertical: 10,
+    width: '100%',
   },
   content: {
     fontSize: 13,

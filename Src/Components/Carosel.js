@@ -22,7 +22,7 @@ const Carosel = ({
   return (
     <FlatList
       horizontal={true}
-      inverted={true}
+      // inverted={true}
       keyExtractor={item => item.id}
       showsHorizontalScrollIndicator={false}
       data={dataArray}
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   },
   parkingImg: {
     width: 110,
+    // width: '100%',
     height: 87,
     position: 'relative',
     borderRadius: 8,
@@ -66,9 +67,10 @@ const styles = StyleSheet.create({
     right: 10,
     top: 8,
     backgroundColor: COLORS.buttonBgColor,
-    padding: 1,
+    paddingHorizontal: 2,
     borderRadius: 4,
     fontFamily: FONTS.Andika.bold,
+    color: 'rgba(0, 0, 0, 1)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -76,5 +78,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.Andika.bold,
     paddingVertical: 2,
+    color: 'rgba(0, 0, 0, 1)',
   },
 });

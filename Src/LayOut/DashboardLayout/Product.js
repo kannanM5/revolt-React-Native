@@ -36,84 +36,85 @@ const Product = () => {
   };
 
   return (
-    <ScrollView>
+    <>
       <SubHeader titleName="EV Charger" onPress={handlerGoBack} />
-
-      <View style={styles.container}>
-        <View style={{backgroundColor: product.color, marginBottom: 10}}>
-          <SVGIcons
-            width={230}
-            height={230}
-            Icon={product.img}
-            customImgStyles={{marginHorizontal: 10, marginVertical: 10}}
-          />
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            right: 20,
-            top: 15,
-            padding: 7,
-            borderRadius: 15,
-            backgroundColor: 'white',
-          }}>
-          <Image source={require('../../Assets/Png/liked.png')} />
-        </View>
-
-        <View style={styles.rate}>
-          <View style={styles.priceGroup}>
-            <Text style={styles.price}>₹{product.price}</Text>
-            <Text style={styles.price1}>₹90,000</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={{backgroundColor: product.color, marginBottom: 10}}>
+            <SVGIcons
+              width={230}
+              height={230}
+              Icon={product.img}
+              customImgStyles={{marginHorizontal: 10, marginVertical: 10}}
+            />
           </View>
-          <Text style={styles.stock}>5 in Stock</Text>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.quantity}>Order Quantity</Text>
+          <View
+            style={{
+              position: 'absolute',
+              right: 20,
+              top: 15,
+              padding: 7,
+              borderRadius: 15,
+              backgroundColor: 'white',
+            }}>
+            <Image source={require('../../Assets/Png/liked.png')} />
+          </View>
 
-          <View style={styles.counter}>
-            <TouchableOpacity onPress={decrement}>
-              <Image source={require('../../Assets/Png/sub.png')} />
-            </TouchableOpacity>
+          <View style={styles.rate}>
+            <View style={styles.priceGroup}>
+              <Text style={styles.price}>₹{product.price}</Text>
+              <Text style={styles.price1}>₹90,000</Text>
+            </View>
+            <Text style={styles.stock}>5 in Stock</Text>
+          </View>
+          <View style={styles.section}>
+            <Text style={styles.quantity}>Order Quantity</Text>
 
-            <Text style={styles.count}>{count}</Text>
-            <View style={styles.line}></View>
+            <View style={styles.counter}>
+              <TouchableOpacity onPress={decrement}>
+                <Image source={require('../../Assets/Png/sub.png')} />
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={increment}>
-              <Image source={require('../../Assets/Png/add.png')} />
-            </TouchableOpacity>
+              <Text style={styles.count}>{count}</Text>
+              <View style={styles.line}></View>
+
+              <TouchableOpacity onPress={increment}>
+                <Image source={require('../../Assets/Png/add.png')} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Text style={styles.title}>
+            IP65 0-300 Charging Stations for Electrical Vechicles, 380
+          </Text>
+          <Text style={styles.prodcutDetails}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh a,
+            mattis libero nec etiam. Nisl odio facilisi laoreet scelerisque.
+          </Text>
+          <View style={styles.BtnContainer}>
+            <Button
+              title="Add to cart"
+              customStyles={
+                activeItem === 1 ? styles.activeBtn : styles.inActiveBtn
+              }
+              customStylesText={
+                activeItem === 1 ? styles.activeBtnText : styles.inActiveBtnText
+              }
+              onPressButton={() => handlepress(1)}
+            />
+            <Button
+              title="Buy Now"
+              customStyles={
+                activeItem === 2 ? styles.activeBtn : styles.inActiveBtn
+              }
+              customStylesText={
+                activeItem === 2 ? styles.activeBtnText : styles.inActiveBtnText
+              }
+              onPressButton={() => handlepress(2)}
+            />
           </View>
         </View>
-        <Text style={styles.title}>
-          IP65 0-300 Charging Stations for Electrical Vechicles, 380
-        </Text>
-        <Text style={styles.prodcutDetails}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh a,
-          mattis libero nec etiam. Nisl odio facilisi laoreet scelerisque.
-        </Text>
-        <View style={styles.BtnContainer}>
-          <Button
-            title="Add to cart"
-            customStyles={
-              activeItem === 1 ? styles.activeBtn : styles.inActiveBtn
-            }
-            customStylesText={
-              activeItem === 1 ? styles.activeBtnText : styles.inActiveBtnText
-            }
-            onPressButton={() => handlepress(1)}
-          />
-          <Button
-            title="Buy Now"
-            customStyles={
-              activeItem === 2 ? styles.activeBtn : styles.inActiveBtn
-            }
-            customStylesText={
-              activeItem === 2 ? styles.activeBtnText : styles.inActiveBtnText
-            }
-            onPressButton={() => handlepress(2)}
-          />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
@@ -122,15 +123,14 @@ export default Product;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 25,
-    marginTop: 15,
-    marginBottom: 55,
+    marginTop: 10,
     flex: 1,
+    marginBottom: 63,
   },
   image: {
     width: 290,
     height: 230,
     position: 'relative',
-    // padding: 10,
   },
   rate: {
     flexDirection: 'row',
@@ -203,13 +203,8 @@ const styles = StyleSheet.create({
   BtnContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flex: 1,
   },
-  button: {
-    width: 162,
-    height: 51,
-    paddingHorizontal: 10,
-  },
+
   activeBtn: {
     backgroundColor: '#FCDC0C',
     width: 142,

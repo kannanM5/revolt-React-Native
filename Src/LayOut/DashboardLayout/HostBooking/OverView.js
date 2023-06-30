@@ -12,6 +12,7 @@ const OverView = () => {
         <Text style={styles.mainText}>Booked parking Spots : 5</Text>
       </View>
       <Text style={styles.MainTitle}>Current Booking:</Text>
+
       <View style={styles.content}>
         <Text style={styles.contentTitle}>Dale Harper</Text>
 
@@ -49,15 +50,16 @@ const styles = StyleSheet.create({
   content: {
     height: 175,
     borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-    padding: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
     elevation: 2,
     borderTopWidth: 0,
     borderRightWidth: 0,
     borderLeftWidth: 0,
     borderBottomWidth: 2,
     backgroundColor: '#FFFFFF',
-    marginTop: 15,
-    marginBottom: 15,
+    marginTop: 5,
+    marginBottom: 10,
   },
   contentTitle: {
     fontSize: 16,

@@ -60,8 +60,7 @@ const CustomTopNavigation = ({state, descriptors, navigation}) => {
                 width: '99%',
                 height: 1,
                 backgroundColor: 'rgba(0,0,0,0.2)',
-                position: 'absolute',
-                top: 27.5,
+                position: 'relative',
               }}></View>
             {isFocused && <Animated.View style={[styles.lineIndicator]} />}
           </TouchableOpacity>
@@ -75,15 +74,11 @@ export default CustomTopNavigation;
 
 const styles = StyleSheet.create({
   lineIndicator: {
-    height: 4,
+    height: 5,
     backgroundColor: '#FCDC0C',
     width: 50,
-  },
-  lineIndicatorNormal: {
-    height: 3,
-    backgroundColor: 'gray',
-    width: '100%',
-    marginTop: 6,
+    position: 'absolute',
+    top: 25,
   },
 
   label: {

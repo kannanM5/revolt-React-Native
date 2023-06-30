@@ -7,39 +7,37 @@ import {FONTS} from '../../../Utilities/Fonts';
 
 const ChargingRatings = () => {
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.containers}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={styles.text}>4.7</Text>
-          <View style={{alignSelf: 'center'}}>
-            <Text style={styles.peopleText}>From 25 People</Text>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.containers}>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={styles.text}>4.7</Text>
+        <View style={{alignSelf: 'center'}}>
+          <Text style={styles.peopleText}>From 25 People</Text>
 
-            <View style={styles.rating}>
-              {starDataArray.map((e, i) => {
-                return (
-                  <View key={i}>
-                    <Image
-                      source={e.pressed ? e.img : e.pressImg}
-                      style={styles.star}
-                    />
-                  </View>
-                );
-              })}
-            </View>
+          <View style={styles.rating}>
+            {starDataArray.map((e, i) => {
+              return (
+                <View key={i}>
+                  <Image
+                    source={e.pressed ? e.img : e.pressImg}
+                    style={styles.star}
+                  />
+                </View>
+              );
+            })}
           </View>
         </View>
-        <CustomerRatingComponent />
+      </View>
+      <CustomerRatingComponent />
 
-        <View>
-          <InputBox
-            placeholder="Write a Comment"
-            customInputStyles={{position: 'relative', marginVertical: 20}}
-          />
-          <Image
-            style={styles.arrow}
-            source={require('../../../Assets/Png/arrow.png')}
-          />
-        </View>
+      <View>
+        <InputBox
+          placeholder="Write a Comment"
+          customInputStyles={{position: 'relative', marginVertical: 20}}
+        />
+        <Image
+          style={styles.arrow}
+          source={require('../../../Assets/Png/arrow.png')}
+        />
       </View>
     </ScrollView>
   );
@@ -50,7 +48,8 @@ export default ChargingRatings;
 const styles = StyleSheet.create({
   containers: {
     marginHorizontal: 25,
-    marginVertical: 10,
+    marginTop: 5,
+    marginBottom: 60,
   },
   rating: {
     flexDirection: 'row',
@@ -77,5 +76,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 23,
     fontFamily: FONTS.Andika.regular,
+    color: 'rgba(0, 0, 0, 0.8)',
   },
 });

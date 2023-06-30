@@ -72,7 +72,7 @@ const ParkingAbout = () => {
           )}
         />
 
-        <Button title="Book Parking Spot" />
+        <Button title="Book Parking Spot" customStyles={{marginTop: 0}} />
       </View>
     </ScrollView>
   );
@@ -83,7 +83,8 @@ export default ParkingAbout;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 25,
-    paddingVertical: 10,
+    marginTop: 5,
+    marginBottom: 65,
   },
   subTitle: {
     fontSize: 16,
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 18,
     fontFamily: FONTS.Andika.bold,
+    color: 'rgba(0, 0, 0, 0.51)',
   },
   hours: {
     fontSize: 10,
@@ -125,6 +127,7 @@ const styles = StyleSheet.create({
   rate: {
     fontSize: 13,
     fontFamily: FONTS.Andika.bold,
+    color: 'rgba(0, 0, 0, 0.51)',
   },
   setColor: {
     backgroundColor: '#1B65D4',

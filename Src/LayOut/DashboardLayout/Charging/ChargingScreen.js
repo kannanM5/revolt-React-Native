@@ -13,13 +13,8 @@ const ChargingScreen = () => {
         defaultSource={require('../../../Assets/Png/goback1.png')}
         onPress={() => navigation.goBack()}
       />
-      <View style={{flex: 1, marginBottom: 50}}>
-        <ChargingDetails />
-      </View>
-
-      <View style={{flex: 1, marginBottom: 50, marginTop: -10}}>
-        <ChargingTopStack />
-      </View>
+      <ChargingDetails />
+      <ChargingTopStack />
     </View>
   );
 };

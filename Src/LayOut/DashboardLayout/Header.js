@@ -26,7 +26,7 @@ export default Header;
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     backgroundColor: '#F9F9F9',
     alignItems: 'center',
     paddingVertical: 15,
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: '100%',
     borderBottomColor: 'white',
+    paddingHorizontal: 20,
   },
   menu: {
     width: 20,

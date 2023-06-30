@@ -34,6 +34,7 @@ const InputBox = ({
       ) : null}
       <TextInput
         placeholder={placeholder}
+        placeholderTextColor={COLORS.placeHolderColor}
         value={value}
         onChangeText={onChangeText}
         style={[styles.InputBox, {...customInputStyles}]}
@@ -67,6 +68,7 @@ export default InputBox;
 const styles = StyleSheet.create({
   InputBox: {
     width: '100%',
+    color: 'red',
     height: 51,
     borderWidth: 1,
     borderRadius: 6,

@@ -45,9 +45,7 @@ const DateTimePicker = ({label = '', customStyles, hours}) => {
       <View style={[styles.datePiker, {...customStyles}]}>
         <View>
           <Text style={styles.label}>{label}</Text>
-          <Text style={styles.time}>
-            Today <Text> {selectedTime}</Text>
-          </Text>
+          <Text style={styles.time}>Today {selectedTime}</Text>
         </View>
         {/* {isShow ? <Text style={styles.differnces}>{differnces}</Text> : null} */}
 

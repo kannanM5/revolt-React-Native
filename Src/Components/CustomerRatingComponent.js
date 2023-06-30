@@ -3,6 +3,7 @@ import React from 'react';
 import {customerrating, starDataArray} from '../SharedComponents/Arrays';
 import {FONTS} from '../Utilities/Fonts';
 import {COLORS} from '../Utilities/Colors';
+import {color} from 'react-native-reanimated';
 
 const CustomerRatingComponent = ({name}) => {
   return (
@@ -72,7 +73,12 @@ const CustomerRatingComponent = ({name}) => {
                   }}>
                   {e.likes}
                 </Text>
-                <Text style={{fontSize: 10, fontFamily: FONTS.Andika.regular}}>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontFamily: FONTS.Andika.regular,
+                    color: 'rgba(0, 0, 0, 0.35)',
+                  }}>
                   Reply
                 </Text>
               </View>

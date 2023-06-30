@@ -1,15 +1,28 @@
-import {StyleSheet, Text, View, ImageBackground, Image} from 'react-native';
-import React from 'react';
+import {StyleSheet, View, ImageBackground, Image} from 'react-native';
+import React, {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import SplashScreen from 'react-native-splash-screen';
 
 const FlashScreen = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      SplashScreen.hide();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <ImageBackground
       source={require('../../Assets/Png/bg.png')}
       style={styles.backgroundImage}>
-      <Image
-        style={styles.image}
-        source={require('../../Assets/Png/flash.png')}
-      />
+      <View style={styles.container}>
+        <Image
+          style={styles.image}
+          source={require('../../Assets/Png/flash.png')}
+        />
+      </View>
     </ImageBackground>
   );
 };
@@ -17,12 +30,12 @@ const FlashScreen = () => {
 export default FlashScreen;
 
 const styles = StyleSheet.create({
-  backgroundImage: {
+  container: {
     flex: 1,
-    resizeMode: 'cover',
-  },
-  image: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
   },
 });

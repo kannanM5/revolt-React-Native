@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../Header';
 import ParkingDetails from './ParkingDetails';
@@ -12,20 +12,19 @@ export const ParkingScreen = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
-      <View style={{flex: 1}}>
-        <Header
-          onPress={handleSubmit}
-          defaultSource={require('../../../Assets/Png/goback1.png')}
-        />
-        <View style={{}}>
-          <ParkingDetails />
-        </View>
-
-        <View style={{flex: 1, marginBottom: 50}}>
-          <ParkingTopStack />
-        </View>
-      </View>
+    <View style={styles.container}>
+      <Header
+        onPress={handleSubmit}
+        defaultSource={require('../../../Assets/Png/goback1.png')}
+      />
+      <ParkingDetails />
+      <ParkingTopStack />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

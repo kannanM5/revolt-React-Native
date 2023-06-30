@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, Image, View} from 'react-native';
 import React from 'react';
 import {FONTS} from '../Utilities/Fonts';
 import {COLORS} from '../Utilities/Colors';
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 15,
   },
+
   BtnTextColor: {
     color: COLORS.buttonTextColor,
     textTransform: 'uppercase',

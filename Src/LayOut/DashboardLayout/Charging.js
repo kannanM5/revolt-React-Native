@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import InputBox from '../../Components/InputBox';
 import {useNavigation, DrawerActions} from '@react-navigation/native';
 import DateTimePicker from '../../Components/DateTimePicker';
@@ -14,18 +14,23 @@ import SVGIcons from '../../Components/SVGIcon';
 const Charging = props => {
   const navigation = useNavigation();
   const [activeItem, setActiveItem] = useState(null);
-  const [activeParking, setActiveParking] = useState(false);
-  const [activeCharging, setActiveCharging] = useState(false);
 
   const handleSubmit = name => {
     if (name === 'parking') {
-      setActiveItem('parking');
-      setActiveCharging(!activeParking);
+      if (activeItem === 'parking') {
+        setActiveItem(null);
+      } else {
+        setActiveItem('parking');
+      }
     } else if (name === 'charging') {
-      setActiveItem('charging');
-      setActiveParking(!activeCharging);
+      if (activeItem === 'charging') {
+        setActiveItem(null);
+      } else {
+        setActiveItem('charging');
+      }
     }
   };
+
   return (
     <View style={styles.container}>
       <MapView
@@ -66,7 +71,7 @@ const Charging = props => {
         style={[
           styles.buttonGroupContainer,
           activeItem === 'parking' || activeItem === 'charging'
-            ? styles.parkingCarousel
+            ? styles.containerCarosel
             : null,
         ]}>
         <View
@@ -109,6 +114,7 @@ const Charging = props => {
               </Text>
             </View>
           </TouchableOpacity>
+
           <TouchableOpacity
             activeOpacity={0.7}
             style={[
@@ -151,8 +157,16 @@ const Charging = props => {
               ? styles.zoomAfter
               : null,
           ]}>
-          <Image source={require('../../Assets/Png/zoom.png')} />
+          <Image
+            style={
+              activeItem === 'parking' || activeItem === 'charging'
+                ? styles.zoomImg
+                : styles.zoomImgafter
+            }
+            source={require('../../Assets/Png/zoom.png')}
+          />
         </View>
+
         {activeItem === 'parking' ? (
           <View>
             <Text style={styles.titleEvent}>Nearest Parking (2)</Text>
@@ -246,25 +260,26 @@ const styles = StyleSheet.create({
   },
   buttonGroupContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     position: 'absolute',
     left: 10,
     right: 10,
     bottom: 70,
-    width: 340,
+    marginHorizontal: 10,
   },
 
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+    width: '100%',
   },
   BtnGRoup: {
     marginBottom: -1,
     justifyContent: 'flex-start',
   },
   BtnAfter: {
-    width: 115,
+    width: 120,
     paddingHorizontal: 5,
     paddingVertical: 4,
     marginRight: 10,
@@ -283,8 +298,8 @@ const styles = StyleSheet.create({
   },
 
   imgBox: {
-    width: 42,
-    height: 36,
+    width: 39,
+    height: 33,
     backgroundColor: COLORS.buttonBgColor,
     borderRadius: 10,
     alignItems: 'center',
@@ -299,13 +314,17 @@ const styles = StyleSheet.create({
   BtnText: {
     fontSize: 14,
     fontFamily: FONTS.Andika.bold,
-    paddingLeft: 10,
+    color: 'rgba(0, 0, 0, 0.85)',
+  },
+  BtnTextAfter: {
+    paddingLeft: -5,
   },
   btnContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  fontFamily: FONTS.Andika.bold,
 
   titleEvent: {
     fontSize: 17,
@@ -313,7 +332,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     paddingVertical: 5,
   },
-  parkingCarousel: {
+  containerCarosel: {
     backgroundColor: COLORS.white,
     elevation: 10,
     borderRadius: 30,
@@ -321,7 +340,7 @@ const styles = StyleSheet.create({
   },
   zoom: {
     position: 'absolute',
-    right: 25,
+    right: 20,
     bottom: 100,
     backgroundColor: '#F2CC0C',
     width: 46,
@@ -332,9 +351,18 @@ const styles = StyleSheet.create({
   },
   zoomAfter: {
     position: 'absolute',
-    bottom: 170,
+    bottom: 166,
+    right: 12,
+    width: 35,
+    height: 38,
+    borderRadius: 12,
   },
-  BtnTextAfter: {
-    paddingLeft: -5,
+  zoomImg: {
+    width: 13,
+    height: 12,
+  },
+  zoomImgafter: {
+    width: 20,
+    height: 18,
   },
 });

@@ -31,7 +31,7 @@ const NewsFeed = () => {
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.content}>{item.content}</Text>
                 <Image
-                  style={{marginVertical: 10, width: 285, borderRadius: 10}}
+                  style={{marginVertical: 10, width: '100%', borderRadius: 10}}
                   source={item.img}
                 />
                 <View style={styles.footer}>

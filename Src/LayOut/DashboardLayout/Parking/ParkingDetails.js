@@ -8,7 +8,10 @@ const ParkingDetails = () => {
     <View style={styles.container}>
       <Carosel
         dataArray={[...ParkingImages]}
-        customImageContainer={{marginRight: 12}}
+        customImageContainer={{
+          marginRight: 12,
+          marginTop: 9,
+        }}
         customImage={{width: 283, height: 140}}
         isshowTitle={false}
       />
@@ -94,6 +97,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 13,
     fontFamily: FONTS.Andika.regular,
+    color: 'rgba(0, 0, 0, 0.8)',
   },
 
   customerImg: {
