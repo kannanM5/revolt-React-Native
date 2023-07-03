@@ -17,6 +17,7 @@ const DateTimePicker = ({label = '', customStyles, hours}) => {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedTime, setSelectedTime] = useState(currentTime);
+  const [timeDifference, setTimeDifference] = useState(0);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -38,6 +39,7 @@ const DateTimePicker = ({label = '', customStyles, hours}) => {
       hour12: true,
     });
     setSelectedTime(formattedTime);
+    setTimeDifference(hoursDiff);
     hideDatePicker();
   };
   return (
@@ -47,23 +49,29 @@ const DateTimePicker = ({label = '', customStyles, hours}) => {
           <Text style={styles.label}>{label}</Text>
           <Text style={styles.time}>Today {selectedTime}</Text>
         </View>
-        {/* {isShow ? <Text style={styles.differnces}>{differnces}</Text> : null} */}
 
         <View style={styles.separate}>
           <Image
             style={styles.img}
             source={require('../Assets/Png/Polygon3.png')}
           />
+          {/* <Text>{timeDifference}</Text> */}
         </View>
       </View>
-
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="time"
         hourFormat="12"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
-        style={styles.bgColor}
+        style={styles.datePicker1}
+        customStyles={{
+          dateInput: {
+            backgroundColor: 'orange',
+            height: 40,
+            width: 100,
+          },
+        }}
       />
     </TouchableOpacity>
   );
@@ -95,14 +103,19 @@ const styles = StyleSheet.create({
     color: COLORS.transparentDimColor,
   },
   img: {
-    marginTop: 18,
+    marginTop: 22,
   },
   differnces: {
     fontSize: 12,
     fontFamily: FONTS.Andika.bold,
     color: COLORS.red,
   },
-  bgColor: {
+  dateTimePicker: {
+    backgroundColor: 'white',
+  },
+  datePicker1: {
+    width: 200,
+    height: 40,
     backgroundColor: 'yellow',
   },
 });

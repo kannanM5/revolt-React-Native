@@ -14,7 +14,7 @@ const RootStack = () => {
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="FlashScreen" component={FlashScreen} />
+      {/* <Stack.Screen name="FlashScreen" component={FlashScreen} /> */}
       <Stack.Screen name="login" component={Login} />
       <Stack.Screen name="Create Account" component={SignUp} />
       <Stack.Screen name="Forgot Password" component={ForgotPassword} />

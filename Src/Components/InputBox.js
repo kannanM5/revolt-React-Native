@@ -21,6 +21,9 @@ const InputBox = ({
   isShownLabel = true,
   errors,
   setPassword,
+  keyboardType,
+  placeholderTextColor,
+  maxLength,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -34,28 +37,25 @@ const InputBox = ({
       ) : null}
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor={COLORS.placeHolderColor}
+        placeholderTextColor={[styles.placeholder, {...placeholderTextColor}]}
         value={value}
         onChangeText={onChangeText}
         style={[styles.InputBox, {...customInputStyles}]}
-        secureTextEntry={showPassword ? false : true}
+        secureTextEntry={setPassword ? !showPassword : false}
+        keyboardType={keyboardType}
+        maxLength={maxLength}
       />
       {setPassword ? (
-        showPassword ? (
-          <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
-            <Image
-              style={styles.eye}
-              source={require('../Assets/Png/eye.png')}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
-            <Image
-              style={styles.eye}
-              source={require('../Assets/Png/eye1.png')}
-            />
-          </TouchableOpacity>
-        )
+        <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>
+          <Image
+            style={styles.eye}
+            source={
+              showPassword
+                ? require('../Assets/Png/eye.png')
+                : require('../Assets/Png/eye1.png')
+            }
+          />
+        </TouchableOpacity>
       ) : null}
 
       {errors ? <Text style={styles.error}>{errorText}</Text> : null}
@@ -68,7 +68,6 @@ export default InputBox;
 const styles = StyleSheet.create({
   InputBox: {
     width: '100%',
-    color: 'red',
     height: 51,
     borderWidth: 1,
     borderRadius: 6,
@@ -80,6 +79,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     position: 'relative',
   },
+  placeholder: {
+    color: COLORS.placeHolderColor,
+  },
   label: {
     fontSize: 15,
     color: COLORS.labelColor,
@@ -90,9 +92,11 @@ const styles = StyleSheet.create({
   },
   error: {
     color: COLORS.red,
-    fontSize: 14,
+    fontSize: 13,
     alignSelf: 'flex-start',
     fontFamily: FONTS.Andika.regular,
+    opacity: 0.7,
+    marginBottom: -10,
   },
   eye: {
     width: 25,

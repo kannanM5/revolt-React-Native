@@ -15,6 +15,11 @@ const Charging = props => {
   const navigation = useNavigation();
   const [activeItem, setActiveItem] = useState(null);
 
+  const [markerCoordinates, setMarkerCoordinates] = useState({
+    latitude: 11.004556,
+    longitude: 76.961632,
+  });
+
   const handleSubmit = name => {
     if (name === 'parking') {
       if (activeItem === 'parking') {
@@ -35,13 +40,23 @@ const Charging = props => {
     <View style={styles.container}>
       <MapView
         initialRegion={{
-          latitude: 28.701642445689195,
-          longitude: 77.22316070481907,
-          latitudeDelta: 0.09,
-          longitudeDelta: 0.04,
+          latitude: 11.004556,
+          longitude: 76.961632,
+          latitudeDelta: 0.095,
+          longitudeDelta: 0.047,
+        }}
+        onPress={event => {
+          const {latitude, longitude} = event.nativeEvent.coordinate;
+          setMarkerCoordinates({latitude, longitude});
         }}
         scrollEnabled={true}
-        style={styles.map}></MapView>
+        style={styles.map}>
+        <Marker
+          coordinate={markerCoordinates}
+          title="My Marker"
+          description="This is you searched"
+        />
+      </MapView>
 
       <View style={styles.header}>
         <Header

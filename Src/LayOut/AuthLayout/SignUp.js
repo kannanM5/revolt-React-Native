@@ -15,6 +15,8 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {FONTS} from '../../Utilities/Fonts';
+import {signUp, mobileotpverify} from '../../Services/Services';
+import {EMAIL_REGEX, NUMBER} from '../../Utilities/Constants';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -61,14 +63,20 @@ const SignUp = () => {
       .required('Name cannot be blank'),
     email: Yup.string()
       .min(5, 'Email must be 5 characters long')
-      .max(20, 'Too Long!')
+      .max(30, 'Too Long!')
+      .matches(EMAIL_REGEX, 'Invalid email address')
       .required('Email cannot be blank'),
+    mobileNumber: Yup.string()
+      .min(5, 'Mobile Number must be 10 characters')
+      .max(10, 'Too Long!')
+      .required('Mobile Number cannot be blank ')
+      .matches(NUMBER, 'Must have numbers'),
     password: Yup.string()
-      .min(5, 'Password must be 5 characters long')
+      .min(3, 'Password must be 3 characters long')
       .max(20, 'Password must be 20 characters long')
       .required('Password cannot be blank'),
     confirmPassword: Yup.string()
-      .min(5, 'Confirm Password must be 5 characters long')
+      .min(3, 'Confirm Password must be 3 characters long')
       .max(20, 'Confirm Password must be 20 characters long')
       .required('Confirm Password cannot be blank'),
   });
@@ -77,6 +85,7 @@ const SignUp = () => {
     initialValues: {
       name: '',
       email: '',
+      mobileNumber: '',
       password: '',
       confirmPassword: '',
     },
@@ -86,12 +95,48 @@ const SignUp = () => {
     },
   });
 
-  const handleSignUp = data => {
-    console.log(data.email, data.password, data.name, data.confirmPassword);
+  const handleSignUp = async data => {
+    try {
+      await EncryptedStorage.setItem(
+        'user_session',
+        JSON.stringify({
+          name: values.name,
+          email: values.email,
+          mobileNumber: values.mobileNumber,
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+        }),
+      );
+    } catch (error) {
+      console.log('error', error);
+    }
+
+    let formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('mobileNumber', data.mobileNumber);
+    formData.append('password', data.password);
+    formData.append('confirmPassword', data.confirmPassword);
+
+    signUp(formData)
+      .then(res => {
+        console.log(res.data);
+
+        if (res.data.status === 1) {
+          navigation.navigate('OTP', {
+            otp: res.data.refid,
+            timer: res.data.remainingseconds,
+            email: values.email,
+          });
+        }
+      })
+      .catch(err => console.log(err, 'error'));
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.profileImage}>
         {imageSource && (
           <Image
@@ -109,83 +154,95 @@ const SignUp = () => {
         </View>
       </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{width: '100%', height: 2000}}>
-        {modal ? (
-          <View style={styles.modal}>
-            <TouchableOpacity onPress={openCamera}>
-              <View style={styles.modalBox}>
-                <Text style={styles.modaltext}>Open Camera</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={openImagePicker}>
-              <View style={styles.modalBox}>
-                <Text style={styles.modaltext}>From files</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        <View style={styles.containBox}>
-          <InputBox
-            label="Name"
-            placeholder="Enter your Name"
-            value={values.name}
-            onChangeText={handleChange('name')}
-            errors={errors.name && touched.name ? true : null}
-            errorText={errors.name}
+      {modal ? (
+        <View style={styles.modal}>
+          <Button
+            title="Open Camera"
+            onPressButton={openCamera}
+            customStyles={styles.Button}
+            customStylesText={styles.textBtn}
+          />
+          <Button
+            title="From files"
+            onPressButton={openImagePicker}
+            customStyles={styles.Button}
+            customStylesText={styles.textBtn}
           />
         </View>
+      ) : null}
 
-        <View style={styles.containBox}>
-          <InputBox
-            label="Email"
-            placeholder="Enter your Email"
-            value={values.email}
-            onChangeText={handleChange('email')}
-            errors={errors.email && touched.email ? true : null}
-            errorText={errors.email}
-          />
-        </View>
+      <View style={styles.containBox}>
+        <InputBox
+          label="Name"
+          placeholder="Enter your Name"
+          value={values.name}
+          onChangeText={handleChange('name')}
+          errors={errors.name && touched.name ? true : null}
+          errorText={errors.name}
+        />
+      </View>
 
-        <View style={styles.containBox}>
-          <InputBox
-            label="Password"
-            placeholder="Enter your Password"
-            customInputStyles={{position: 'relative'}}
-            value={values.password}
-            onChangeText={handleChange('password')}
-            errors={errors.password && touched.password ? true : null}
-            errorText={errors.password}
-            setPassword={true}
-          />
-        </View>
+      <View style={styles.containBox}>
+        <InputBox
+          label="Email"
+          placeholder="Enter your Email"
+          value={values.email.replace.EMAIL_REGEX}
+          onChangeText={handleChange('email')}
+          errors={errors.email && touched.email ? true : null}
+          errorText={errors.email}
+        />
+      </View>
+      <View style={styles.containBox}>
+        <InputBox
+          label="Mobile Number"
+          placeholder="Enter your Mobile Number"
+          value={values.mobileNumber}
+          onChangeText={handleChange('mobileNumber')}
+          errors={errors.mobileNumber && touched.mobileNumber ? true : null}
+          errorText={errors.mobileNumber}
+          keyboardType="numeric"
+          maxLength={10}
+        />
+      </View>
 
-        <View style={styles.containBox}>
-          <InputBox
-            label="Confirm  Password"
-            placeholder="Enter your Confirm  Password"
-            secureTextEntry={true}
-            value={values.confirmPassword}
-            onChangeText={handleChange('confirmPassword')}
-            errors={
-              errors.confirmPassword && touched.confirmPassword ? true : null
-            }
-            errorText={errors.confirmPassword}
-          />
-        </View>
+      <View style={styles.containBox}>
+        <InputBox
+          label="Password"
+          placeholder="Enter your Password"
+          customInputStyles={{position: 'relative'}}
+          value={values.password}
+          onChangeText={handleChange('password')}
+          errors={errors.password && touched.password ? true : null}
+          errorText={errors.password}
+          setPassword={true}
+        />
+      </View>
 
-        <View style={styles.buttonContainer}>
-          <Button title="Sign up" onPressButton={handleSubmit} />
-        </View>
-        <Text style={styles.AccountSetup}>Already have an account ?</Text>
-        <Text
-          onPress={() => navigation.navigate('login')}
-          style={styles.AccountCreate}>
-          Sign In
-        </Text>
-      </ScrollView>
-    </View>
+      <View style={styles.containBox}>
+        <InputBox
+          label="Confirm  Password"
+          placeholder="Enter your Confirm  Password"
+          secureTextEntry={true}
+          value={values.confirmPassword}
+          onChangeText={handleChange('confirmPassword')}
+          errors={
+            errors.confirmPassword && touched.confirmPassword ? true : null
+          }
+          errorText={errors.confirmPassword}
+          setPassword={true}
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button title="Sign up" onPressButton={handleSubmit} />
+      </View>
+      <Text style={styles.AccountSetup}>Already have an account ?</Text>
+      <Text
+        onPress={() => navigation.navigate('login')}
+        style={styles.AccountCreate}>
+        Sign In
+      </Text>
+    </ScrollView>
   );
 };
 
@@ -193,10 +250,9 @@ export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     marginHorizontal: 25,
-    marginVertical: 25,
+    marginTop: 15,
   },
   profileImage: {
     width: 109,
@@ -223,7 +279,6 @@ const styles = StyleSheet.create({
   },
   containBox: {
     width: '100%',
-    marginBottom: 5,
   },
   buttonContainer: {
     width: '100%',
@@ -239,27 +294,34 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.Andika.bold,
     fontSize: 15,
     alignSelf: 'flex-start',
+    marginBottom: 30,
   },
 
   modal: {
-    flex: 1,
-    backgroundColor: '#ECA405',
+    backgroundColor: 'white',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    paddingVertical: 15,
-    borderRadius: 25,
-    elevation: 5,
-    marginVertical: 6,
-  },
-  modalBox: {
-    backgroundColor: '#FFFF',
     paddingHorizontal: 15,
-    paddingVertical: 12,
-    borderRadius: 15,
+    flexDirection: 'row',
+    borderRadius: 10,
+    elevation: 1,
+    marginTop: 10,
+    marginHorizontal: 2,
+    borderWidth: 1,
+    width: '100%',
+    borderColor: 'rgba(0,0,0,0.08)',
   },
+  Button: {
+    width: 105,
+    height: 35,
+    backgroundColor: '#ECA405',
+  },
+  textBtn: {
+    fontSize: 11,
+    color: 'white',
+  },
+
   modaltext: {
-    color: 'black',
+    color: 'white',
     fontSize: 12,
   },
 });

@@ -3,9 +3,9 @@ import React from 'react';
 import {COLORS} from '../Utilities/Colors';
 import {FONTS} from '../Utilities/Fonts';
 
-const SubHeader = ({titleName = '', onPress}) => {
+const SubHeader = ({titleName = '', onPress, customStyles}) => {
   return (
-    <View style={styles.subTitle}>
+    <View style={[styles.subTitle, {...customStyles}]}>
       <TouchableOpacity onPress={onPress}>
         <Image
           style={styles.image}
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     elevation: 1,
     flexDirection: 'row',
     paddingHorizontal: 25,
-    paddingVertical: 10,
+    // paddingVertical: 10,
     alignItems: 'center',
   },
   image: {

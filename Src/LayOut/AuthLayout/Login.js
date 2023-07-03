@@ -8,123 +8,180 @@ import * as Yup from 'yup';
 import LinearGradientComponent from '../../Components/LinearGradient';
 import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
+import {EMAIL_REGEX} from '../../Utilities/Constants';
+import {login, changepassword, forgotpassword} from '../../Services/Services';
+import {SALT_KEY} from '../../Utilities/Constants';
+import DeviceInfo from 'react-native-device-info';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {useSelector} from 'react-redux';
 
 const Login = () => {
   const navigation = useNavigation();
+  const sha1 = require('sha1');
+  const deviceId = DeviceInfo.getDeviceId();
+  const myState = useSelector(state => state.auth);
+
+  useEffect(() => {
+    const token = myState.token;
+
+    if (token !== null) {
+      console.log('success');
+    } else {
+      console.log('error');
+    }
+  }, []);
 
   const SignupSchema = Yup.object().shape({
     email: Yup.string()
       .min(5, 'Email must be 5 characters long')
-      .max(20, 'Too Long!')
-      .required('Email cannot be blank'),
+      .max(30, 'Too Long!')
+      .required('Email cannot be blank')
+      .matches(EMAIL_REGEX, 'Invalid email address'),
     password: Yup.string()
-      .min(5, 'Password must be 5 characters long')
-      .max(30, 'Password must be 20 characters long')
+      .min(3, 'Password must be 3 characters long')
+      .max(20, 'Password must be 20 characters long')
       .required('Password cannot be blank'),
   });
 
-  const {handleChange, handleSubmit, errors, values, touched} = useFormik({
+  const {
+    handleChange,
+    handleSubmit,
+    errors,
+    values,
+    touched,
+    resetForm,
+    setFieldValue,
+  } = useFormik({
     initialValues: {
+      name: '',
+      authcode: '',
       email: '',
       password: '',
+      devicetype: 1,
+      deviceid: deviceId,
+      gcmid: '',
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
       handleLogin(values);
     },
   });
-  const handleLogin = data => {
-    console.log(data.email, data.password);
+
+  const handleLogin = async data => {
+    let formData = new FormData();
+    formData.append('authcode', sha1(SALT_KEY + data.deviceid + data.name));
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('devicetype', data.devicetype);
+    formData.append('deviceid', deviceId);
+    formData.append('token');
+
+    login(formData)
+      .then(res => {
+        console.log(res.data);
+        if (res.data.status === 1) {
+          console.log('success');
+          // resetForm();
+        } else {
+          console.log('else error');
+        }
+      })
+      .catch(error => console.log(error, 'error'));
   };
 
+  // const forgotpassword = () => {
+  //   let formData = new FormData();
+  //   formData.append('token', values.email);
+  // };
+
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require('../../Assets/Png/Revolt-logo.png')}
+    <ScrollView
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}>
+      <Image
+        style={styles.logo}
+        source={require('../../Assets/Png/Revolt-logo.png')}
+      />
+      <Text style={styles.welcomeMessage}>Welcome Back!</Text>
+      <Text
+        onPress={() => navigation.navigate('PageScreens')}
+        style={styles.LoginMessage}>
+        Login to Continue
+      </Text>
+      <View style={styles.containBox}>
+        <InputBox
+          label="Email"
+          placeholder="Enter your email"
+          value={values.email}
+          onChangeText={handleChange('email')}
+          errors={errors.email && touched.email ? true : null}
+          errorText={errors.email}
         />
-        <Text style={styles.welcomeMessage}>Welcome Back!</Text>
-        <Text
-          onPress={() => navigation.navigate('PageScreens')}
-          style={styles.LoginMessage}>
-          Login to Continue
-        </Text>
-        <View style={styles.containBox}>
-          <InputBox
-            label="Email"
-            placeholder="Enter your email"
-            value={values.email}
-            onChangeText={handleChange('email')}
-            errors={errors.email && touched.email ? true : null}
-            errorText={errors.email}
-          />
-        </View>
-
-        <View style={styles.containBox}>
-          <InputBox
-            label="Password"
-            placeholder="Enter your Password"
-            value={values.password}
-            onChangeText={handleChange('password')}
-            customInputStyles={{position: 'relative'}}
-            errors={errors.password && touched.password ? true : null}
-            errorText={errors.password}
-            setPassword={true}
-          />
-        </View>
-
-        <Text
-          onPress={() => navigation.navigate('Forgot Password')}
-          style={styles.forgotPassword}>
-          Forgot Password ?
-        </Text>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Login"
-            onPressButton={handleSubmit}
-            customStyles={{marginTop: 6}}
-          />
-        </View>
-        <View style={styles.lines}>
-          <View style={styles.lineImg}></View>
-          <Text style={{color: '#000000', fontSize: 15, paddingHorizontal: 12}}>
-            or
-          </Text>
-          <View style={styles.lineImg}></View>
-        </View>
-
-        <View style={styles.MainButtons}>
-          <Button
-            title="Google"
-            customStyles={styles.btn}
-            customStylesText={{color: 'white', paddingLeft: 20}}
-          />
-          <Image
-            style={styles.image1}
-            source={require('../../Assets/Png/google.png')}
-          />
-          <Button
-            title="Facebook"
-            customStyles={styles.customBtn}
-            customStylesText={styles.customTextBtn}
-          />
-          <Image
-            style={styles.image2}
-            source={require('../../Assets/Png/fb.png')}
-          />
-        </View>
-        <Text
-          onPress={() => navigation.navigate('BottomTabNavigation')}
-          style={styles.AccountSetup}>
-          Don't have an account ?
-        </Text>
-        <Text
-          onPress={() => navigation.navigate('Create Account')}
-          style={styles.AccountCreate}>
-          Sign up
-        </Text>
       </View>
+
+      <View style={styles.containBox}>
+        <InputBox
+          label="Password"
+          placeholder="Enter your Password"
+          value={values.password}
+          onChangeText={handleChange('password')}
+          customInputStyles={{position: 'relative'}}
+          errors={errors.password && touched.password ? true : null}
+          errorText={errors.password}
+          setPassword={true}
+        />
+      </View>
+
+      <Text
+        onPress={() => navigation.navigate('Forgot Password')}
+        style={styles.forgotPassword}>
+        Forgot Password ?
+      </Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Login"
+          onPressButton={handleSubmit}
+          customStyles={{marginTop: 6}}
+        />
+      </View>
+      <View style={styles.lines}>
+        <View style={styles.lineImg}></View>
+        <Text style={{color: '#000000', fontSize: 15, paddingHorizontal: 12}}>
+          or
+        </Text>
+        <View style={styles.lineImg}></View>
+      </View>
+
+      <View style={styles.MainButtons}>
+        <Button
+          title="Google"
+          customStyles={styles.btn}
+          customStylesText={{color: 'white', paddingLeft: 20}}
+        />
+        <Image
+          style={styles.image1}
+          source={require('../../Assets/Png/google.png')}
+        />
+        <Button
+          title="Facebook"
+          customStyles={styles.customBtn}
+          customStylesText={styles.customTextBtn}
+        />
+        <Image
+          style={styles.image2}
+          source={require('../../Assets/Png/fb.png')}
+        />
+      </View>
+      <Text
+        onPress={() => navigation.navigate('BottomTabNavigation')}
+        style={styles.AccountSetup}>
+        Don't have an account ?
+      </Text>
+      <Text
+        onPress={() => navigation.navigate('Create Account')}
+        style={styles.AccountCreate}>
+        Sign up
+      </Text>
     </ScrollView>
   );
 };
@@ -136,7 +193,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     marginHorizontal: 25,
-    marginTop: 50,
+    marginTop: 40,
     marginBottom: 10,
   },
   logo: {
