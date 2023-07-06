@@ -6,14 +6,41 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {newFeed} from '../../SharedComponents/Arrays';
 import {useNavigation} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
+import {newsfeed} from '../../Services/Services';
+import {useSelector} from 'react-redux';
 
 const NewsFeed = () => {
   const navigation = useNavigation();
+  const myToken = useSelector(state => state.auth.token);
+  const [newsFeed, setNewsFeed] = useState();
+
+  useEffect(() => {
+    handleNewsFeed();
+  }, []);
+
+  const handleNewsFeed = () => {
+    const formData = new FormData();
+    formData.append('token', myToken);
+    formData.append('page', 1);
+    newsfeed(formData)
+      .then(res => {
+        // console.log(res);
+        if (res.data.status === 1) {
+          // console.log(res.data.newsfeed);
+          setNewsFeed(res?.data?.newsfeed);
+
+          console.log(newsFeed, 'newsfeed');
+        } else {
+          console.log('error');
+        }
+      })
+      .catch(err => console.log(err, 'error'));
+  };
   return (
     <>
       <SubHeader titleName="Latest News" onPress={() => navigation.goBack()} />

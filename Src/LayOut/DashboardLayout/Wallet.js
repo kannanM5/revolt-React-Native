@@ -1,13 +1,49 @@
 import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '../../Components/Button';
 import {walletDetails} from '../../SharedComponents/Arrays';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
+import {walletbalance} from '../../Services/Services';
+import {useSelector} from 'react-redux';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const Wallet = () => {
   const navigation = useNavigation();
+  const myToken = useSelector(state => state.auth.token);
+  // const route = useRoute();
+  // const amount = route.params.amount;
+  const [balance, setBalance] = useState();
+
+  useEffect(() => {
+    const balanceAmount = async () => {
+      try {
+        EncryptedStorage.setItem('balance', balance);
+      } catch {
+        console.log('error');
+      }
+    };
+    balanceAmount();
+  });
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('token', myToken);
+    walletbalance(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          console.log('wallet balance', res.data);
+          setBalance(res.data.balance);
+
+          navigation.navigate('AddMoney');
+        }
+      })
+      .catch(error => console.log('error', error));
+  };
+
   return (
     <>
       <SubHeader titleName="Wallet" onPress={() => navigation.goBack()} />
@@ -17,12 +53,9 @@ const Wallet = () => {
           source={require('../../Assets/Png/wallet1.png')}
         />
         <Text style={styles.titleName}>Wallet Balance </Text>
-        <Text style={styles.amount}>₹ 1000.00 </Text>
+        <Text style={styles.amount}>₹ {balance} </Text>
         <View style={styles.buttonContainer}>
-          <Button
-            title="+ Add Money"
-            onPressButton={() => navigation.navigate('AddMoney')}
-          />
+          <Button title="+ Add Money" onPressButton={handleSubmit} />
         </View>
         <Text style={styles.subTitle}>History</Text>
         <FlatList

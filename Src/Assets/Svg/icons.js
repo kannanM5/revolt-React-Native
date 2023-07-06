@@ -9,6 +9,7 @@ import Product3 from '../Svg/image3.svg';
 import Product4 from '../Svg/image4.svg';
 import Product5 from '../Svg/image5.svg';
 import Product6 from '../Svg/image6.svg';
+import HeartIcon from '../Svg/heartIcon.svg';
 
 export const ICONS = {
   car1: Car1,
@@ -22,4 +23,5 @@ export const ICONS = {
   product4: Product4,
   product5: Product5,
   product6: Product6,
+  hearticon: HeartIcon,
 };

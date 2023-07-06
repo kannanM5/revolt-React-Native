@@ -24,6 +24,7 @@ const InputBox = ({
   keyboardType,
   placeholderTextColor,
   maxLength,
+  ref,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -44,6 +45,7 @@ const InputBox = ({
         secureTextEntry={setPassword ? !showPassword : false}
         keyboardType={keyboardType}
         maxLength={maxLength}
+        ref={ref}
       />
       {setPassword ? (
         <TouchableOpacity onPress={handlePassword} style={styles.eyeBtn}>

@@ -1,28 +1,47 @@
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import RootStack from './Src/Stacks/RootStack';
 import MainStack from './Src/Stacks/MainStack';
-import {Provider} from 'react-redux';
-import store from './Src/Store/Store';
+import {useDispatch, useSelector} from 'react-redux';
+import {storeToken} from './Src/Methods';
+import Loader from './Src/LayOut/AuthLayout/Loader';
+import {setToken, setLoader} from './Src/Store/Slices/AuthSlice';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const App = () => {
+  const myToken = useSelector(state => state.auth.token);
+  const loading = useSelector(state => state.auth.loading);
+  const dispatch = useDispatch();
+
+  const checkLoginStatus = async () => {
+    try {
+      dispatch(setLoader(true));
+      const token = await EncryptedStorage.getItem('ISLOGIN');
+
+      if (token) {
+        dispatch(setToken(token));
+        // storeToken(token, dispatch);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(setLoader(false));
+    }
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        {/* <MainStack /> */}
-        <RootStack />
-      </NavigationContainer>
-    </Provider>
+    <NavigationContainer>
+      {myToken ? <MainStack /> : <RootStack />}
+    </NavigationContainer>
   );
 };
-
-// const App = () => {
-//   return (
-//     <NavigationContainer>
-//       {/* <MainStack /> */}
-//       <RootStack />
-//     </NavigationContainer>
-//   );
-// };
 
 export default App;

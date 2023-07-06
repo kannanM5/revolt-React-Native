@@ -1,12 +1,49 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
+import {updatewallet} from '../../Services/Services';
+import {useSelector} from 'react-redux';
 
 const AddMoney = () => {
   const navigation = useNavigation();
+  const myToken = useSelector(state => state.auth.token);
+
+  const SignupSchema = Yup.object().shape({
+    amount: Yup.string()
+      .min(1, 'Amount must be 1 digits long')
+      .max(7, 'Too Long!')
+      .required('Amount cannot be blank'),
+  });
+
+  const {handleChange, handleSubmit, touched, errors, values} = useFormik({
+    initialValues: {
+      amount: '',
+    },
+    validationSchema: SignupSchema,
+    onSubmit: values => {
+      updateAount(values);
+    },
+  });
+
+  const updateAount = data => {
+    const formData = new FormData();
+    formData.append('amount', data.amount);
+    formData.append('token', myToken);
+    updatewallet(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          console.log('amount credited', res.data);
+          navigation.navigate('WALLET', {amount: values.amount});
+        }
+      })
+      .catch(error => console.log('error', error));
+  };
+
   return (
     <>
       <SubHeader titleName="Add Money" onPress={() => navigation.goBack()} />
@@ -16,10 +53,22 @@ const AddMoney = () => {
           source={require('../../Assets/Png/addMoney.png')}
         />
         <View style={styles.containBox}>
-          <InputBox placeholder="Enter Amount" />
+          <InputBox
+            placeholder="Enter Amount"
+            value={values.amount}
+            onChangeText={handleChange('amount')}
+            errors={errors.amount && touched.amount ? true : null}
+            errorText={errors.amount}
+            keyboardType="numeric"
+            maxLength={7}
+          />
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Submit" customStyles={styles.button} />
+          <Button
+            title="Submit"
+            customStyles={styles.button}
+            onPressButton={handleSubmit}
+          />
         </View>
       </View>
     </>

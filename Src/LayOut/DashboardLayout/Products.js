@@ -6,24 +6,57 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
-import {items, starDataArray} from '../../SharedComponents/Arrays';
+import {items, starDataArray, colors} from '../../SharedComponents/Arrays';
 import {useNavigation} from '@react-navigation/native';
 import Header from './Header';
 import {FONTS} from '../../Utilities/Fonts';
 import SVGIcons from '../../Components/SVGIcon';
+import {productlist} from '../../Services/Services';
+import {useSelector} from 'react-redux';
+import {DrawerActions} from '@react-navigation/native';
+import {FILESBASEURL} from '../../Utilities/Constants';
+import {ICONS} from '../../Assets/Svg/icons';
+import {trimString} from '../../Utilities/Constants';
 
 const Products = () => {
   const showIndicator = true;
   const navigation = useNavigation();
+  const [products, setProducts] = useState();
+  const myToken = useSelector(state => state.auth.token);
+
+  useEffect(() => {
+    handleProductList();
+  }, []);
+
+  const handleProductList = () => {
+    let formData = new FormData();
+    formData.append('token', myToken);
+    formData.append('pagenumber', 1);
+
+    productlist(formData)
+      .then(res => {
+        // console.log(res.data.product_list);
+        console.log(res.data, '---------------------');
+        if (res.data.status === 1) {
+          setProducts(res?.data?.product_list);
+          // console.log(products, 'products');
+        }
+        // else {
+        //   setProducts([]);
+        // }
+      })
+      .catch(error => console.log(error, 'error'));
+  };
 
   const handlePress = item => {
     navigation.navigate('product', {items: item});
   };
 
   const handleOPenDrawer = () => {
-    navigation.openDrawer();
+    // navigation.openDrawer();
+    navigation.dispatch(DrawerActions.toggleDrawer());
     console.log('correct');
   };
   return (
@@ -44,12 +77,12 @@ const Products = () => {
         </View>
         <View style={{flex: 1, marginBottom: 60}}>
           <FlatList
-            data={items}
+            data={products}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             numColumns={2}
             // columnWrapperStyle={styles.columnWrapper}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.id}
             renderItem={({item}) => (
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -61,21 +94,29 @@ const Products = () => {
                 }}>
                 <View style={styles.product}>
                   <View style={styles.top}>
-                    {showIndicator && item.indicator ? (
+                    {/* {showIndicator && item.indicator ? (
                       <Text style={styles.indicator}>{item.indicator}</Text>
                     ) : (
                       <Text></Text>
-                    )}
-                    <Image style={styles.like} source={item.like} />
+                    )} */}
+                    {/* <Image style={styles.like} source={item.like} /> */}
+                    <SVGIcons width={11} height={10} Icon={ICONS.hearticon} />
                   </View>
+
                   <View
                     style={[
                       styles.imgContainer,
-                      {backgroundColor: item.color},
+                      // {backgroundColor: item.color},
                     ]}>
-                    <SVGIcons width={70} height={76} Icon={item.img} />
+                    {/* <SVGIcons width={70} height={76} Icon={item.img} /> */}
+                    <Image
+                      source={{uri: FILESBASEURL + item.image_url}}
+                      style={{width: 65, height: 65}}
+                    />
                   </View>
-                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.name}>
+                    {trimString(item.product_name, 15)}
+                  </Text>
                   <Text style={styles.price}>₹ {item.price}</Text>
 
                   <View style={styles.rating}>
@@ -139,6 +180,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'orange',
   },
   top: {
     flexDirection: 'row',

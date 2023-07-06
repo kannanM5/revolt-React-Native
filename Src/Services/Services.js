@@ -27,3 +27,23 @@ export const mobileotpverify = data => {
 export const resendotpverify = data => {
   return axios.post('/resendotpverify', data);
 };
+
+export const verifyresetpassword = data => {
+  return axios.post('/verifyresetpassword', data);
+};
+
+export const updatewallet = data => {
+  return axios.post('/updatewallet', data);
+};
+
+export const walletbalance = data => {
+  return axios.post('/walletbalance', data);
+};
+
+export const productlist = data => {
+  return axios.post('/productlist', data);
+};
+
+export const newsfeed = data => {
+  return axios.post('/newsfeed', data);
+};

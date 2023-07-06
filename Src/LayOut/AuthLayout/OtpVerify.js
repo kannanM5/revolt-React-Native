@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {storeToken} from '../../Methods';
 import {setToken} from '../../Store/Slices/AuthSlice';
+import {setAuthCode} from '../../Store/Slices/AuthSlice';
 
 const OtpVerify = () => {
   const navigation = useNavigation();
@@ -65,11 +66,19 @@ const OtpVerify = () => {
     formData.append('otp_code', password);
     formData.append('devicetype', data.devicetype);
     formData.append('deviceid', data.deviceid);
+
+    console.log(formData);
+
     mobileotpverify(formData)
       .then(res => {
+        console.log(res.data);
         if (res.data.status === 1) {
+          navigation.navigate('BottomTabNavigation');
           storeToken(res.data.token, dispatch);
+
           console.log('data got from api response', res.data);
+        } else {
+          console.log('error');
         }
       })
       .catch(err => console.log(err, 'error'));
@@ -171,7 +180,6 @@ const OtpVerify = () => {
             >
               Request again
             </Text>
-            <Text>{authState.token}</Text>
           </View>
         </View>
       </>

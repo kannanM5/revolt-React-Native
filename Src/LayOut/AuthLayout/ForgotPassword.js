@@ -3,9 +3,46 @@ import React from 'react';
 import Button from '../../Components/Button';
 import InputBox from '../../Components/InputBox';
 import {useNavigation} from '@react-navigation/native';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
+import {MOBILE_REGEX} from '../../Utilities/Constants';
+import {FONTS} from '../../Utilities/Fonts';
+import {forgotpassword} from '../../Services/Services';
 
 const ForgotPassword = () => {
   const navigation = useNavigation();
+
+  const SignupSchema = Yup.object().shape({
+    email: Yup.string()
+      // .max(10, 'Too Long!')
+      .required('mobile number cannot be blank'),
+    // .matches(MOBILE_REGEX, 'Invalid mobile number'),
+  });
+
+  const {handleChange, handleSubmit, errors, values, touched} = useFormik({
+    initialValues: {
+      email: '',
+    },
+    validationSchema: SignupSchema,
+    onSubmit: values => {
+      handleforgotpassword(values);
+    },
+  });
+
+  const handleforgotpassword = data => {
+    let formData = new FormData();
+    formData.append('email', data.email);
+
+    forgotpassword(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          console.log(res.data);
+          navigation.navigate('ResetPassword', {refid: res.data.refid});
+        }
+      })
+      .catch(error => console.log(error, 'error'));
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -18,17 +55,24 @@ const ForgotPassword = () => {
           source={require('../../Assets/Png/Group222.png')}
         />
         <View style={styles.containBox}>
-          <InputBox label="Email" placeholder="Enter your Email" />
+          <InputBox
+            label="Email"
+            placeholder="Enter your Email"
+            errors={errors.email ? true : null}
+            errorText={errors.email}
+            value={values.email}
+            onChangeText={handleChange('email')}
+          />
         </View>
         <View style={styles.buttonContainer}>
           <Button
             title="Submit"
-            onPressButton={() => navigation.navigate('OTP')}
             customStyles={{
               height: 45,
               width: 130,
               borderRadius: 20,
             }}
+            onPressButton={handleSubmit}
           />
         </View>
       </View>
@@ -48,7 +92,7 @@ const styles = StyleSheet.create({
   titleName: {
     fontSize: 24,
     color: 'rgba(0, 0, 0, 0.85)',
-    fontWeight: 700,
+    fontFamily: FONTS.Andika.bold,
   },
   titleContent: {
     textAlign: 'center',
@@ -56,6 +100,7 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.6)',
     width: 225,
     lineHeight: 19,
+    fontFamily: FONTS.Andika.regular,
   },
   forgotImage: {
     width: 162,

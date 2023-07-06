@@ -15,7 +15,7 @@ import Button from '../../Components/Button';
 const PageScreens = () => {
   const flatListRef = useRef(null);
   const [active, setActive] = useState(0);
-  const {width} = useWindowDimensions();
+  const {width: windowWidth} = useWindowDimensions();
   const scrollX = useRef(new Animated.Value(0)).current;
 
   return (
@@ -28,7 +28,7 @@ const PageScreens = () => {
         horizontal
         ref={flatListRef}
         renderItem={({item}) => (
-          <View style={[styles.content, {width: width}]}>
+          <View style={[styles.content, {width: windowWidth}]}>
             <Text style={styles.option}>{item.option}</Text>
             <View style={styles.imgContainer}>
               <Image style={styles.image} source={item.img} />

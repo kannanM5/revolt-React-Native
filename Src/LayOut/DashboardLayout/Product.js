@@ -12,6 +12,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import SVGIcons from '../../Components/SVGIcon';
+import {FILESBASEURL} from '../../Utilities/Constants';
 
 const Product = () => {
   const route = useRoute();
@@ -40,12 +41,21 @@ const Product = () => {
       <SubHeader titleName="EV Charger" onPress={handlerGoBack} />
       <ScrollView>
         <View style={styles.container}>
-          <View style={{backgroundColor: product.color, marginBottom: 10}}>
-            <SVGIcons
+          <View
+            style={{
+              backgroundColor: product.color,
+              marginBottom: 10,
+              width: '100%',
+            }}>
+            {/* <SVGIcons
               width={230}
               height={230}
               Icon={product.img}
               customImgStyles={{marginHorizontal: 10, marginVertical: 10}}
+            /> */}
+            <Image
+              style={{width: '100%', height: 300}}
+              source={{uri: FILESBASEURL + product.image_url}}
             />
           </View>
           <View
@@ -71,14 +81,14 @@ const Product = () => {
             <Text style={styles.quantity}>Order Quantity</Text>
 
             <View style={styles.counter}>
-              <TouchableOpacity onPress={decrement}>
+              <TouchableOpacity onPress={decrement} activeOpacity={0.8}>
                 <Image source={require('../../Assets/Png/sub.png')} />
               </TouchableOpacity>
 
               <Text style={styles.count}>{count}</Text>
               <View style={styles.line}></View>
 
-              <TouchableOpacity onPress={increment}>
+              <TouchableOpacity onPress={increment} activeOpacity={0.8}>
                 <Image source={require('../../Assets/Png/add.png')} />
               </TouchableOpacity>
             </View>

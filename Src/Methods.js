@@ -9,14 +9,3 @@ export const storeToken = async (token, dispatch) => {
     console.log(error);
   }
 };
-
-// export const retieveToken = async (token, dispatch) => {
-//   try {
-//     const userAuth = await EncryptedStorage.setItem('ISLOGIN');
-//     if (userAuth) {
-//       console.log('login succesfully');
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };

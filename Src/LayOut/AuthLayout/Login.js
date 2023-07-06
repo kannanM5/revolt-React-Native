@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View, ScrollView} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import {useNavigation} from '@react-navigation/native';
@@ -9,27 +9,17 @@ import LinearGradientComponent from '../../Components/LinearGradient';
 import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
 import {EMAIL_REGEX} from '../../Utilities/Constants';
-import {login, changepassword, forgotpassword} from '../../Services/Services';
+import {login} from '../../Services/Services';
 import {SALT_KEY} from '../../Utilities/Constants';
 import DeviceInfo from 'react-native-device-info';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import {useSelector} from 'react-redux';
+import {storeToken} from '../../Methods';
+import {useDispatch} from 'react-redux';
 
 const Login = () => {
   const navigation = useNavigation();
   const sha1 = require('sha1');
   const deviceId = DeviceInfo.getDeviceId();
-  const myState = useSelector(state => state.auth);
-
-  useEffect(() => {
-    const token = myState.token;
-
-    if (token !== null) {
-      console.log('success');
-    } else {
-      console.log('error');
-    }
-  }, []);
+  const dispatch = useDispatch();
 
   const SignupSchema = Yup.object().shape({
     email: Yup.string()
@@ -53,13 +43,8 @@ const Login = () => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      name: '',
-      authcode: '',
       email: '',
       password: '',
-      devicetype: 1,
-      deviceid: deviceId,
-      gcmid: '',
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
@@ -67,32 +52,25 @@ const Login = () => {
     },
   });
 
-  const handleLogin = async data => {
+  const handleLogin = data => {
     let formData = new FormData();
-    formData.append('authcode', sha1(SALT_KEY + data.deviceid + data.name));
+    formData.append('authcode', sha1(SALT_KEY + deviceId + data.email));
     formData.append('email', data.email);
     formData.append('password', data.password);
-    formData.append('devicetype', data.devicetype);
+    formData.append('devicetype', 1);
     formData.append('deviceid', deviceId);
-    formData.append('token');
 
     login(formData)
       .then(res => {
         console.log(res.data);
+
         if (res.data.status === 1) {
-          console.log('success');
-          // resetForm();
-        } else {
-          console.log('else error');
+          storeToken(res.data.token, dispatch);
+          navigation.navigate('BottomTabNavigation');
         }
       })
       .catch(error => console.log(error, 'error'));
   };
-
-  // const forgotpassword = () => {
-  //   let formData = new FormData();
-  //   formData.append('token', values.email);
-  // };
 
   return (
     <ScrollView
@@ -172,11 +150,7 @@ const Login = () => {
           source={require('../../Assets/Png/fb.png')}
         />
       </View>
-      <Text
-        onPress={() => navigation.navigate('BottomTabNavigation')}
-        style={styles.AccountSetup}>
-        Don't have an account ?
-      </Text>
+      <Text style={styles.AccountSetup}>Don't have an account ?</Text>
       <Text
         onPress={() => navigation.navigate('Create Account')}
         style={styles.AccountCreate}>

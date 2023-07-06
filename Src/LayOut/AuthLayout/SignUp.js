@@ -88,6 +88,7 @@ const SignUp = () => {
       mobileNumber: '',
       password: '',
       confirmPassword: '',
+      profileImage: {},
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
@@ -96,21 +97,6 @@ const SignUp = () => {
   });
 
   const handleSignUp = async data => {
-    try {
-      await EncryptedStorage.setItem(
-        'user_session',
-        JSON.stringify({
-          name: values.name,
-          email: values.email,
-          mobileNumber: values.mobileNumber,
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-        }),
-      );
-    } catch (error) {
-      console.log('error', error);
-    }
-
     let formData = new FormData();
     formData.append('name', data.name);
     formData.append('email', data.email);
@@ -127,6 +113,7 @@ const SignUp = () => {
             otp: res.data.refid,
             timer: res.data.remainingseconds,
             email: values.email,
+            mobile: res.data.mobileNumber,
           });
         }
       })

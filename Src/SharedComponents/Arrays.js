@@ -121,6 +121,28 @@ export const customerrating = [
 ];
 
 import {ICONS} from '../Assets/Svg/icons';
+
+export const colors = [
+  {
+    color: '#FDDFCE',
+  },
+  {
+    color: '#FDDFCE',
+  },
+  {
+    color: '#9BD3EC',
+  },
+  {
+    color: '#FFEE86',
+  },
+  {
+    color: '#D0E8D0',
+  },
+  {
+    color: '#FFB6FC',
+  },
+];
+
 export const items = [
   {
     img: ICONS.product1,
