@@ -5,53 +5,74 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
 import {items, starDataArray, colors} from '../../SharedComponents/Arrays';
-import {useNavigation} from '@react-navigation/native';
 import Header from './Header';
 import {FONTS} from '../../Utilities/Fonts';
 import SVGIcons from '../../Components/SVGIcon';
 import {productlist} from '../../Services/Services';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {DrawerActions} from '@react-navigation/native';
 import {FILESBASEURL} from '../../Utilities/Constants';
 import {ICONS} from '../../Assets/Svg/icons';
 import {trimString} from '../../Utilities/Constants';
+import Loader from '../AuthLayout/Loader';
+import {setProductList} from '../../Store/Slices/ProductSlice';
 
-const Products = () => {
+const Products = ({navigation}) => {
   const showIndicator = true;
-  const navigation = useNavigation();
-  const [products, setProducts] = useState();
+  const dispatch = useDispatch();
   const myToken = useSelector(state => state.auth.token);
+  const products = useSelector(state => state.product.productsList);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     handleProductList();
   }, []);
 
   const handleProductList = () => {
+    setLoading(true);
+
     let formData = new FormData();
     formData.append('token', myToken);
     formData.append('pagenumber', 1);
+    formData.append('search_string', search);
 
     productlist(formData)
       .then(res => {
-        // console.log(res.data.product_list);
-        console.log(res.data, '---------------------');
+        console.log(res.data);
         if (res.data.status === 1) {
-          setProducts(res?.data?.product_list);
-          // console.log(products, 'products');
+          let refData = [...res.data.product_list];
+          refData = refData.map(e => {
+            return {
+              ...e,
+              Qty: 1,
+            };
+          });
+          dispatch(setProductList(refData));
         }
-        // else {
-        //   setProducts([]);
-        // }
       })
-      .catch(error => console.log(error, 'error'));
+      .catch(error => console.log(error, 'error'))
+      .finally(() => {
+        setLoading(false);
+      });
   };
+
+  if (loading) {
+    <Loader />;
+  }
 
   const handlePress = item => {
     navigation.navigate('product', {items: item});
+  };
+
+  const handleSearch = text => {
+    setSearch(text);
   };
 
   const handleOPenDrawer = () => {
@@ -59,6 +80,14 @@ const Products = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
     console.log('correct');
   };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
+
   return (
     <View style={{flex: 1}}>
       <Header
@@ -67,19 +96,35 @@ const Products = () => {
       />
       <View style={styles.container}>
         <View style={styles.searchBoxContainer}>
-          <InputBox placeholder="Search for your locations" />
-          <View style={styles.searchContain}>
+          <InputBox
+            placeholder="Search for your locations"
+            value={search}
+            onChangeText={handleSearch}
+          />
+          <TouchableOpacity
+            style={styles.searchContain}
+            activeOpacity={0.9}
+            onPress={handleProductList}>
             <Image
               source={require('../../Assets/Png/search.png')}
               style={styles.searchIcon}
             />
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={{flex: 1, marginBottom: 60}}>
           <FlatList
             data={products}
+            refreshControl={
+              <RefreshControl
+                onRefresh={onRefresh}
+                refreshing={refreshing}
+                progressBackgroundColor={'white'}
+                colors={['#FCDC0C']}
+              />
+            }
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={loading && <Loader />}
             numColumns={2}
             // columnWrapperStyle={styles.columnWrapper}
             keyExtractor={item => item.id}
@@ -111,7 +156,7 @@ const Products = () => {
                     {/* <SVGIcons width={70} height={76} Icon={item.img} /> */}
                     <Image
                       source={{uri: FILESBASEURL + item.image_url}}
-                      style={{width: 65, height: 65}}
+                      style={{width: '100%', height: '100%'}}
                     />
                   </View>
                   <Text style={styles.name}>
@@ -150,6 +195,7 @@ const styles = StyleSheet.create({
   },
   searchBoxContainer: {
     marginBottom: 15,
+    position: 'relative',
   },
 
   columnWrapper: {
@@ -180,7 +226,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'orange',
+    // backgroundColor: 'orange',
   },
   top: {
     flexDirection: 'row',

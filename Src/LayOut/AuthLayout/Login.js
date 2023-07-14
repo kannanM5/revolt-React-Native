@@ -10,14 +10,12 @@ import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
 import {EMAIL_REGEX} from '../../Utilities/Constants';
 import {login} from '../../Services/Services';
-import {SALT_KEY} from '../../Utilities/Constants';
 import DeviceInfo from 'react-native-device-info';
-import {storeToken} from '../../Methods';
+import {getAuthCode, storeToken} from '../../Methods';
 import {useDispatch} from 'react-redux';
 
 const Login = () => {
   const navigation = useNavigation();
-  const sha1 = require('sha1');
   const deviceId = DeviceInfo.getDeviceId();
   const dispatch = useDispatch();
 
@@ -54,19 +52,17 @@ const Login = () => {
 
   const handleLogin = data => {
     let formData = new FormData();
-    formData.append('authcode', sha1(SALT_KEY + deviceId + data.email));
+    formData.append('authcode', getAuthCode(deviceId + data.email));
     formData.append('email', data.email);
     formData.append('password', data.password);
     formData.append('devicetype', 1);
     formData.append('deviceid', deviceId);
-
+    console.log(formData);
     login(formData)
       .then(res => {
-        console.log(res.data);
-
         if (res.data.status === 1) {
           storeToken(res.data.token, dispatch);
-          navigation.navigate('BottomTabNavigation');
+          console.log(res.data);
         }
       })
       .catch(error => console.log(error, 'error'));

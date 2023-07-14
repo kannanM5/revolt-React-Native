@@ -10,11 +10,13 @@ import React from 'react';
 import {FONTS} from '../Utilities/Fonts';
 import {COLORS} from '../Utilities/Colors';
 import SVGIcons from './SVGIcon';
+import {FILESBASEURL} from '../Utilities/Constants';
 
 const Carosel = ({
   dataArray = [],
   customImageContainer,
   customImage,
+  defaultSource,
   customTextStyle,
   onPress,
   isshowTitle = true,
@@ -23,23 +25,32 @@ const Carosel = ({
     <FlatList
       horizontal={true}
       // inverted={true}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item.station_id}
       showsHorizontalScrollIndicator={false}
       data={dataArray}
       renderItem={({item}) => (
         <View style={[styles.imageContainer, {...customImageContainer}]}>
-          <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-            <Image
+          <TouchableOpacity onPress={() => onPress(item)} activeOpacity={0.8}>
+            {/* <Image
               style={[styles.parkingImg, {...customImage}]}
               source={item.img}
+            /> */}
+            <Image
+              source={{uri: FILESBASEURL + item.station_image}}
+              style={[styles.parkingImg, {...customImage}]}
             />
           </TouchableOpacity>
           {isshowTitle ? (
             <Text style={[styles.text, {...customTextStyle}]}>
-              {item.label}
+              {item.car_parking_slot_count} Slots Station
             </Text>
           ) : null}
-          {isshowTitle ? <Text style={styles.distance}>2.5 Km</Text> : null}
+          {isshowTitle ? (
+            <Text style={styles.distance}>
+              {Math.floor(item.distance).toString().slice(0, 2) / 10}
+              Km
+            </Text>
+          ) : null}
         </View>
       )}
     />

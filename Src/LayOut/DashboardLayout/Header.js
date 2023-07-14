@@ -1,7 +1,10 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {useSelector} from 'react-redux';
 
 const Header = ({onPress, defaultSource, customStyles}) => {
+  const cartCount = useSelector(state => state.product.cartCount);
+
   return (
     <View style={[styles.header, {...customStyles}]}>
       {/* navigation.dispatch(DrawerActions.openDrawer()) */}
@@ -15,8 +18,11 @@ const Header = ({onPress, defaultSource, customStyles}) => {
       />
       <Image
         style={styles.notification}
-        source={require('../../Assets/Png/notification.png')}
+        source={require('../../Assets/Png/notify.png')}
       />
+      <View style={styles.quantityCountContainer}>
+        <Text style={styles.quantityCount}>{cartCount}</Text>
+      </View>
     </View>
   );
 };
@@ -45,7 +51,24 @@ const styles = StyleSheet.create({
     height: 34,
   },
   notification: {
-    width: 20.5,
-    height: 24,
+    width: 25,
+    height: 25,
+    position: 'relative',
+  },
+  quantityCount: {
+    fontSize: 6,
+    color: '#FFD801',
+    fontWeight: 700,
+  },
+  quantityCountContainer: {
+    backgroundColor: '#FC3A3A',
+    width: 8,
+    height: 8,
+    borderRadius: 6,
+    position: 'absolute',
+    top: 23,
+    right: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

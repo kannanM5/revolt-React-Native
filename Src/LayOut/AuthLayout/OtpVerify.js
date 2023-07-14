@@ -1,8 +1,14 @@
-import {ScrollView, StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
-import {useNavigation, useRoute} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import {useFormik} from 'formik';
@@ -15,16 +21,27 @@ import {storeToken} from '../../Methods';
 import {setToken} from '../../Store/Slices/AuthSlice';
 import {setAuthCode} from '../../Store/Slices/AuthSlice';
 
-const OtpVerify = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const otp = route.params.otp;
+const OtpVerify = ({navigation, route}) => {
+  const refid = route.params.otp;
   const timer = route.params.timer;
   const email = route.params.email;
   const [time, setTime] = useState(timer);
   const deviceId = DeviceInfo.getDeviceId();
   const dispatch = useDispatch();
   const authState = useSelector(state => state.auth);
+
+  const inputRefs = useRef([]);
+  const fieldNames = ['value1', 'value2', 'value3', 'value4'];
+
+  const handleTextChange = (index, text) => {
+    if (text.length === 1 && index < fieldNames.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  const inputBoxRefs = (ref, index) => {
+    inputRefs.current[index] = ref;
+  };
 
   useEffect(() => {
     const countDown = setInterval(() => {
@@ -47,25 +64,19 @@ const OtpVerify = () => {
         value2: null,
         value3: null,
         value4: null,
-        otp_code: null,
-        refid: otp,
-        devicetype: 1,
-        deviceid: deviceId,
       },
       onSubmit: values => {
-        OtpVerify(values);
+        handleOtpVerify(values);
       },
     });
 
-  const OtpVerify = async data => {
+  const handleOtpVerify = data => {
     let formData = new FormData();
-    let password = parseInt(
-      data.value1 + data.value2 + data.value3 + data.value4,
-    );
-    formData.append('refid', data.refid);
-    formData.append('otp_code', password);
-    formData.append('devicetype', data.devicetype);
-    formData.append('deviceid', data.deviceid);
+    let otp = parseInt(data.value1 + data.value2 + data.value3 + data.value4);
+    formData.append('refid', refid);
+    formData.append('otp_code', otp);
+    formData.append('devicetype', 1);
+    formData.append('deviceid', deviceId);
 
     console.log(formData);
 
@@ -73,38 +84,12 @@ const OtpVerify = () => {
       .then(res => {
         console.log(res.data);
         if (res.data.status === 1) {
-          navigation.navigate('BottomTabNavigation');
           storeToken(res.data.token, dispatch);
 
           console.log('data got from api response', res.data);
-        } else {
-          console.log('error');
         }
       })
       .catch(err => console.log(err, 'error'));
-  };
-
-  const handleRequestAgain = data => {
-    let formData = new FormData();
-    // formData.append('resendOtp', otp);
-    // console.log(formData);
-    // resendotpverify(formData)
-    //   .then(res => {
-    //     console.log(res.data);
-    //     // if (res.data.status === 1) {
-    //     // if (time === 0) {
-    //     // setFieldValue('resendOtp', res.data.refid);
-    //     // setTimeout(() => {
-    //     //   setTime(297);
-    //     //   console.log('resend again', formData);
-    //     // }, 3000);
-    //     // }
-    //     // }
-    //     //  else {
-    //     //   console.log('else error');
-    //     // }
-    //   })
-    //   .catch(err => console.log(err, 'error'));
   };
 
   return (
@@ -126,42 +111,21 @@ const OtpVerify = () => {
             <Text style={styles.email}> {email}</Text>
           </Text>
           <View style={styles.containBox}>
-            <InputBox
-              placeholder="0"
-              customInputStyles={styles.input}
-              placeholderTextColor={styles.placeholdercolor}
-              value={values.value1}
-              onChangeText={handleChange('value1')}
-              maxLength={1}
-              keyboardType="numeric"
-            />
-            <InputBox
-              placeholder="1"
-              customInputStyles={styles.input}
-              placeholderTextColor={styles.placeholdercolor}
-              value={values.value2}
-              onChangeText={handleChange('value2')}
-              maxLength={1}
-              keyboardType="numeric"
-            />
-            <InputBox
-              placeholder="2"
-              customInputStyles={styles.input}
-              placeholderTextColor={styles.placeholdercolor}
-              value={values.value3}
-              onChangeText={handleChange('value3')}
-              maxLength={1}
-              keyboardType="numeric"
-            />
-            <InputBox
-              placeholder="8"
-              customInputStyles={styles.input}
-              placeholderTextColor={styles.placeholdercolor}
-              value={values.value4}
-              onChangeText={handleChange('value4')}
-              maxLength={1}
-              keyboardType="numeric"
-            />
+            {fieldNames.map((fieldName, index) => (
+              <TextInput
+                key={index}
+                style={styles.input}
+                ref={ref => inputBoxRefs(ref, index)}
+                placeholder="0"
+                maxLength={1}
+                keyboardType="numeric"
+                onChangeText={text => {
+                  handleChange(fieldName)(text);
+                  handleTextChange(index, text);
+                }}
+                value={values[fieldName]}
+              />
+            ))}
           </View>
 
           {time ? (
@@ -173,13 +137,7 @@ const OtpVerify = () => {
           </View>
           <View style={styles.footer}>
             <Text style={styles.AccountSet}>Don’t receive code?</Text>
-            <Text
-              style={styles.AccountSetup}
-              onPress={handleRequestAgain}
-              // onPress={handleSubmit}
-            >
-              Request again
-            </Text>
+            <Text style={styles.AccountSetup}>Request again</Text>
           </View>
         </View>
       </>
@@ -248,7 +206,14 @@ const styles = StyleSheet.create({
     color: '#3D5DF1',
     fontFamily: FONTS.Andika.bold,
     fontSize: 15,
-    marginTop: 5,
+    width: 50,
+    height: 46,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 5,
+    textAlign: 'center',
+    backgroundColor: 'white',
+    marginRight: 5,
   },
   placeholdercolor: {
     color: '#3D5DF1',

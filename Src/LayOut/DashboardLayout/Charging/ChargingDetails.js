@@ -1,61 +1,90 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  useWindowDimensions,
+} from 'react-native';
 import React from 'react';
-import Carosel from '../../../Components/Carosel';
-import {chargingImages, starDataArray} from '../../../SharedComponents/Arrays';
+import {starDataArray} from '../../../SharedComponents/Arrays';
 import {FONTS} from '../../../Utilities/Fonts';
+import {useSelector} from 'react-redux';
+import {FILESBASEURL} from '../../../Utilities/Constants';
 
 const ChargingDetails = () => {
+  const data = useSelector(state => state?.home?.homeList);
+  const {width: windowWidth} = useWindowDimensions();
   return (
     <View style={styles.container}>
-      <Carosel
-        dataArray={[...chargingImages]}
-        customImageContainer={{marginRight: 12, marginTop: 3}}
-        customImage={{width: 283, height: 140}}
-        isshowTitle={false}
-      />
-      <Text style={styles.shopTitle}>Cafe Coffee Day</Text>
-      <Text style={styles.address}>
-        142, Velachery Main Rd, Indira Gandhi Nagar, Velachery, Chennai,Tamil
-        Nadu 600042
-      </Text>
-      <View style={{flexDirection: 'row', paddingVertical: 8}}>
-        <Text
-          style={{
-            fontWeight: 700,
-            fontSize: 14,
-            color: 'black',
-            marginRight: 10,
-          }}>
-          4.0
-        </Text>
-        <View style={styles.rating}>
-          {starDataArray.map((e, i) => {
-            return (
+      <FlatList
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        data={data}
+        pagingEnabled
+        renderItem={({item}) => {
+          return (
+            <View
+              style={{
+                width: windowWidth - 50,
+                paddingHorizontal: 5,
+              }}>
               <Image
-                source={e.pressed ? e.pressImg : e.img}
-                style={styles.star}
-                key={i}
+                style={{
+                  height: 140,
+                  marginTop: 8,
+                  borderRadius: 8,
+                }}
+                source={{uri: FILESBASEURL + item.station_image}}
               />
-            );
-          })}
-        </View>
-      </View>
-      <View style={styles.section}>
-        <View style={[styles.section, {marginRight: 15}]}>
-          <Image
-            style={{marginRight: 10}}
-            source={require('../../../Assets/Png/location.png')}
-          />
-          <Text style={styles.text}>1.5 km for you</Text>
-        </View>
-        <View style={styles.section}>
-          <Image
-            style={{marginRight: 10}}
-            source={require('../../../Assets/Png/socket.png')}
-          />
-          <Text style={styles.text}>2 Charging sockets</Text>
-        </View>
-      </View>
+              <Text style={styles.shopTitle}>{item.station_name}</Text>
+              <Text style={styles.address}>{item.location}</Text>
+              <View style={{flexDirection: 'row', paddingVertical: 8}}>
+                <Text
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 14,
+                    color: 'black',
+                    marginRight: 10,
+                  }}>
+                  4.0
+                </Text>
+                <View style={styles.rating}>
+                  {starDataArray.map((e, i) => {
+                    return (
+                      <Image
+                        source={e.pressed ? e.pressImg : e.img}
+                        style={styles.star}
+                        key={i}
+                      />
+                    );
+                  })}
+                </View>
+              </View>
+              <View style={styles.section}>
+                <View style={[styles.section, {marginRight: 15}]}>
+                  <Image
+                    style={{marginRight: 10}}
+                    source={require('../../../Assets/Png/location.png')}
+                  />
+                  <Text style={styles.text}>
+                    {Math.floor(item.distance).toString().slice(0, 2) / 10} km
+                    for you
+                  </Text>
+                </View>
+                <View style={styles.section}>
+                  <Image
+                    style={{marginRight: 10}}
+                    source={require('../../../Assets/Png/socket.png')}
+                  />
+                  <Text style={styles.text}>
+                    {item.total_sockets} Charging sockets
+                  </Text>
+                </View>
+              </View>
+            </View>
+          );
+        }}></FlatList>
     </View>
   );
 };
@@ -65,13 +94,11 @@ export default ChargingDetails;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 25,
-    marginTop: 10,
     marginBottom: -10,
   },
   shopTitle: {
     fontSize: 24,
     color: 'black',
-    paddingTop: 15,
     paddingBottom: 6,
     fontFamily: FONTS.Andika.bold,
   },
@@ -80,6 +107,7 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.65)',
     fontFamily: FONTS.Andika.regular,
     lineHeight: 20,
+    width: 310,
   },
   rating: {
     flexDirection: 'row',

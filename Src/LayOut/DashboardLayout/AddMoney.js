@@ -1,17 +1,18 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
-import {useNavigation} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {updatewallet} from '../../Services/Services';
-import {useSelector} from 'react-redux';
+import {setWalletAmount} from '../../Store/Slices/WalletSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
-const AddMoney = () => {
-  const navigation = useNavigation();
+const AddMoney = ({navigation, route}) => {
   const myToken = useSelector(state => state.auth.token);
+  const balanceAmount = useSelector(state => state.wallet.walletAmount);
+  const dispatch = useDispatch();
 
   const SignupSchema = Yup.object().shape({
     amount: Yup.string()
@@ -26,19 +27,21 @@ const AddMoney = () => {
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
-      updateAount(values);
+      updateAmount(values);
     },
   });
 
-  const updateAount = data => {
+  const updateAmount = data => {
     const formData = new FormData();
     formData.append('amount', data.amount);
     formData.append('token', myToken);
     updatewallet(formData)
       .then(res => {
         if (res.data.status === 1) {
-          console.log('amount credited', res.data);
-          navigation.navigate('WALLET', {amount: values.amount});
+          navigation.goBack('WALLET');
+
+          const digits = Number(data.amount) + Number('.00');
+          dispatch(setWalletAmount(Number(balanceAmount) + digits + '.00'));
         }
       })
       .catch(error => console.log('error', error));

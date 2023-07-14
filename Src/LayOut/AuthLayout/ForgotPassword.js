@@ -5,7 +5,6 @@ import InputBox from '../../Components/InputBox';
 import {useNavigation} from '@react-navigation/native';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {MOBILE_REGEX} from '../../Utilities/Constants';
 import {FONTS} from '../../Utilities/Fonts';
 import {forgotpassword} from '../../Services/Services';
 
@@ -15,7 +14,7 @@ const ForgotPassword = () => {
   const SignupSchema = Yup.object().shape({
     email: Yup.string()
       // .max(10, 'Too Long!')
-      .required('mobile number cannot be blank'),
+      .required('Email cannot be blank'),
     // .matches(MOBILE_REGEX, 'Invalid mobile number'),
   });
 
@@ -37,7 +36,7 @@ const ForgotPassword = () => {
       .then(res => {
         if (res.data.status === 1) {
           console.log(res.data);
-          navigation.navigate('ResetPassword', {refid: res.data.refid});
+          navigation.navigate('OTP', {refid: res.data.refid});
         }
       })
       .catch(error => console.log(error, 'error'));

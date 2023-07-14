@@ -1,47 +1,90 @@
-import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  RefreshControl,
+} from 'react-native';
+import React, {useEffect, useState, memo} from 'react';
 import Button from '../../Components/Button';
-import {walletDetails} from '../../SharedComponents/Arrays';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import Loader from '../AuthLayout/Loader';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
-import {useFormik} from 'formik';
-import * as Yup from 'yup';
-import {walletbalance} from '../../Services/Services';
-import {useSelector} from 'react-redux';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {walletbalance, mywallethistory} from '../../Services/Services';
+import {useDispatch, useSelector} from 'react-redux';
+import moment from 'moment';
+import {setWalletAmount, setHistoryArr} from '../../Store/Slices/WalletSlice';
 
-const Wallet = () => {
-  const navigation = useNavigation();
+var currentPage = 1;
+var totalPages = 1;
+
+const Wallet = ({navigation}) => {
+  const dispatch = useDispatch();
+  const [historyArr, setHistoryArr] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const myToken = useSelector(state => state.auth.token);
-  // const route = useRoute();
-  // const amount = route.params.amount;
-  const [balance, setBalance] = useState();
+  const balance = useSelector(state => state.wallet.walletAmount);
+  // const historyArr = useSelector(state => state.wallet.historyArr);
 
   useEffect(() => {
-    const balanceAmount = async () => {
-      try {
-        EncryptedStorage.setItem('balance', balance);
-      } catch {
-        console.log('error');
-      }
-    };
-    balanceAmount();
-  });
+    walletBalanceAPI();
+    mywallethistoryApi();
+  }, []);
 
-  const handleSubmit = async () => {
+  const walletBalanceAPI = () => {
     const formData = new FormData();
     formData.append('token', myToken);
     walletbalance(formData)
       .then(res => {
         if (res.data.status === 1) {
-          console.log('wallet balance', res.data);
-          setBalance(res.data.balance);
+          dispatch(setWalletAmount(res.data.balance));
+        }
+      })
+      .catch(error => console.log('error', error))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
-          navigation.navigate('AddMoney');
+  const handleSubmit = () => {
+    navigation.navigate('AddMoney');
+  };
+
+  const mywallethistoryApi = (pageNumber = 1) => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('token', myToken);
+    formData.append('pagenumber', pageNumber);
+    mywallethistory(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          let Data = res.data.wallet.map(ele => ele);
+          if (pageNumber === 1) {
+            totalPages = parseInt(res.data.totalpages);
+            setHistoryArr(Data);
+          } else {
+            setHistoryArr(preListData => [...preListData, ...Data]);
+          }
         }
       })
       .catch(error => console.log('error', error));
+  };
+
+  const onEndReached = () => {
+    currentPage = currentPage + 1;
+    if (currentPage <= totalPages) {
+      mywallethistoryApi(currentPage);
+    }
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      mywallethistoryApi();
+    }, 2000);
   };
 
   return (
@@ -59,15 +102,29 @@ const Wallet = () => {
         </View>
         <Text style={styles.subTitle}>History</Text>
         <FlatList
-          data={walletDetails}
+          data={historyArr}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5}
+          keyExtractor={item => item.id}
+          ListFooterComponent={isLoading && <Loader />}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              progressBackgroundColor={'white'}
+              colors={['#FCDC0C']}
+            />
+          }
           renderItem={({item}) => (
             <View style={styles.paymentDetails}>
               <View>
                 <Text style={styles.amountDetails}>Rs. {item.amount}</Text>
-                <Text style={styles.timing}>{item.time}</Text>
+                <Text style={styles.timing}>
+                  {moment(item.payment_date).format('D MMMM YYYY, h:mm a')}
+                </Text>
               </View>
-              <Text style={styles.isSend}>{item.isSend}</Text>
+              <Text style={styles.isSend}>{item.payment_type}</Text>
             </View>
           )}
         />
@@ -114,7 +171,7 @@ const styles = StyleSheet.create({
   },
   paymentDetails: {
     width: '100%',
-    height: 75,
+    height: 65,
     borderBottomWidth: 1,
     borderRightWidth: 1,
     borderLeftWidth: 1,
@@ -128,6 +185,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
     backgroundColor: '#FFFFFF',
+    alignItems: 'center',
   },
   amountDetails: {
     fontFamily: FONTS.Andika.regular,
@@ -141,5 +199,6 @@ const styles = StyleSheet.create({
   isSend: {
     color: '#FEBF00',
     fontSize: 12.5,
+    fontFamily: FONTS.Andika.regular,
   },
 });

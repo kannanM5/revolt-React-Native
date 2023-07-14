@@ -40,10 +40,52 @@ export const walletbalance = data => {
   return axios.post('/walletbalance', data);
 };
 
+export const mywallethistory = data => {
+  return axios.post('/mywallethistory', data);
+};
+
 export const productlist = data => {
   return axios.post('/productlist', data);
 };
 
+export const addtocart = data => {
+  return axios.post('/addtocart', data);
+};
+
 export const newsfeed = data => {
   return axios.post('/newsfeed', data);
+};
+
+export const stations = data => {
+  return axios.post('/stations', data);
+};
+
+// 18. Nearest Stations
+
+export const neareststations = data => {
+  return axios.post('/neareststations', data);
+};
+
+//19. App User Review
+
+export const review = data => {
+  return axios.post('/review', data);
+};
+
+// 6. Get My Profile
+
+export const getmyprofile = data => {
+  return axios.post('/getmyprofile', data);
+};
+
+// 7. Update My Profile
+
+export const updatemyprofile = data => {
+  return axios.post('/updatemyprofile', data);
+};
+
+// 46. Add vehicle
+
+export const addvehicle = data => {
+  return axios.post('/addvehicle', data);
 };

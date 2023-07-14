@@ -6,32 +6,45 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import {useNavigation} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import {FONTS} from '../../Utilities/Fonts';
 import {signUp, mobileotpverify} from '../../Services/Services';
-import {EMAIL_REGEX, NUMBER} from '../../Utilities/Constants';
+import {
+  EMAIL_REGEX,
+  FILESBASEURL,
+  NUMBER,
+  getUrlWithPrefix,
+} from '../../Utilities/Constants';
+import {setProfileArr} from '../../Store/Slices/ProfileSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 const SignUp = () => {
   const navigation = useNavigation();
-  const [imageSource, setImageSource] = useState(null);
   const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
+  const profile = useSelector(state => state.profile.profileArr);
+
+  useEffect(() => {});
+  console.log(profile);
 
   const openCamera = () => {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
       cropping: true,
+      cropperCircleOverlay: true,
+      mediaType: 'photo',
+      forceJpg: true,
     })
       .then(image => {
-        setImageSource({uri: image.path});
         console.log('true');
+        setFieldValue('profile_image', {uri: image.path});
         setModal(false);
       })
       .catch(e => {
@@ -46,10 +59,11 @@ const SignUp = () => {
       height: 500,
       cropperCircleOverlay: true,
       mediaType: 'photo',
+      forceJpg: true,
     })
       .then(image => {
         setModal(false);
-        setImageSource({uri: image.path});
+        setFieldValue('profile_image', {uri: image.path});
       })
       .catch(error => {
         console.log(error);
@@ -66,7 +80,7 @@ const SignUp = () => {
       .max(30, 'Too Long!')
       .matches(EMAIL_REGEX, 'Invalid email address')
       .required('Email cannot be blank'),
-    mobileNumber: Yup.string()
+    mobile: Yup.string()
       .min(5, 'Mobile Number must be 10 characters')
       .max(10, 'Too Long!')
       .required('Mobile Number cannot be blank ')
@@ -81,39 +95,53 @@ const SignUp = () => {
       .required('Confirm Password cannot be blank'),
   });
 
-  const {handleChange, handleSubmit, errors, values, touched} = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      mobileNumber: '',
-      password: '',
-      confirmPassword: '',
-      profileImage: {},
-    },
-    validationSchema: SignupSchema,
-    onSubmit: values => {
-      handleSignUp(values);
-    },
-  });
+  const {handleChange, handleSubmit, errors, values, touched, setFieldValue} =
+    useFormik({
+      initialValues: {
+        name: '',
+        email: '',
+        mobile: null,
+        password: '',
+        confirmPassword: '',
+        profile_image: {},
+      },
+      validationSchema: SignupSchema,
+      onSubmit: values => {
+        handleSignUp(values);
+      },
+    });
 
-  const handleSignUp = async data => {
+  const handleSignUp = data => {
     let formData = new FormData();
     formData.append('name', data.name);
     formData.append('email', data.email);
-    formData.append('mobileNumber', data.mobileNumber);
+    formData.append('mobile', data.mobile);
     formData.append('password', data.password);
     formData.append('confirmPassword', data.confirmPassword);
+    formData.append('profile_image', data.profile_image.uri);
 
     signUp(formData)
       .then(res => {
         console.log(res.data);
 
         if (res.data.status === 1) {
+          dispatch(
+            setProfileArr({
+              ...profile,
+              name: data.name,
+              email: data.email,
+              mobile: data.mobile,
+              password: data.password,
+              confirmPassword: data.confirmPassword,
+              profile_image: data.profile_image.uri,
+            }),
+          );
+
           navigation.navigate('OTP', {
             otp: res.data.refid,
             timer: res.data.remainingseconds,
             email: values.email,
-            mobile: res.data.mobileNumber,
+            mobile: values.mobile,
           });
         }
       })
@@ -125,12 +153,13 @@ const SignUp = () => {
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}>
       <View style={styles.profileImage}>
-        {imageSource && (
-          <Image
-            source={imageSource}
-            style={{width: 109, borderRadius: 50, height: 109}}
-          />
-        )}
+        <Image
+          source={{
+            uri: values.profile_image.uri,
+          }}
+          style={{width: 109, borderRadius: 50, height: 109}}
+        />
+
         <View style={styles.TakeProfileImg}>
           <TouchableOpacity onPress={() => setModal(!modal)}>
             <Image
@@ -183,10 +212,10 @@ const SignUp = () => {
         <InputBox
           label="Mobile Number"
           placeholder="Enter your Mobile Number"
-          value={values.mobileNumber}
-          onChangeText={handleChange('mobileNumber')}
-          errors={errors.mobileNumber && touched.mobileNumber ? true : null}
-          errorText={errors.mobileNumber}
+          value={values.mobile}
+          onChangeText={handleChange('mobile')}
+          errors={errors.mobile && touched.mobile ? true : null}
+          errorText={errors.mobile}
           keyboardType="numeric"
           maxLength={10}
         />

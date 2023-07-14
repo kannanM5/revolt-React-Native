@@ -8,6 +8,7 @@ import {
 import CustomDrawerNavigation from './CustomDrawerNavigation';
 import Charging from '../../LayOut/DashboardLayout/Charging';
 import Manageprofile from '../../LayOut/DashboardLayout/Manageprofile';
+import ManageVehicle from '../../LayOut/DashboardLayout/ManageVehicle';
 import PaymentDetail from '../../LayOut/DashboardLayout/PaymentDetail';
 import BookingScreen from '../../LayOut/DashboardLayout/Booking/BookingScreen';
 import HistoryScreen from '../../LayOut/DashboardLayout/History/HistoryScreen';
@@ -40,6 +41,7 @@ const DrawerNavigation = () => {
       <Drawer.Screen name="HostBookingScreen" component={HostBookingScreen} />
       <Drawer.Screen name="ParkingScreen" component={ParkingScreen} />
       <Drawer.Screen name="ChargingScreen" component={ChargingScreen} />
+      <Drawer.Screen name="ManageVehicle" component={ManageVehicle} />
       <Drawer.Screen name="Logout" component={LogOut} />
     </Drawer.Navigator>
   );

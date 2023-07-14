@@ -3,21 +3,11 @@ import React, {useState} from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {FONTS} from '../Utilities/Fonts';
 import {COLORS} from '../Utilities/Colors';
+import moment from 'moment';
 
-const DateTimePicker = ({label = '', customStyles, hours}) => {
-  var currentTime = new Date();
-  var hours = currentTime.getHours();
-  var minutes = currentTime.getMinutes();
-
-  var amPm = hours >= 12 ? 'PM' : 'AM';
-  var hours = hours % 12 || 12;
-
-  var minutes = minutes < 10 ? '0' + minutes : minutes;
-  var currentTime = `${hours} : ${minutes} ${amPm}`;
-
+const DateTimePicker = ({label = '', customStyles, currentTime}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedTime, setSelectedTime] = useState(currentTime);
-  const [timeDifference, setTimeDifference] = useState(0);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -27,19 +17,25 @@ const DateTimePicker = ({label = '', customStyles, hours}) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = time => {
-    const selectedDate = new Date(time);
-    const currentDate = new Date();
-    const timeDiff = Math.abs(selectedDate - currentDate);
-    const minutesDiff = Math.floor((timeDiff / 1000 / 60) % 60);
-    const hoursDiff = Math.floor(timeDiff / 1000 / 60 / 60);
-    const formattedTime = time.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    });
-    setSelectedTime(formattedTime);
-    setTimeDifference(hoursDiff);
+  const handleConfirm = datetime => {
+    // const selectedDate = new Date(time);
+    // const currentDate = new Date();
+    // const timeDiff = Math.abs(selectedDate - currentDate);
+    // const hoursDiff = Math.floor(timeDiff / 1000 / 60 / 60);
+    // const formattedTime = time.toLocaleTimeString('en-US', {
+    //   hour: 'numeric',
+    //   minute: 'numeric',
+    //   hour12: true,
+    // });
+
+    // setSelectedTime(formattedTime);
+    // setTimeDifference(hoursDiff);
+    setSelectedTime(
+      moment(datetime).format('yyyy mm dd hh:mm:a').slice(11, 16) +
+        ' ' +
+        moment(datetime).format('yyyy mm dd hh:mm:a').slice(17, 21),
+    );
+
     hideDatePicker();
   };
   return (
@@ -55,23 +51,15 @@ const DateTimePicker = ({label = '', customStyles, hours}) => {
             style={styles.img}
             source={require('../Assets/Png/Polygon3.png')}
           />
-          {/* <Text>{timeDifference}</Text> */}
         </View>
       </View>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
-        mode="time"
+        mode="datetime"
         hourFormat="12"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
         style={styles.datePicker1}
-        customStyles={{
-          dateInput: {
-            backgroundColor: 'orange',
-            height: 40,
-            width: 100,
-          },
-        }}
       />
     </TouchableOpacity>
   );

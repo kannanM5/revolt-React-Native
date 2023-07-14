@@ -7,7 +7,6 @@ import OtpVerify from '../LayOut/AuthLayout/OtpVerify';
 import ResetPassword from '../LayOut/AuthLayout/ResetPassword';
 import FlashScreen from '../LayOut/DashboardLayout/FlashScreen';
 import PageScreens from '../LayOut/DashboardLayout/PageScreens';
-import BottomTabNavigation from '../Navigation/BottomTabNavigation/BottomTabNavigation';
 import Loader from '../LayOut/AuthLayout/Loader';
 
 const RootStack = () => {
@@ -23,10 +22,6 @@ const RootStack = () => {
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="PageScreens" component={PageScreens} />
       <Stack.Screen name="loader" component={Loader} />
-      <Stack.Screen
-        name="BottomTabNavigation"
-        component={BottomTabNavigation}
-      />
     </Stack.Navigator>
   );
 };

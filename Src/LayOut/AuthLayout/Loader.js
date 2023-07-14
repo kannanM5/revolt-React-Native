@@ -4,7 +4,7 @@ import React from 'react';
 const Loader = () => {
   return (
     <View style={[styles.container, styles.horizontal]}>
-      <ActivityIndicator size={50} />
+      <ActivityIndicator size={50} color={'#F2CC0C'} />
     </View>
   );
 };
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   horizontal: {
     flexDirection: 'row',

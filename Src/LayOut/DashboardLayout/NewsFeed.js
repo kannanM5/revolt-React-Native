@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {newFeed} from '../../SharedComponents/Arrays';
@@ -13,41 +14,81 @@ import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import {newsfeed} from '../../Services/Services';
 import {useSelector} from 'react-redux';
+import Loader from '../AuthLayout/Loader';
+
+var currentPage = 1;
+var totalPages = 1;
 
 const NewsFeed = () => {
   const navigation = useNavigation();
   const myToken = useSelector(state => state.auth.token);
-  const [newsFeed, setNewsFeed] = useState();
+  const [arr, setArr] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    handleNewsFeed();
+    handleNewsFeed(1);
   }, []);
 
-  const handleNewsFeed = () => {
+  const handleNewsFeed = (pageNumber = 1) => {
+    setIsLoading(true);
+
     const formData = new FormData();
     formData.append('token', myToken);
-    formData.append('page', 1);
+    formData.append('page', pageNumber);
     newsfeed(formData)
       .then(res => {
-        // console.log(res);
         if (res.data.status === 1) {
-          // console.log(res.data.newsfeed);
-          setNewsFeed(res?.data?.newsfeed);
-
-          console.log(newsFeed, 'newsfeed');
-        } else {
-          console.log('error');
+          let Data = res.data.newsfeed.map(ele => JSON.parse(ele));
+          console.log(res.data.newsfeed);
+          if (pageNumber === 1) {
+            totalPages = parseInt(res.data.totalpages);
+            setArr(Data);
+          } else {
+            setArr(preListData => [...preListData, ...Data]);
+          }
         }
       })
-      .catch(err => console.log(err, 'error'));
+      .catch(err => {
+        console.log(err, 'error');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
+
+  const onEndReached = () => {
+    currentPage = currentPage + 1;
+    if (currentPage <= totalPages) {
+      handleNewsFeed(currentPage);
+    }
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
+
   return (
     <>
       <SubHeader titleName="Latest News" onPress={() => navigation.goBack()} />
       <View style={styles.container}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={newFeed}
+          data={arr}
+          refreshControl={
+            <RefreshControl
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              progressBackgroundColor={'white'}
+              colors={['#FCDC0C']}
+            />
+          }
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={isLoading && <Loader />}
           renderItem={({item}) => (
             <View style={styles.info}>
               <TouchableOpacity
@@ -56,10 +97,15 @@ const NewsFeed = () => {
                   navigation.navigate('NewsDetails', {items: item})
                 }>
                 <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.content}>{item.content}</Text>
+                <Text style={styles.content}>{item.description}</Text>
                 <Image
-                  style={{marginVertical: 10, width: '100%', borderRadius: 10}}
-                  source={item.img}
+                  style={{
+                    marginVertical: 10,
+                    width: '100%',
+                    height: 150,
+                    borderRadius: 10,
+                  }}
+                  source={{uri: item.urlToImage}}
                 />
                 <View style={styles.footer}>
                   <View style={styles.left}>
@@ -75,7 +121,7 @@ const NewsFeed = () => {
                         fontFamily: FONTS.Andika.bold,
                         color: 'rgba(0, 0, 0, 0.7)',
                       }}>
-                      {item.likes}
+                      120k
                     </Text>
 
                     <View style={styles.containBox}>
@@ -138,7 +184,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.Andika.bold,
     color: 'rgba(0, 0, 0, 0.7)',
     lineHeight: 17,
-    width: '85%',
+    width: '100%',
   },
   footer: {
     flexDirection: 'row',

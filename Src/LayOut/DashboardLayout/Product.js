@@ -8,28 +8,48 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Button from '../../Components/Button';
-import {useNavigation, useRoute} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import SVGIcons from '../../Components/SVGIcon';
 import {FILESBASEURL} from '../../Utilities/Constants';
+import {addtocart} from '../../Services/Services';
+import {useSelector, useDispatch} from 'react-redux';
+import {setQuantity, setCartList} from '../../Store/Slices/ProductSlice';
 
-const Product = () => {
-  const route = useRoute();
+const Product = ({navigation, route}) => {
   const product = route.params.items;
   const [activeItem, setActiveItem] = useState(2);
-  const [count, setCount] = useState(1);
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const myToken = useSelector(state => state.auth.token);
+  let productArr = useSelector(state => state.product.productsList);
+
+  const SETQUANTITY = () => {
+    const ind = productArr.findIndex(ele => ele.id === product.id);
+    let myQty = productArr[ind].Qty;
+    return myQty;
+  };
 
   const handlepress = event => {
-    setActiveItem(event);
-    console.log(event);
-  };
-  const increment = () => {
-    setCount(count + 1);
-  };
-  const decrement = () => {
-    if (count > 1) setCount(count - 1);
+    if (event === 1) {
+      setActiveItem(event);
+
+      const formData = new FormData();
+      formData.append('token', myToken);
+      formData.append('product_id', product.id);
+      formData.append('quantity', SETQUANTITY());
+
+      addtocart(formData)
+        .then(res => {
+          console.log(res.data);
+          if (res.data.status === 1) {
+            dispatch(setCartList(productArr));
+            console.log('success');
+          }
+        })
+        .catch(error => console.log(error, 'error'));
+    } else {
+      setActiveItem(event);
+    }
   };
 
   const handlerGoBack = () => {
@@ -81,14 +101,22 @@ const Product = () => {
             <Text style={styles.quantity}>Order Quantity</Text>
 
             <View style={styles.counter}>
-              <TouchableOpacity onPress={decrement} activeOpacity={0.8}>
+              <TouchableOpacity
+                onPress={() =>
+                  dispatch(setQuantity({id: product.id, type: 'DECRE'}))
+                }
+                activeOpacity={0.8}>
                 <Image source={require('../../Assets/Png/sub.png')} />
               </TouchableOpacity>
 
-              <Text style={styles.count}>{count}</Text>
+              <Text style={styles.count}>{SETQUANTITY()}</Text>
               <View style={styles.line}></View>
 
-              <TouchableOpacity onPress={increment} activeOpacity={0.8}>
+              <TouchableOpacity
+                onPress={() =>
+                  dispatch(setQuantity({id: product.id, type: 'INCRE'}))
+                }
+                activeOpacity={0.8}>
                 <Image source={require('../../Assets/Png/add.png')} />
               </TouchableOpacity>
             </View>

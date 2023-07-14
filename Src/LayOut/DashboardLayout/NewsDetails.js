@@ -11,8 +11,8 @@ const NewsDetails = ({navigation}) => {
     <ScrollView>
       <SubHeader titleName="Latest News" onPress={() => navigation.goBack()} />
       <View style={styles.container}>
-        <Text style={styles.title}>{detail.content}</Text>
-        <Image style={styles.img} source={detail.img} />
+        <Text style={styles.title}>{detail.title}</Text>
+        <Image style={styles.img} source={{uri: detail.urlToImage}} />
         <Text style={styles.content}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec feugiat
           tristique congue scelerisque augue. Non orci, at pretium turpis
@@ -95,6 +95,8 @@ const styles = StyleSheet.create({
   img: {
     marginVertical: 10,
     width: '100%',
+    height: 150,
+    borderRadius: 10,
   },
   content: {
     fontSize: 13,

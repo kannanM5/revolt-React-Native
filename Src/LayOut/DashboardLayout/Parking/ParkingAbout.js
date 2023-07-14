@@ -12,7 +12,6 @@ import {timeDuration} from '../../../SharedComponents/Arrays';
 import {FONTS} from '../../../Utilities/Fonts';
 
 const ParkingAbout = () => {
-  // const [arr, setArr] = useState(timeDuration);
   const [selectedId, setselectedId] = useState(null);
 
   const handleColor = currentId => {

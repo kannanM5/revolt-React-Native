@@ -1,23 +1,100 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import InputBox from '../../Components/InputBox';
-import {useNavigation, DrawerActions} from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import DateTimePicker from '../../Components/DateTimePicker';
 import MapView, {Marker} from 'react-native-maps';
-import {ParkingImages, chargingImages} from '../../SharedComponents/Arrays';
 import Carosel from '../../Components/Carosel';
 import Header from './Header';
 import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
 import SVGIcons from '../../Components/SVGIcon';
+import {stations} from '../../Services/Services';
+import {useDispatch, useSelector} from 'react-redux';
+import GetLocation from 'react-native-get-location';
+import {neareststations} from '../../Services/Services';
+import {setHomeList} from '../../Store/Slices/HomeSlice';
+import moment from 'moment';
 
-const Charging = props => {
-  const navigation = useNavigation();
+const Charging = ({navigation}) => {
+  let currentTime = moment().format('YYYY MM DD hh:mm a');
+
+  useEffect(() => {
+    currentTime;
+  }, []);
+  const myToken = useSelector(state => state.auth.token);
+  const data = useSelector(state => state.home.homeList);
+  const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(null);
-
-  const [markerCoordinates, setMarkerCoordinates] = useState({
+  const [activeStation, setActiveStaion] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState({
     latitude: 11.004556,
     longitude: 76.961632,
+  });
+
+  useEffect(() => {
+    getUserLocation();
+  }, []);
+
+  const getUserLocation = async () => {
+    try {
+      let location = await GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 60000,
+      });
+      let currentLatitude = location.latitude;
+      let currentLongitude = location.longitude;
+      setCurrentLocation({
+        latitude: currentLatitude,
+        longitude: currentLongitude,
+      });
+    } catch (error) {
+      const {code, message} = error;
+      console.warn(code, message, '--------');
+    }
+  };
+
+  const handleNearestStation = () => {
+    const formData = new FormData();
+    formData.append('token', myToken);
+    formData.append('user_latitude', currentLocation.latitude);
+    formData.append('user_longitude', currentLocation.latitude);
+    formData.append('station_type', activeStation);
+    formData.append('from_time', currentTime);
+    formData.append('to_time', currentTime);
+    formData.append('location', 'coimbatore');
+
+    neareststations(formData)
+      .then(res => {
+        console.log(res, '------success');
+        if (res.data.status === 1) {
+          let refData = [...res.data.stations];
+          refData = refData.map(e => e);
+          dispatch(setHomeList(refData));
+          console.log(refData);
+        }
+      })
+      .catch(error => console.log(error, 'error'));
+  };
+
+  const handleSearch = () => {
+    let formData = new FormData();
+    formData.append('token', myToken);
+
+    stations(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          console.log(res.data, '------------------');
+        }
+      })
+      .catch(error => console.log(error, 'error'));
+  };
+
+  const [markerCoordinates, setMarkerCoordinates] = useState({
+    // latitude: 11.004556,
+    // longitude: 76.961632,
+    latitude: currentLocation.latitude,
+    longitude: currentLocation.longitude,
   });
 
   const handleSubmit = name => {
@@ -27,21 +104,27 @@ const Charging = props => {
       } else {
         setActiveItem('parking');
       }
+      setActiveStaion(1);
     } else if (name === 'charging') {
       if (activeItem === 'charging') {
         setActiveItem(null);
       } else {
         setActiveItem('charging');
       }
+      setActiveStaion(2);
     }
+
+    handleNearestStation();
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <MapView
         initialRegion={{
-          latitude: 11.004556,
-          longitude: 76.961632,
+          // latitude: 11.004556,
+          // longitude: 76.961632,
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
           latitudeDelta: 0.095,
           longitudeDelta: 0.047,
         }}
@@ -71,15 +154,31 @@ const Charging = props => {
           customInputStyles={styles.input}
         />
         <View style={styles.searchContain}>
-          <Image
-            source={require('../../Assets/Png/search.png')}
-            style={styles.searchIcon}
-          />
+          <TouchableOpacity onPress={handleSearch}>
+            <Image
+              source={require('../../Assets/Png/search.png')}
+              style={styles.searchIcon}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.datePicker}>
-        <DateTimePicker label="From" customStyles={styles.picker} />
-        <DateTimePicker label="To" customStyles={styles.picker} />
+        <DateTimePicker
+          label="From"
+          customStyles={styles.picker}
+          currentTime={
+            currentTime.slice(11, 16).toString() +
+            ' ' +
+            currentTime.slice(17, 21)
+          }
+        />
+        <DateTimePicker
+          label="To"
+          customStyles={styles.picker}
+          currentTime={
+            currentTime.slice(11, 16).toString() + currentTime.slice(17, 21)
+          }
+        />
       </View>
 
       <View
@@ -184,20 +283,30 @@ const Charging = props => {
 
         {activeItem === 'parking' ? (
           <View>
-            <Text style={styles.titleEvent}>Nearest Parking (2)</Text>
+            <Text style={styles.titleEvent}>
+              Nearest Parking ({data.length})
+            </Text>
             <Carosel
-              dataArray={[...ParkingImages]}
-              onPress={() => navigation.navigate('ParkingScreen')}
+              dataArray={[...data]}
+              onPress={() => {
+                navigation.navigate('ParkingScreen');
+                handleNearestStation();
+              }}
             />
           </View>
         ) : null}
 
         {activeItem === 'charging' ? (
           <View>
-            <Text style={styles.titleEvent}>Nearest Charging (3)</Text>
+            <Text style={styles.titleEvent}>
+              Nearest Charging ({data.length})
+            </Text>
             <Carosel
-              dataArray={[...chargingImages]}
-              onPress={() => navigation.navigate('ChargingScreen')}
+              dataArray={[...data]}
+              onPress={() => {
+                navigation.navigate('ChargingScreen');
+                handleNearestStation();
+              }}
             />
           </View>
         ) : null}

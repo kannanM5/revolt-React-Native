@@ -2,6 +2,7 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {FONTS} from '../Utilities/Fonts';
 import {COLORS} from '../Utilities/Colors';
+import {FlatList} from 'react-native-gesture-handler';
 
 const DropDown = ({
   label = '',
@@ -11,6 +12,7 @@ const DropDown = ({
   customStyles,
   customStylesDefaultText,
   customImgStyle,
+  onPress,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -19,10 +21,10 @@ const DropDown = ({
     setIsOpen(!isOpen);
   };
 
-  const handleSelectItem = item => {
-    setSelectedItem(item);
-    setIsOpen(false);
-  };
+  // const handleSelectItem = item => {
+  //   setSelectedItem(item);
+  //   setIsOpen(false);
+  // };
   return (
     <View style={styles.containerList}>
       {isShowTitle && label ? <Text style={styles.label}>{label}</Text> : null}
@@ -48,11 +50,24 @@ const DropDown = ({
       </TouchableOpacity>
       {isOpen && (
         <View>
-          {dropdownItems.map((item, i) => (
-            <TouchableOpacity key={i} onPress={() => handleSelectItem(item)}>
+          {/* {dropdownItems.map((item, i) => (
+            <TouchableOpacity
+              key={i}
+              onPress={onPress(item)}
+              activeOpacity={0.8}>
               <Text style={styles.dropdownItem}>{item}</Text>
             </TouchableOpacity>
-          ))}
+          ))} */}
+
+          <FlatList
+            data={dropdownItems}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+                <Text style={styles.dropdownItem}>{item.label}</Text>
+              </TouchableOpacity>
+            )}
+          />
         </View>
       )}
     </View>
@@ -105,7 +120,7 @@ const styles = StyleSheet.create({
   DefaultName: {
     fontSize: 14,
     fontFamily: FONTS.Andika.regular,
-    color: COLORS.placeHolderColor,
+    // color: COLORS.placeHolderColor,
     alignSelf: 'center',
   },
 });

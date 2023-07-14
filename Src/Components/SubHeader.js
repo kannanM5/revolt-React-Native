@@ -1,9 +1,17 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {COLORS} from '../Utilities/Colors';
 import {FONTS} from '../Utilities/Fonts';
+import Button from './Button';
 
-const SubHeader = ({titleName = '', onPress, customStyles}) => {
+const SubHeader = ({
+  titleName = '',
+  onPress,
+  customStyles,
+  show,
+  handlepress,
+}) => {
+  const [modal, setModal] = useState(false);
   return (
     <View style={[styles.subTitle, {...customStyles}]}>
       <TouchableOpacity onPress={onPress}>
@@ -14,6 +22,14 @@ const SubHeader = ({titleName = '', onPress, customStyles}) => {
       </TouchableOpacity>
 
       <Text style={styles.title}>{titleName}</Text>
+
+      {show ? (
+        <Button
+          title="+Add"
+          customStyles={{height: 35, width: 60, marginLeft: 35}}
+          onPressButton={handlepress}
+        />
+      ) : null}
     </View>
   );
 };

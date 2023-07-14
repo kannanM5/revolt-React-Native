@@ -40,30 +40,35 @@ export const starDataArray = [
     img: require('../Assets/Png/star1.png'),
     pressImg: require('../Assets/Png/star2.png'),
     pressed: false,
+    count: 0,
   },
   {
     id: 222,
     img: require('../Assets/Png/star1.png'),
     pressImg: require('../Assets/Png/star2.png'),
     pressed: false,
+    count: 0,
   },
   {
     id: 333,
     img: require('../Assets/Png/star1.png'),
     pressImg: require('../Assets/Png/star2.png'),
     pressed: false,
+    count: 0,
   },
   {
     id: 444,
     img: require('../Assets/Png/star1.png'),
     pressImg: require('../Assets/Png/star2.png'),
     pressed: false,
+    count: 0,
   },
   {
     id: 555,
     img: require('../Assets/Png/star1.png'),
     pressImg: require('../Assets/Png/star2.png'),
     pressed: false,
+    count: 0,
   },
 ];
 
@@ -222,27 +227,6 @@ export const walletDetails = [
     amount: 400,
     time: '26  Nov 2019, 04:03 PM',
     isSend: 'American Express',
-  },
-];
-
-export const newFeed = [
-  {
-    img: require('../Assets/Png/news1.png'),
-    title: 'Techcrunch',
-    likes: '120k',
-    content: 'Are bidirectional EV chargers ready for the home market?',
-  },
-  {
-    img: require('../Assets/Png/news2.png'),
-    title: 'Hackaday',
-    likes: '120k',
-    content: 'EV Charging Connectors Come In Many Shapes And Sizes',
-  },
-  {
-    img: require('../Assets/Png/news1.png'),
-    title: 'The Fiancial Express',
-    likes: '120k',
-    content: 'Tata Power signs MoU to install 5,000 EV chargers in Maharashtra',
   },
 ];
 

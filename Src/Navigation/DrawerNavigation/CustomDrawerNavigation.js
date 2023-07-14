@@ -7,13 +7,17 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
+import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../../Services/Services';
+import {getUrlWithPrefix, removeToken} from '../../Methods';
+import Toast from 'react-native-simple-toast';
+import {FILESBASEURL, trimString} from '../../Utilities/Constants';
 
 const DrawerDetails = [
   {
@@ -76,12 +80,32 @@ const DrawerDetails = [
 ];
 
 const CustomDrawerNavigation = props => {
+  const myToken = useSelector(state => state.auth.token);
+  const profile = useSelector(state => state.profile.profileArr);
+  console.log(profile.profile_image);
   const [activeItem, setActiveItem] = useState(null);
-  // const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    const formData = new FormData();
+    formData.append('token', myToken);
+    logout(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          removeToken(dispatch);
+          Toast.show('Succesfully logged out');
+        }
+      })
+      .catch(err => console.log(err));
+  };
 
   const handlepress = item => {
-    setActiveItem(item.pressFun);
-    props.navigation.navigate(item.pressFun);
+    if (item.label === 'Logout') {
+      handleLogout();
+    } else {
+      setActiveItem(item.pressFun);
+      props.navigation.navigate(item.pressFun);
+    }
   };
 
   return (
@@ -90,7 +114,9 @@ const CustomDrawerNavigation = props => {
         <View style={{flexDirection: 'row'}}>
           <Image
             style={styles.img}
-            source={require('../../Assets/Png/demo.png')}
+            source={{
+              uri: profile.profile_image,
+            }}
           />
           <View>
             <Text
@@ -98,9 +124,9 @@ const CustomDrawerNavigation = props => {
                 styles.text,
                 {fontFamily: FONTS.Andika.bold, paddingTop: 5},
               ]}>
-              Anderson
+              {profile.name}
             </Text>
-            <Text style={styles.num}>9595959595</Text>
+            <Text style={styles.num}>{profile.mobile}</Text>
           </View>
         </View>
         <View style={{paddingTop: 20, marginHorizontal: 25}}>

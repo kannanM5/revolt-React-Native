@@ -1,14 +1,131 @@
-import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
-import DropDown from '../../Components/DropDown';
 import SubHeader from '../../Components/SubHeader';
-import {useNavigation} from '@react-navigation/native';
 import {FONTS} from '../../Utilities/Fonts';
+import {useDispatch, useSelector} from 'react-redux';
+import {getmyprofile, updatemyprofile} from '../../Services/Services';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
+import {setProfileArr} from '../../Store/Slices/ProfileSlice';
+import ImagePicker from 'react-native-image-crop-picker';
+import {FILESBASEURL, trimString} from '../../Utilities/Constants';
 
-const Manageprofile = () => {
-  const navigation = useNavigation();
+const Manageprofile = ({navigation}) => {
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+  const Profile = useSelector(state => state.profile.profileArr);
+  // console.log(Profile);
+  const myToken = useSelector(state => state.auth.token);
+
+  useEffect(() => {
+    handleGetMyProfile();
+  }, []);
+
+  const {values, handleChange, handleSubmit, setValues, setFieldValue} =
+    useFormik({
+      initialValues: {
+        name: Profile.name,
+        address: '',
+        city: '',
+        pincode: '',
+        profile_image: {},
+        mobile: Profile.mobile,
+      },
+      onSubmit: values => {
+        handleUpdateMyProfile(values);
+      },
+    });
+
+  const handleGetMyProfile = () => {
+    const formData = new FormData();
+    formData.append('token', myToken);
+    getmyprofile(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          let refData = res.data.profile;
+          // console.log(refData);
+          setValues({
+            ...values,
+            // name: refData.name,
+            address: refData.address,
+            city: refData.city,
+            pincode: refData.pincode,
+            profile_image: values.profile_image,
+            mobile: values.mobile,
+          });
+          dispatch(setProfileArr(refData));
+        }
+      })
+      .catch(error => console.log(error, 'getProfile'));
+  };
+
+  const handleUpdateMyProfile = data => {
+    const formData = new FormData();
+    formData.append('token', myToken);
+    formData.append('name', data.name);
+    formData.append('address', data.address);
+    formData.append('city', data.city);
+    formData.append('pincode', data.pincode);
+    formData.append('profile_image', data.profile_image.uri);
+    formData.append('mobile', data.mobile);
+
+    updatemyprofile(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          // console.log('log', data.profile_image);
+          dispatch(
+            setProfileArr({
+              ...Profile,
+              name: data.name,
+              address: data.address,
+              city: data.city,
+              pincode: data.pincode,
+              profile_image: data.profile_image.uri,
+              mobile: data.mobile,
+              Id_tag: data.Id_tag,
+            }),
+          );
+          console.log('handleSucess');
+        }
+      })
+      .catch(error => console.log(error, 'updateprofile Error'));
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
+
+  const openImagePicker = () => {
+    ImagePicker.openPicker({
+      cropping: true,
+      width: 500,
+      height: 500,
+      cropperCircleOverlay: true,
+      mediaType: 'photo',
+      forceJpg: true,
+    })
+      .then(image => {
+        setFieldValue('profile_image', {uri: image.path});
+        console.log('imagePicker');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <View style={{flex: 1}}>
       <SubHeader
@@ -16,13 +133,29 @@ const Manageprofile = () => {
         onPress={() => navigation.goBack()}
       />
 
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressBackgroundColor={'white'}
+            colors={['#FCDC0C']}
+          />
+        }>
         <View style={styles.containImg}>
           <View>
-            <Image
-              style={styles.profileImg}
-              source={require('../../Assets/Png/demo.png')}
-            />
+            <TouchableOpacity activeOpacity={0.7} onPress={openImagePicker}>
+              <Image
+                style={styles.profileImg}
+                source={{
+                  uri:
+                    values.profile_image.uri ||
+                    FILESBASEURL + Profile.profile_image,
+                }}
+              />
+            </TouchableOpacity>
           </View>
           <View style={{paddingTop: 2, marginLeft: -105}}>
             <Text
@@ -32,13 +165,12 @@ const Manageprofile = () => {
                   fontSize: 13,
                   color: ' rgba(0, 0, 0, 0.6)',
                   fontFamily: FONTS.Andika.bold,
+                  marginBottom: -6,
                 },
               ]}>
               Hello
             </Text>
-            <Text style={[styles.text, {fontFamily: FONTS.Andika.bold}]}>
-              Anderson
-            </Text>
+            <Text style={styles.text}> {Profile?.name}</Text>
           </View>
           <View
             style={{
@@ -54,25 +186,61 @@ const Manageprofile = () => {
             />
           </View>
         </View>
-        <InputBox label="Name" placeholder="Bharath Kumar" />
-        <InputBox label="Mobile Number" placeholder="Lorum ipsum simple" />
-        <InputBox label="Address" placeholder="Test" />
-        <InputBox label="City" placeholder="Test" />
-        <InputBox label="Pincode" placeholder="956847" />
-        <View style={styles.separator}>
-          <Text style={styles.separatorText}>Vehicle Details</Text>
-          <DropDown
-            label="Vehicle Type"
-            DefaultName="Select Vehicle"
-            dropdownItems={['Auto', 'car', 'Bike']}
-          />
+        <InputBox
+          label="Name"
+          placeholder="Bharath Kumar"
+          value={values.name}
+          onChangeText={handleChange('name')}
+        />
+        <InputBox
+          label="Mobile Number"
+          placeholder="9876543210"
+          value={values.mobile}
+          onChangeText={handleChange('mobile')}
+          maxLength={10}
+          keyboardType="numeric"
+        />
+        <InputBox
+          label="Address"
+          placeholder="Test"
+          value={values.address}
+          onChangeText={handleChange('address')}
+        />
+        <InputBox
+          label="City"
+          placeholder="Test"
+          value={values.city}
+          onChangeText={handleChange('city')}
+        />
+        <InputBox
+          label="Pincode"
+          placeholder="956847"
+          value={values.pincode}
+          onChangeText={handleChange('pincode')}
+          maxLength={6}
+          keyboardType="numeric"
+        />
 
-          <InputBox label="Vehicle Mode" placeholder="Vehicle mode" />
-          <InputBox label="Vehicle Model" placeholder="Vehicle model" />
-          <InputBox label="Vehicle Number" placeholder="Vehicle number" />
-          <InputBox label="Vehicle Type" placeholder="Vehicle type" />
-          <Button customStyles={{marginVertical: 20}} title="Add Vehicle" />
-        </View>
+        <Button
+          customStyles={{marginBottom: 6, height: 40}}
+          title="Update profile"
+          onPressButton={handleSubmit}
+        />
+
+        <Button
+          customStyles={{height: 40, marginBottom: 6}}
+          title="Manage Vehicle"
+          onPressButton={() => navigation.navigate('ManageVehicle')}
+        />
+
+        <Button
+          customStyles={{
+            marginBottom: 20,
+            backgroundColor: 'red',
+            height: 40,
+          }}
+          title="Delete Account"
+        />
       </ScrollView>
     </View>
   );
@@ -109,8 +277,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginHorizontal: 15,
-    // fontWeight: 400,
     color: 'rgba(0, 0, 0, 0.8)',
+    fontFamily: FONTS.Andika.bold,
   },
   separator: {
     marginTop: 40,
