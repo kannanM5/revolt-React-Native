@@ -1,11 +1,10 @@
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState} from 'react';
 import Header from './Header';
 import {DrawerActions} from '@react-navigation/native';
 import {FONTS} from '../../Utilities/Fonts';
 import Button from '../../Components/Button';
 import InputBox from '../../Components/InputBox';
-import {CameraScreen, Camera, CameraType} from 'react-native-camera-kit';
 
 const QRCodee = ({navigation}) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
@@ -51,13 +50,6 @@ const QRCodee = ({navigation}) => {
         <View style={{width: '100%'}}>
           <Button title="Scan Qr code" onPressButton={openChandleOpencamera} />
         </View>
-
-        {/* <CameraScreen
-          actions={{rightButtonText: 'Done', leftButtonText: 'Cancel'}}
-          onBottomButtonPressed={event => this.onBottomButtonPressed(event)}
-          hideControls={false}
-          showCapturedImageCount={false}
-        /> */}
 
         <View style={styles.lines}>
           <View style={styles.lineImg}></View>

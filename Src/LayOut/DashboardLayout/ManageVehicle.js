@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Keyboard,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
@@ -31,7 +33,7 @@ const ManageVehicle = ({navigation}) => {
   const [dataArr, setDataArr] = useState([]);
 
   const arr = [
-    {label: 'car', id: 1},
+    {label: 'Car', id: 1},
     {label: 'Bike', id: 2},
     {label: 'Auto', id: 3},
   ];
@@ -43,20 +45,27 @@ const ManageVehicle = ({navigation}) => {
     vehicle_make: Yup.string().required('Field cannot be blank'),
   });
 
-  const {values, handleChange, handleSubmit, errors, touched, resetForm} =
-    useFormik({
-      initialValues: {
-        token: myToken,
-        vehicle_make: '',
-        vehicle_type: '',
-        vehicle_model: '',
-        vehicle_number: '',
-      },
-      onSubmit: values => {
-        handleAddVehicle(values);
-      },
-      validationSchema: SignupSchema,
-    });
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    resetForm,
+    setValues,
+  } = useFormik({
+    initialValues: {
+      token: myToken,
+      vehicle_make: '',
+      vehicle_type: '',
+      vehicle_model: '',
+      vehicle_number: '',
+    },
+    onSubmit: values => {
+      handleAddVehicle(values);
+    },
+    validationSchema: SignupSchema,
+  });
 
   const handleAddVehicle = data => {
     const formData = new FormData();
@@ -68,17 +77,17 @@ const ManageVehicle = ({navigation}) => {
     const selectedOption = arr.find(e => e.label === data.vehicle_type);
     formData.append('vehicle_type', selectedOption ? selectedOption.id : null);
 
+    console.log(formData);
     addvehicle(formData)
       .then(res => {
         if (res.data.status === 1) {
-          console.log(res);
           Toast.show('Succesfully add the vehicle');
 
           handleListVehicle();
           setIsShow(false);
           resetForm();
         } else {
-          console.log('error else ihh');
+          console.log('error');
         }
       })
       .catch(err => console.log(err, 'error'));
@@ -136,15 +145,24 @@ const ManageVehicle = ({navigation}) => {
 
     const formData = new FormData();
     formData.append('token', myToken);
+
     formData.append('vehicle_id', item.vehicle_id);
-    formData.append('vehicle_type', item.vehicle_type);
     formData.append('vehicle_make', item.vehicle_make);
     formData.append('vehicle_model', item.vehicle_model);
     formData.append('vehicle_number', item.vehicle_number);
 
+    formData.append('vehicle_type', item.vehicle_type);
+
     editvehicle(formData)
       .then(res => {
-        if (res.data.status) {
+        if (res.data.status === 1) {
+          setValues({
+            ...values,
+            vehicle_type: item.vehicle_type !== 1 ? 'Car' : 'Auto',
+            vehicle_make: item.vehicle_make,
+            vehicle_model: item.vehicle_model,
+            vehicle_number: item.vehicle_number,
+          });
           console.log('editVehcle');
         }
       })
@@ -159,39 +177,44 @@ const ManageVehicle = ({navigation}) => {
         show={true}
         handlepress={() => setIsShow(!isShow)}
       />
+
       <View style={styles.container}>
         {isShow ? (
-          <View>
-            <TouchableOpacity
-              style={{position: 'relative', backgroundColor: 'white'}}
-              activeOpacity={0.7}
-              onPress={() => setIsOpen(!isOpen)}>
-              <InputBox
-                label="Vehicle Type"
-                placeholder="Vehicle type"
-                value={values.vehicle_type}
-                onChangeText={handleChange('vehicle_type')}
-                // errors={
-                //   errors.vehicle_type && touched.vehicle_type ? true : null
-                // }
-                // errorText={errors.vehicle_type}
-              />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View>
+              <TouchableOpacity
+                style={{position: 'relative', backgroundColor: 'white'}}
+                activeOpacity={1}
+                onPress={() => {
+                  setIsOpen(!isOpen);
+                }}>
+                <InputBox
+                  label="Vehicle Type"
+                  placeholder="Vehicle type"
+                  value={values.vehicle_type}
+                  onChangeText={handleChange('vehicle_type')}
+                  errors={
+                    errors.vehicle_type && touched.vehicle_type ? true : null
+                  }
+                  errorText={errors.vehicle_type}
+                  editable={false}
+                  customInputStyles={{color: 'black'}}
+                />
 
-              <Image
-                style={styles.upDown}
-                source={
-                  isOpen
-                    ? require('../../Assets/Png/up.png')
-                    : require('../../Assets/Png/down.png')
-                }
-              />
-            </TouchableOpacity>
-            {isOpen && (
-              <FlatList
-                data={arr}
-                renderItem={({item}) => {
+                <Image
+                  style={styles.upDown}
+                  source={
+                    isOpen
+                      ? require('../../Assets/Png/up.png')
+                      : require('../../Assets/Png/down.png')
+                  }
+                />
+              </TouchableOpacity>
+              {isOpen &&
+                arr.map((item, index) => {
                   return (
                     <TouchableOpacity
+                      key={index}
                       activeOpacity={0.8}
                       onPress={() => {
                         handleSelectOption(item);
@@ -199,43 +222,48 @@ const ManageVehicle = ({navigation}) => {
                       <Text style={styles.dropdownItem}>{item.label}</Text>
                     </TouchableOpacity>
                   );
-                }}
+                })}
+
+              <InputBox
+                label="Vehicle Mode"
+                placeholder="Vehicle mode"
+                value={values.vehicle_make}
+                onChangeText={handleChange('vehicle_make')}
+                errors={
+                  errors.vehicle_make && touched.vehicle_make ? true : null
+                }
+                errorText={errors.vehicle_make}
               />
-            )}
-            <InputBox
-              label="Vehicle Mode"
-              placeholder="Vehicle mode"
-              value={values.vehicle_make}
-              onChangeText={handleChange('vehicle_make')}
-              errors={errors.vehicle_make && touched.vehicle_make ? true : null}
-              errorText={errors.vehicle_make}
-            />
-            <InputBox
-              label="Vehicle Model"
-              placeholder="Vehicle model"
-              value={values.vehicle_model}
-              onChangeText={handleChange('vehicle_model')}
-              errors={
-                errors.vehicle_model && touched.vehicle_model ? true : null
-              }
-              errorText={errors.vehicle_model}
-            />
-            <InputBox
-              label="Vehicle Number"
-              placeholder="Vehicle number"
-              value={values.vehicle_number}
-              onChangeText={handleChange('vehicle_number')}
-              errors={
-                errors.vehicle_number && touched.vehicle_number ? true : null
-              }
-              errorText={errors.vehicle_number}
-            />
-            <Button
-              customStyles={{marginVertical: 20, height: 40}}
-              title="ADD VEHICLE"
-              onPressButton={handleSubmit}
-            />
-          </View>
+              <InputBox
+                label="Vehicle Model"
+                placeholder="Vehicle model"
+                value={values.vehicle_model}
+                onChangeText={handleChange('vehicle_model')}
+                errors={
+                  errors.vehicle_model && touched.vehicle_model ? true : null
+                }
+                errorText={errors.vehicle_model}
+              />
+              <InputBox
+                label="Vehicle Number"
+                placeholder="Vehicle number"
+                value={values.vehicle_number}
+                onChangeText={handleChange('vehicle_number')}
+                errors={
+                  errors.vehicle_number && touched.vehicle_number ? true : null
+                }
+                errorText={errors.vehicle_number}
+              />
+              <Button
+                customStyles={{
+                  marginVertical: 20,
+                  height: 40,
+                }}
+                title="ADD VEHICLE"
+                onPressButton={handleSubmit}
+              />
+            </View>
+          </ScrollView>
         ) : (
           <View style={{marginBottom: 70, marginTop: 5}}>
             <FlatList
@@ -351,6 +379,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    fontFamily: FONTS.Andika.bold,
+    marginBottom: -8,
   },
   updateBtn: {
     backgroundColor: '#F2CC0C',

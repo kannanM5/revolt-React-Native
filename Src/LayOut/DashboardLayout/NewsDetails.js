@@ -7,7 +7,6 @@ import {trimString} from '../../Utilities/Constants';
 const NewsDetails = ({navigation, route}) => {
   const detail = route.params.items;
   const myArr = route.params.arr;
-  console.log(myArr[1].id);
 
   const [show, setShow] = useState(true);
 

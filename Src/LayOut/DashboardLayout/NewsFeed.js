@@ -38,7 +38,6 @@ const NewsFeed = ({navigation}) => {
       .then(res => {
         if (res.data.status === 1) {
           let Data = res.data.newsfeed.map(ele => JSON.parse(ele));
-          console.log(res.data.newsfeed);
           if (pageNumber === 1) {
             totalPages = parseInt(res.data.totalpages);
             setArr(Data);

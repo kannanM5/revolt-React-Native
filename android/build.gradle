@@ -15,57 +15,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        implementation 'com.facebook.android:facebook-android-sdk:latest.release'
-    }
-
-//     allprojects {
-//     repositories {
-//       mavenLocal()
-//       jcenter()
-//       maven { url "$rootDir/../node_modules/react-native/android" }
-
-//       // ADD THIS
-//       maven { url 'https://maven.google.com' }
-
-//       // ADD THIS
-//       maven { url "https://www.jitpack.io" }
-//     }
-// }
-
-// android {
-//     ...
-
-//     defaultConfig {
-//         ...
-//         vectorDrawables.useSupportLibrary = true
-//         ...
-//     }
-//     ...
-// }
-
-buildscript {
-  ext {
-        ...
-        kotlin_version = '1.5.10'
-  }
-```
-
-Add `google()` to the `buildscript.repositories` and `allprojects.repositories`
-
-```
-buildscript {
-    repositories {
-        ...
-        google()
     }
 }
 
-allprojects {
-    repositories {
-        ...
-        google()
-    }
-}
-}
+

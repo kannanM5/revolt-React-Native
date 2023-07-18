@@ -83,7 +83,7 @@ const DrawerDetails = [
 const CustomDrawerNavigation = props => {
   const myToken = useToken();
   const profile = useSelector(state => state.profile.profileArr);
-  console.log(profile.profile_image);
+  // console.log(profile.profile_image);
   const [activeItem, setActiveItem] = useState(null);
   const dispatch = useDispatch();
 
