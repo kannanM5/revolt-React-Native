@@ -226,7 +226,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'orange',
   },
   top: {
     flexDirection: 'row',

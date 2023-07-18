@@ -45,6 +45,7 @@ const CustomTopNavigation = ({state, descriptors, navigation}) => {
         return (
           <TouchableOpacity
             accessibilityRole="button"
+            activeOpacity={0.7}
             key={index}
             accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}

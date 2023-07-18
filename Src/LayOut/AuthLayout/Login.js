@@ -9,7 +9,7 @@ import LinearGradientComponent from '../../Components/LinearGradient';
 import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
 import {EMAIL_REGEX} from '../../Utilities/Constants';
-import {login} from '../../Services/Services';
+import {login, sociallogin} from '../../Services/Services';
 import DeviceInfo from 'react-native-device-info';
 import {getAuthCode, storeToken} from '../../Methods';
 import {useDispatch} from 'react-redux';
@@ -31,15 +31,7 @@ const Login = () => {
       .required('Password cannot be blank'),
   });
 
-  const {
-    handleChange,
-    handleSubmit,
-    errors,
-    values,
-    touched,
-    resetForm,
-    setFieldValue,
-  } = useFormik({
+  const {handleChange, handleSubmit, errors, values, touched} = useFormik({
     initialValues: {
       email: '',
       password: '',
@@ -63,6 +55,25 @@ const Login = () => {
         if (res.data.status === 1) {
           storeToken(res.data.token, dispatch);
           console.log(res.data);
+        }
+      })
+      .catch(error => console.log(error, 'error'));
+  };
+
+  const handleGoogle = () => {
+    let formData = new FormData();
+    formData.append('name');
+    formData.append('mediaid');
+    formData.append('mediatype', 2);
+    formData.append('devicetype', 1);
+    formData.append('deviceid', deviceId);
+    console.log(formData);
+    sociallogin(formData)
+      .then(res => {
+        console.log(res, '--');
+        S;
+        if (res.data.status === 1) {
+          console.log(res.data, '---sucess');
         }
       })
       .catch(error => console.log(error, 'error'));
@@ -131,6 +142,7 @@ const Login = () => {
           title="Google"
           customStyles={styles.btn}
           customStylesText={{color: 'white', paddingLeft: 20}}
+          onPressButton={handleGoogle}
         />
         <Image
           style={styles.image1}

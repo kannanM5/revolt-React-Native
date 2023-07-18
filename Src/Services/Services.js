@@ -89,3 +89,25 @@ export const updatemyprofile = data => {
 export const addvehicle = data => {
   return axios.post('/addvehicle', data);
 };
+
+// 27. Social Media login/signup
+
+export const sociallogin = data => {
+  return axios.post('/sociallogin', data);
+};
+
+export const listvehicle = data => {
+  return axios.post('/listvehicle', data);
+};
+
+// 48. Delete vehicle
+
+export const deletevehicle = data => {
+  return axios.post('/deletevehicle', data);
+};
+
+// 47. Edit vehicle
+
+export const editvehicle = data => {
+  return axios.post('/editvehicle', data);
+};

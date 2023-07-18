@@ -18,6 +18,7 @@ import {logout} from '../../Services/Services';
 import {getUrlWithPrefix, removeToken} from '../../Methods';
 import Toast from 'react-native-simple-toast';
 import {FILESBASEURL, trimString} from '../../Utilities/Constants';
+import {useToken} from '../../Utilities/Constants';
 
 const DrawerDetails = [
   {
@@ -80,7 +81,7 @@ const DrawerDetails = [
 ];
 
 const CustomDrawerNavigation = props => {
-  const myToken = useSelector(state => state.auth.token);
+  const myToken = useToken();
   const profile = useSelector(state => state.profile.profileArr);
   console.log(profile.profile_image);
   const [activeItem, setActiveItem] = useState(null);

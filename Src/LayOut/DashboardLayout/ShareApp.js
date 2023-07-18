@@ -1,4 +1,12 @@
-import {Image, StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import React from 'react';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
@@ -13,7 +21,11 @@ const ShareApp = ({navigation}) => {
         <View style={styles.container}>
           <Text style={styles.text}>Share App with friends</Text>
           <View style={styles.parent}>
-            <View
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                Linking.openURL('https://www.whatsapp.com');
+              }}
               style={[
                 styles.content,
                 {backgroundColor: '#00C169', marginRight: 10, marginRight: 10},
@@ -22,18 +34,28 @@ const ShareApp = ({navigation}) => {
                 style={styles.image}
                 source={require('../../Assets/Png/whatsapp.png')}
               />
-            </View>
-            <View
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
               style={[
                 styles.content,
                 {backgroundColor: '#294DA5', marginRight: 10},
-              ]}>
+              ]}
+              onPress={() => {
+                Linking.openURL('https://www.facebook.com');
+              }}>
               <Image
                 style={styles.image}
                 source={require('../../Assets/Png/fb.png')}
               />
-            </View>
-            <View
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                Linking.openURL('https://www.skype.com/');
+              }}
               style={[
                 styles.content,
                 {backgroundColor: '#00AFF0', marginRight: 10},
@@ -42,7 +64,7 @@ const ShareApp = ({navigation}) => {
                 style={styles.image}
                 source={require('../../Assets/Png/skype.png')}
               />
-            </View>
+            </TouchableOpacity>
             <View
               style={[
                 styles.content,

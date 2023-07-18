@@ -13,12 +13,11 @@ const ForgotPassword = () => {
 
   const SignupSchema = Yup.object().shape({
     email: Yup.string()
-      // .max(10, 'Too Long!')
+      .email('Invalid email address')
       .required('Email cannot be blank'),
-    // .matches(MOBILE_REGEX, 'Invalid mobile number'),
   });
 
-  const {handleChange, handleSubmit, errors, values, touched} = useFormik({
+  const {handleChange, handleSubmit, errors, values} = useFormik({
     initialValues: {
       email: '',
     },
@@ -35,8 +34,11 @@ const ForgotPassword = () => {
     forgotpassword(formData)
       .then(res => {
         if (res.data.status === 1) {
-          console.log(res.data);
-          navigation.navigate('OTP', {refid: res.data.refid});
+          navigation.navigate('ResetPassword', {
+            refid: res.data.refid,
+            timer: res.data.remainingseconds,
+            email: data.email,
+          });
         }
       })
       .catch(error => console.log(error, 'error'));

@@ -20,6 +20,7 @@ import HostBookingScreen from '../../LayOut/DashboardLayout/HostBooking/HostBook
 import {ParkingScreen} from '../../LayOut/DashboardLayout/Parking/ParkingScreen';
 import ChargingScreen from '../../LayOut/DashboardLayout/Charging/ChargingScreen';
 import LogOut from '../../LayOut/DashboardLayout/LogOut';
+import QRCodee from '../../LayOut/DashboardLayout/QRCodee';
 
 const DrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
@@ -43,6 +44,7 @@ const DrawerNavigation = () => {
       <Drawer.Screen name="ChargingScreen" component={ChargingScreen} />
       <Drawer.Screen name="ManageVehicle" component={ManageVehicle} />
       <Drawer.Screen name="Logout" component={LogOut} />
+      <Drawer.Screen name="QRCodee" component={QRCodee} />
     </Drawer.Navigator>
   );
 };

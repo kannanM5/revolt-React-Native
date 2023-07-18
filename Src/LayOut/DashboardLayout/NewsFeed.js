@@ -9,19 +9,17 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {newFeed} from '../../SharedComponents/Arrays';
-import {useNavigation} from '@react-navigation/native';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import {newsfeed} from '../../Services/Services';
-import {useSelector} from 'react-redux';
 import Loader from '../AuthLayout/Loader';
+import {trimString, useToken} from '../../Utilities/Constants';
 
 var currentPage = 1;
 var totalPages = 1;
 
-const NewsFeed = () => {
-  const navigation = useNavigation();
-  const myToken = useSelector(state => state.auth.token);
+const NewsFeed = ({navigation}) => {
+  const myToken = useToken();
   const [arr, setArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -94,10 +92,12 @@ const NewsFeed = () => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() =>
-                  navigation.navigate('NewsDetails', {items: item})
+                  navigation.navigate('NewsDetails', {items: item, arr: arr})
                 }>
                 <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.content}>{item.description}</Text>
+                <Text style={styles.content}>
+                  {trimString(item.description, 90)}
+                </Text>
                 <Image
                   style={{
                     marginVertical: 10,

@@ -5,16 +5,13 @@ import InputBox from '../../Components/InputBox';
 import {FONTS} from '../../Utilities/Fonts';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {verifyresetpassword} from '../../Services/Services';
+import {login, verifyresetpassword} from '../../Services/Services';
 
-const ResetPassword = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+const ResetPassword = ({route}) => {
   const refid = route.params.refid;
 
   const SignupSchema = Yup.object().shape({
-    newpassword: Yup.string().required('password cannot be blank'),
+    newpassword: Yup.string().required('Password cannot be blank'),
     confirmpassword: Yup.string().required('Confirm password cannot be blank'),
   });
 
@@ -42,7 +39,6 @@ const ResetPassword = () => {
       'otp',
       data.input1 + data.input2 + data.input3 + data.input4,
     );
-    console.log(formData);
     verifyresetpassword(formData)
       .then(res => {
         console.log(res.data);
@@ -51,6 +47,7 @@ const ResetPassword = () => {
           Alert.alert('Error', res.data.msg);
           return;
         }
+        login(data);
       })
       .catch(err => console.log(err, 'error'));
   };
@@ -72,6 +69,8 @@ const ResetPassword = () => {
             setPassword={true}
             value={values.newpassword}
             onChangeText={handleChange('newpassword')}
+            errors={errors.newpassword && touched.newpassword ? true : null}
+            errorText={errors.newpassword}
           />
         </View>
         <View style={styles.containBox}>
@@ -81,6 +80,10 @@ const ResetPassword = () => {
             setPassword={true}
             value={values.confirmpassword}
             onChangeText={handleChange('confirmpassword')}
+            errors={
+              errors.confirmpassword && touched.confirmpassword ? true : null
+            }
+            errorText={errors.confirmpassword}
           />
         </View>
         <Button

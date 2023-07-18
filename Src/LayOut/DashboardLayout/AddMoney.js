@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, Image} from 'react-native';
+import React from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import SubHeader from '../../Components/SubHeader';
@@ -8,9 +8,10 @@ import * as Yup from 'yup';
 import {updatewallet} from '../../Services/Services';
 import {setWalletAmount} from '../../Store/Slices/WalletSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import {useToken} from '../../Utilities/Constants';
 
 const AddMoney = ({navigation, route}) => {
-  const myToken = useSelector(state => state.auth.token);
+  const myToken = useToken();
   const balanceAmount = useSelector(state => state.wallet.walletAmount);
   const dispatch = useDispatch();
 

@@ -4,7 +4,7 @@ import React from 'react';
 const Loader = () => {
   return (
     <View style={[styles.container, styles.horizontal]}>
-      <ActivityIndicator size={50} color={'#F2CC0C'} />
+      <ActivityIndicator size={40} color={'#F2CC0C'} />
     </View>
   );
 };

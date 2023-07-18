@@ -271,14 +271,16 @@ const Charging = ({navigation}) => {
               ? styles.zoomAfter
               : null,
           ]}>
-          <Image
-            style={
-              activeItem === 'parking' || activeItem === 'charging'
-                ? styles.zoomImg
-                : styles.zoomImgafter
-            }
-            source={require('../../Assets/Png/zoom.png')}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate('QRCodee')}>
+            <Image
+              style={
+                activeItem === 'parking' || activeItem === 'charging'
+                  ? styles.zoomImg
+                  : styles.zoomImgafter
+              }
+              source={require('../../Assets/Png/zoom.png')}
+            />
+          </TouchableOpacity>
         </View>
 
         {activeItem === 'parking' ? (

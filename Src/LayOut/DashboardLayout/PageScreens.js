@@ -6,17 +6,25 @@ import {
   Image,
   useWindowDimensions,
   Animated,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {pageScreens} from '../../SharedComponents/Arrays';
 import {FONTS} from '../../Utilities/Fonts';
 import Button from '../../Components/Button';
 
 const PageScreens = () => {
-  const flatListRef = useRef(null);
-  const [active, setActive] = useState(0);
+  const flatListRef = useRef(0);
   const {width: windowWidth} = useWindowDimensions();
   const scrollX = useRef(new Animated.Value(0)).current;
+
+  const handleNextPage = (id, i) => {
+    if (flatListRef.current) {
+      if (i < 2)
+        flatListRef.current.scrollToIndex({index: i + 1, animated: true});
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -27,9 +35,15 @@ const PageScreens = () => {
         keyExtractor={item => item.id}
         horizontal
         ref={flatListRef}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <View style={[styles.content, {width: windowWidth}]}>
-            <Text style={styles.option}>{item.option}</Text>
+            <Text
+              onPress={() => {
+                handleNextPage(item.id, index);
+              }}
+              style={styles.option}>
+              {item.option}
+            </Text>
             <View style={styles.imgContainer}>
               <Image style={styles.image} source={item.img} />
             </View>
@@ -37,6 +51,7 @@ const PageScreens = () => {
             <Button
               title={item.btnName}
               customStyles={{width: 120, height: 44}}
+              onPressButton={() => handleNextPage(item.id, index)}
             />
           </View>
         )}

@@ -11,7 +11,7 @@ import Button from '../../Components/Button';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import SVGIcons from '../../Components/SVGIcon';
-import {FILESBASEURL} from '../../Utilities/Constants';
+import {FILESBASEURL, useToken} from '../../Utilities/Constants';
 import {addtocart} from '../../Services/Services';
 import {useSelector, useDispatch} from 'react-redux';
 import {setQuantity, setCartList} from '../../Store/Slices/ProductSlice';
@@ -20,7 +20,7 @@ const Product = ({navigation, route}) => {
   const product = route.params.items;
   const [activeItem, setActiveItem] = useState(2);
   const dispatch = useDispatch();
-  const myToken = useSelector(state => state.auth.token);
+  const myToken = useToken();
   let productArr = useSelector(state => state.product.productsList);
 
   const SETQUANTITY = () => {

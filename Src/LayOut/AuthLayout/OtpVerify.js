@@ -5,24 +5,20 @@ import {
   View,
   Image,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
-import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import {useFormik} from 'formik';
-import * as Yup from 'yup';
 import DeviceInfo from 'react-native-device-info';
 import {resendotpverify, mobileotpverify} from '../../Services/Services';
 import {useDispatch, useSelector} from 'react-redux';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import {storeToken} from '../../Methods';
-import {setToken} from '../../Store/Slices/AuthSlice';
-import {setAuthCode} from '../../Store/Slices/AuthSlice';
 
 const OtpVerify = ({navigation, route}) => {
-  const refid = route.params.otp;
+  const refid = route.params.refid;
   const timer = route.params.timer;
   const email = route.params.email;
   const [time, setTime] = useState(timer);
@@ -57,18 +53,17 @@ const OtpVerify = ({navigation, route}) => {
     };
   }, [time]);
 
-  const {handleChange, handleSubmit, errors, values, touched, setFieldValue} =
-    useFormik({
-      initialValues: {
-        value1: null,
-        value2: null,
-        value3: null,
-        value4: null,
-      },
-      onSubmit: values => {
-        handleOtpVerify(values);
-      },
-    });
+  const {handleChange, handleSubmit, values} = useFormik({
+    initialValues: {
+      value1: null,
+      value2: null,
+      value3: null,
+      value4: null,
+    },
+    onSubmit: values => {
+      handleOtpVerify(values);
+    },
+  });
 
   const handleOtpVerify = data => {
     let formData = new FormData();
@@ -87,6 +82,19 @@ const OtpVerify = ({navigation, route}) => {
           storeToken(res.data.token, dispatch);
 
           console.log('data got from api response', res.data);
+        }
+      })
+      .catch(err => console.log(err, 'error'));
+  };
+
+  const handleResendOtpverify = () => {
+    let formData = new FormData();
+    formData.append('refid', refid);
+
+    resendotpverify(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          console.log('data resendOtp', res.data);
         }
       })
       .catch(err => console.log(err, 'error'));
@@ -137,7 +145,9 @@ const OtpVerify = ({navigation, route}) => {
           </View>
           <View style={styles.footer}>
             <Text style={styles.AccountSet}>Don’t receive code?</Text>
-            <Text style={styles.AccountSetup}>Request again</Text>
+            <TouchableOpacity onPress={handleResendOtpverify}>
+              <Text style={styles.AccountSetup}>Request again</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </>

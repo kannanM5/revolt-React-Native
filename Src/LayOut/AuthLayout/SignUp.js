@@ -9,7 +9,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
-import {useNavigation} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -24,14 +23,12 @@ import {
 import {setProfileArr} from '../../Store/Slices/ProfileSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
-const SignUp = () => {
-  const navigation = useNavigation();
+const SignUp = ({navigation}) => {
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   const profile = useSelector(state => state.profile.profileArr);
 
   useEffect(() => {});
-  console.log(profile);
 
   const openCamera = () => {
     ImagePicker.openCamera({

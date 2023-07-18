@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {COLORS} from '../Utilities/Colors';
 import {FONTS} from '../Utilities/Fonts';
 import Button from './Button';
@@ -11,10 +11,9 @@ const SubHeader = ({
   show,
   handlepress,
 }) => {
-  const [modal, setModal] = useState(false);
   return (
     <View style={[styles.subTitle, {...customStyles}]}>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
         <Image
           style={styles.image}
           source={require('../Assets/Png/goback1.png')}

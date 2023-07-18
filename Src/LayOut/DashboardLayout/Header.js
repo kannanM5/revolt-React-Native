@@ -8,7 +8,7 @@ const Header = ({onPress, defaultSource, customStyles}) => {
   return (
     <View style={[styles.header, {...customStyles}]}>
       {/* navigation.dispatch(DrawerActions.openDrawer()) */}
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
         <Image style={styles.menu} source={defaultSource} />
       </TouchableOpacity>
 

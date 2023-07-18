@@ -19,13 +19,14 @@ import * as Yup from 'yup';
 import {setProfileArr} from '../../Store/Slices/ProfileSlice';
 import ImagePicker from 'react-native-image-crop-picker';
 import {FILESBASEURL, trimString} from '../../Utilities/Constants';
+import Loader from '../AuthLayout/Loader';
 
 const Manageprofile = ({navigation}) => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const Profile = useSelector(state => state.profile.profileArr);
-  // console.log(Profile);
   const myToken = useSelector(state => state.auth.token);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     handleGetMyProfile();
@@ -47,26 +48,27 @@ const Manageprofile = ({navigation}) => {
     });
 
   const handleGetMyProfile = () => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('token', myToken);
     getmyprofile(formData)
       .then(res => {
         if (res.data.status === 1) {
           let refData = res.data.profile;
-          // console.log(refData);
           setValues({
             ...values,
-            // name: refData.name,
+            name: refData.name,
             address: refData.address,
             city: refData.city,
             pincode: refData.pincode,
             profile_image: values.profile_image,
-            mobile: values.mobile,
+            mobile: refData.mobile,
           });
           dispatch(setProfileArr(refData));
         }
       })
-      .catch(error => console.log(error, 'getProfile'));
+      .catch(error => console.log(error, 'getProfile'))
+      .finally(() => setIsLoading(false));
   };
 
   const handleUpdateMyProfile = data => {
@@ -144,103 +146,109 @@ const Manageprofile = ({navigation}) => {
             colors={['#FCDC0C']}
           />
         }>
-        <View style={styles.containImg}>
-          <View>
-            <TouchableOpacity activeOpacity={0.7} onPress={openImagePicker}>
-              <Image
-                style={styles.profileImg}
-                source={{
-                  uri:
-                    values.profile_image.uri ||
-                    FILESBASEURL + Profile.profile_image,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{paddingTop: 2, marginLeft: -105}}>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontSize: 13,
-                  color: ' rgba(0, 0, 0, 0.6)',
-                  fontFamily: FONTS.Andika.bold,
-                  marginBottom: -6,
-                },
-              ]}>
-              Hello
-            </Text>
-            <Text style={styles.text}> {Profile?.name}</Text>
-          </View>
-          <View
-            style={{
-              backgroundColor: '#E7E7E7',
-              width: 35,
-              height: 35,
-              justifyContent: 'center',
-              borderRadius: 20,
-            }}>
-            <Image
-              style={styles.editImage}
-              source={require('../../Assets/Png/edit.png')}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <View style={styles.containImg}>
+              <View>
+                <TouchableOpacity activeOpacity={0.7} onPress={openImagePicker}>
+                  <Image
+                    style={styles.profileImg}
+                    source={{
+                      uri:
+                        values.profile_image.uri ||
+                        FILESBASEURL + Profile.profile_image,
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{paddingTop: 2, marginLeft: -105}}>
+                <Text
+                  style={[
+                    styles.text,
+                    {
+                      fontSize: 13,
+                      color: ' rgba(0, 0, 0, 0.6)',
+                      fontFamily: FONTS.Andika.bold,
+                      marginBottom: -6,
+                    },
+                  ]}>
+                  Hello
+                </Text>
+                <Text style={styles.text}> {Profile?.name}</Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: '#E7E7E7',
+                  width: 35,
+                  height: 35,
+                  justifyContent: 'center',
+                  borderRadius: 20,
+                }}>
+                <Image
+                  style={styles.editImage}
+                  source={require('../../Assets/Png/edit.png')}
+                />
+              </View>
+            </View>
+            <InputBox
+              label="Name"
+              placeholder="Bharath Kumar"
+              value={values.name}
+              onChangeText={handleChange('name')}
             />
-          </View>
-        </View>
-        <InputBox
-          label="Name"
-          placeholder="Bharath Kumar"
-          value={values.name}
-          onChangeText={handleChange('name')}
-        />
-        <InputBox
-          label="Mobile Number"
-          placeholder="9876543210"
-          value={values.mobile}
-          onChangeText={handleChange('mobile')}
-          maxLength={10}
-          keyboardType="numeric"
-        />
-        <InputBox
-          label="Address"
-          placeholder="Test"
-          value={values.address}
-          onChangeText={handleChange('address')}
-        />
-        <InputBox
-          label="City"
-          placeholder="Test"
-          value={values.city}
-          onChangeText={handleChange('city')}
-        />
-        <InputBox
-          label="Pincode"
-          placeholder="956847"
-          value={values.pincode}
-          onChangeText={handleChange('pincode')}
-          maxLength={6}
-          keyboardType="numeric"
-        />
+            <InputBox
+              label="Mobile Number"
+              placeholder="9876543210"
+              value={values.mobile}
+              onChangeText={handleChange('mobile')}
+              maxLength={10}
+              keyboardType="numeric"
+            />
+            <InputBox
+              label="Address"
+              placeholder="Test"
+              value={values.address}
+              onChangeText={handleChange('address')}
+            />
+            <InputBox
+              label="City"
+              placeholder="Test"
+              value={values.city}
+              onChangeText={handleChange('city')}
+            />
+            <InputBox
+              label="Pincode"
+              placeholder="956847"
+              value={values.pincode}
+              onChangeText={handleChange('pincode')}
+              maxLength={6}
+              keyboardType="numeric"
+            />
 
-        <Button
-          customStyles={{marginBottom: 6, height: 40}}
-          title="Update profile"
-          onPressButton={handleSubmit}
-        />
+            <Button
+              customStyles={{marginBottom: 6, height: 40}}
+              title="Update profile"
+              onPressButton={handleSubmit}
+            />
 
-        <Button
-          customStyles={{height: 40, marginBottom: 6}}
-          title="Manage Vehicle"
-          onPressButton={() => navigation.navigate('ManageVehicle')}
-        />
+            <Button
+              customStyles={{height: 40, marginBottom: 6}}
+              title="Manage Vehicle"
+              onPressButton={() => navigation.navigate('ManageVehicle')}
+            />
 
-        <Button
-          customStyles={{
-            marginBottom: 20,
-            backgroundColor: 'red',
-            height: 40,
-          }}
-          title="Delete Account"
-        />
+            <Button
+              customStyles={{
+                marginBottom: 20,
+                backgroundColor: 'red',
+                height: 40,
+              }}
+              title="Delete Account"
+            />
+          </>
+        )}
       </ScrollView>
     </View>
   );

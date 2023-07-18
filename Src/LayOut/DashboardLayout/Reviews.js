@@ -1,18 +1,18 @@
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {starDataArray} from '../../SharedComponents/Arrays';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import {review} from '../../Services/Services';
-import {useSelector} from 'react-redux';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
+import {useToken} from '../../Utilities/Constants';
 
 const Reviews = ({navigation}) => {
   const [myArr, setMyArr] = useState(starDataArray);
-  const myToken = useSelector(state => state.auth.token);
+  const myToken = useToken();
   var refData = [...myArr];
 
   const handleStarPress = id => {

@@ -6,7 +6,7 @@ import {
   FlatList,
   RefreshControl,
 } from 'react-native';
-import React, {useEffect, useState, memo} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '../../Components/Button';
 import Loader from '../AuthLayout/Loader';
 import SubHeader from '../../Components/SubHeader';
@@ -15,18 +15,18 @@ import {walletbalance, mywallethistory} from '../../Services/Services';
 import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment';
 import {setWalletAmount, setHistoryArr} from '../../Store/Slices/WalletSlice';
+import {useToken} from '../../Utilities/Constants';
 
 var currentPage = 1;
 var totalPages = 1;
 
 const Wallet = ({navigation}) => {
   const dispatch = useDispatch();
+  const myToken = useToken();
   const [historyArr, setHistoryArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const myToken = useSelector(state => state.auth.token);
   const balance = useSelector(state => state.wallet.walletAmount);
-  // const historyArr = useSelector(state => state.wallet.historyArr);
 
   useEffect(() => {
     walletBalanceAPI();

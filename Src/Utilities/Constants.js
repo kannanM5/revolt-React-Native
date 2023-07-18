@@ -15,3 +15,9 @@ export const FILESBASEURL = 'http://cbe.themaestro.in/revolt/';
 export const trimString = (str, maxLength) => {
   return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
 };
+
+import {useSelector} from 'react-redux';
+
+export const useToken = () => {
+  return useSelector(state => state.auth.token);
+};

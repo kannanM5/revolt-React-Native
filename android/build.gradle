@@ -17,6 +17,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.facebook.react:react-native-gradle-plugin")
+        implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     }
 
 //     allprojects {
@@ -43,4 +44,28 @@ buildscript {
 //     }
 //     ...
 // }
+
+buildscript {
+  ext {
+        ...
+        kotlin_version = '1.5.10'
+  }
+```
+
+Add `google()` to the `buildscript.repositories` and `allprojects.repositories`
+
+```
+buildscript {
+    repositories {
+        ...
+        google()
+    }
+}
+
+allprojects {
+    repositories {
+        ...
+        google()
+    }
+}
 }

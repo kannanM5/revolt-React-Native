@@ -1,25 +1,36 @@
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
-import React from 'react';
-import {useRoute} from '@react-navigation/native';
+import React, {useState} from 'react';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
+import {trimString} from '../../Utilities/Constants';
 
-const NewsDetails = ({navigation}) => {
-  const route = useRoute();
+const NewsDetails = ({navigation, route}) => {
   const detail = route.params.items;
+  const myArr = route.params.arr;
+  console.log(myArr[1].id);
+
+  const [show, setShow] = useState(true);
+
+  const handleShowMore = () => {
+    setShow(!show);
+  };
+
   return (
     <ScrollView>
-      <SubHeader titleName="Latest News" onPress={() => navigation.goBack()} />
+      <SubHeader
+        titleName={trimString(detail.title, 20)}
+        onPress={() => navigation.goBack()}
+      />
       <View style={styles.container}>
         <Text style={styles.title}>{detail.title}</Text>
         <Image style={styles.img} source={{uri: detail.urlToImage}} />
         <Text style={styles.content}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec feugiat
-          tristique congue scelerisque augue. Non orci, at pretium turpis
-          malesuada convallis ultrices in tristique. At posuere maecenas justo
-          dictumst tellus tortor. Leo consequat purus mi dolor in elit sem
-          ornare et. Odio pellentesque gravida id habitasse.
+          {show ? trimString(detail.content, 80) : detail.content}
         </Text>
+        <Text style={styles.seemore} onPress={handleShowMore}>
+          {show ? 'See more...' : 'See less...'}
+        </Text>
+
         <Text style={styles.subTitle}>Related</Text>
         <View style={styles.line}></View>
         <Text style={styles.TitleName}>
@@ -30,46 +41,29 @@ const NewsDetails = ({navigation}) => {
           <View style={{width: '63%'}}>
             <Image
               style={{height: 240, width: '100%', borderRadius: 10}}
-              source={require('../../Assets/Png/one1.png')}
+              source={{uri: myArr[1].urlToImage}}
+              resizeMode="contain"
             />
           </View>
 
           <View style={{width: '33%'}}>
             <View>
               <Image
-                style={{
-                  height: 110,
-                  width: '100%',
-                  marginBottom: 10,
-                  marginLeft: 15,
-                  borderRadius: 10,
-                }}
-                source={require('../../Assets/Png/one2.png')}
+                style={[styles.collapseImage, {marginBottom: 10, marginTop: 0}]}
+                source={{uri: myArr[2].urlToImage}}
+                resizeMode="contain"
               />
             </View>
             <View>
               <Image
-                style={{
-                  height: 110,
-                  width: '100%',
-                  marginTop: 10,
-                  marginLeft: 15,
-                  borderRadius: 10,
-                }}
-                source={require('../../Assets/Png/one3.png')}
+                style={styles.collapseImage}
+                source={{uri: myArr[3].urlToImage}}
+                resizeMode="contain"
               />
             </View>
           </View>
         </View>
-        <Text
-          style={{
-            fontSize: 13,
-            fontFamily: FONTS.Andika.bold,
-            lineHeight: 19,
-            marginVertical: 10,
-            marginBottom: 70,
-            color: 'rgba(0, 0, 0, 0.8)',
-          }}>
+        <Text style={[styles.content, {marginBottom: 70, marginVertical: 10}]}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec feugiat
           tristique congue scelerisque augue.
         </Text>
@@ -89,7 +83,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: FONTS.Andika.bold,
-    color: 'rgba(0, 0, 0, 0.9)',
+    color: '#F2CC0C',
     lineHeight: 23,
   },
   img: {
@@ -99,10 +93,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   content: {
-    fontSize: 13,
-    fontFamily: FONTS.Andika.regular,
-    color: 'rgba(0, 0, 0, 0.8)',
-    lineHeight: 17,
+    fontSize: 14,
+    fontFamily: FONTS.Andika.bold,
+    color: 'rgba(0, 0, 0, 0.4)',
+    lineHeight: 21,
   },
   subTitle: {
     fontSize: 18,
@@ -121,5 +115,17 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, 1)',
     lineHeight: 25,
     marginVertical: 6,
+  },
+  seemore: {
+    fontSize: 15,
+    color: 'black',
+    fontFamily: FONTS.Andika.bold,
+  },
+  collapseImage: {
+    height: 110,
+    width: '100%',
+    marginTop: 10,
+    marginLeft: 15,
+    borderRadius: 10,
   },
 });

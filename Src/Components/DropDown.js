@@ -21,10 +21,10 @@ const DropDown = ({
     setIsOpen(!isOpen);
   };
 
-  // const handleSelectItem = item => {
-  //   setSelectedItem(item);
-  //   setIsOpen(false);
-  // };
+  const handleSelectItem = item => {
+    setSelectedItem(item);
+    setIsOpen(false);
+  };
   return (
     <View style={styles.containerList}>
       {isShowTitle && label ? <Text style={styles.label}>{label}</Text> : null}
@@ -50,24 +50,14 @@ const DropDown = ({
       </TouchableOpacity>
       {isOpen && (
         <View>
-          {/* {dropdownItems.map((item, i) => (
+          {dropdownItems.map((item, i) => (
             <TouchableOpacity
               key={i}
               onPress={onPress(item)}
               activeOpacity={0.8}>
               <Text style={styles.dropdownItem}>{item}</Text>
             </TouchableOpacity>
-          ))} */}
-
-          <FlatList
-            data={dropdownItems}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-                <Text style={styles.dropdownItem}>{item.label}</Text>
-              </TouchableOpacity>
-            )}
-          />
+          ))}
         </View>
       )}
     </View>
