@@ -111,7 +111,7 @@ const Products = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, marginBottom: 60}}>
+        <View style={{flex: 1, marginBottom: 60, marginTop: 15}}>
           <FlatList
             data={products}
             refreshControl={
@@ -189,12 +189,12 @@ export default Products;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 25,
+    marginHorizontal: 10,
     marginVertical: 10,
     flex: 1,
   },
   searchBoxContainer: {
-    marginBottom: 15,
+    // marginBottom: 15,
     position: 'relative',
   },
 
@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     elevation: 1,
+
     // flex: 1,
   },
   imgContainer: {

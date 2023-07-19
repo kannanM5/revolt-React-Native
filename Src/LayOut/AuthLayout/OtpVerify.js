@@ -18,9 +18,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {storeToken} from '../../Methods';
 
 const OtpVerify = ({navigation, route}) => {
-  const refid = route.params.refid;
-  const timer = route.params.timer;
-  const email = route.params.email;
+  const {refid, timer, email} = route.params.refid;
+  // const timer = route.params.timer;
+  // const email = route.params.email;
   const [time, setTime] = useState(timer);
   const deviceId = DeviceInfo.getDeviceId();
   const dispatch = useDispatch();

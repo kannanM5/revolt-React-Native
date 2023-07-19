@@ -86,7 +86,7 @@ export default QRCodee;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginHorizontal: 25,
+    marginHorizontal: 15,
     marginTop: 20,
   },
   image: {

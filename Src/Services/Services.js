@@ -111,3 +111,9 @@ export const deletevehicle = data => {
 export const editvehicle = data => {
   return axios.post('/editvehicle', data);
 };
+
+// 73. Delete user
+
+export const deleteuser = data => {
+  return axios.post('/deleteuser', data);
+};

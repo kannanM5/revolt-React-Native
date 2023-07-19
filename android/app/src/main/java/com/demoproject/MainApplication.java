@@ -9,9 +9,9 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
-import com.facebook.FacebookSdk;
-import com.facebook.CallbackManager;
-import com.facebook.appevents.AppEventsLogger;
+//import com.facebook.FacebookSdk;
+//import com.facebook.CallbackManager;
+//import com.facebook.appevents.AppEventsLogger;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -53,27 +53,27 @@ public class MainApplication extends Application implements ReactApplication {
     return mReactNativeHost;
   }
 
+//  @Override
+//  public void onCreate() {
+//    super.onCreate();
+//    SoLoader.init(this, /* native exopackage */ false);
+//    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+//      // If you opted-in for the New Architecture, we load the native entry point for this app.
+//      DefaultNewArchitectureEntryPoint.load();
+//    }
+//    ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+//  }
+
+//    private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+
+//  protected static CallbackManager getCallbackManager() {
+//    return mCallbackManager;
+//  }
+
   @Override
   public void onCreate() {
     super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
-      DefaultNewArchitectureEntryPoint.load();
-    }
-    ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-  }
-
-    private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
-
-  protected static CallbackManager getCallbackManager() {
-    return mCallbackManager;
-  }
-
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    FacebookSdk.sdkInitialize(getApplicationContext());
-    AppEventsLogger.activateApp(this);
+//    FacebookSdk.sdkInitialize(getApplicationContext());
+//    AppEventsLogger.activateApp(this);
   }
 }

@@ -49,12 +49,14 @@ const Login = () => {
     formData.append('password', data.password);
     formData.append('devicetype', 1);
     formData.append('deviceid', deviceId);
-    console.log(formData);
+    // console.log(formData);
     login(formData)
       .then(res => {
         if (res.data.status === 1) {
           storeToken(res.data.token, dispatch);
           console.log(res.data);
+        } else {
+          console.log('else error');
         }
       })
       .catch(error => console.log(error, 'error'));

@@ -41,8 +41,6 @@ const ResetPassword = ({route}) => {
     );
     verifyresetpassword(formData)
       .then(res => {
-        console.log(res.data);
-
         if (res.data.status === 0) {
           Alert.alert('Error', res.data.msg);
           return;

@@ -152,13 +152,14 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.Andika.bold,
   },
   section: {
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   sectionContent: {
     flexDirection: 'row',
     alignSelf: 'center',
     backgroundColor: '#F9F9F9',
     paddingVertical: 8,
+    // paddingHorizontal: 20,
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     elevation: 2,
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
+    justifyContent: 'space-between',
   },
   image: {
     width: 24,

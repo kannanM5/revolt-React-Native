@@ -75,7 +75,7 @@ export default NewsDetails;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 25,
+    marginHorizontal: 15,
     marginVertical: 10,
     flex: 1,
   },

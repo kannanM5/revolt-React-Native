@@ -53,7 +53,8 @@ const Product = ({navigation, route}) => {
   };
 
   const handlerGoBack = () => {
-    navigation.navigate('PRODUCT');
+    // navigation.navigate('PRODUCT');
+    navigation.goBack();
   };
 
   return (
@@ -160,7 +161,7 @@ export default Product;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 25,
+    marginHorizontal: 15,
     marginTop: 10,
     flex: 1,
     marginBottom: 63,

@@ -135,7 +135,7 @@ const SignUp = ({navigation}) => {
           );
 
           navigation.navigate('OTP', {
-            otp: res.data.refid,
+            refid: res.data.refid,
             timer: res.data.remainingseconds,
             email: values.email,
             mobile: values.mobile,

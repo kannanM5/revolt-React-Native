@@ -154,7 +154,7 @@ export default NewsFeed;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 25,
+    marginHorizontal: 10,
     marginTop: 10,
     marginBottom: 75,
     flex: 1,

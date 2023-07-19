@@ -6,6 +6,7 @@ import {
   Image,
   RefreshControl,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputBox from '../../Components/InputBox';
@@ -13,13 +14,18 @@ import Button from '../../Components/Button';
 import SubHeader from '../../Components/SubHeader';
 import {FONTS} from '../../Utilities/Fonts';
 import {useDispatch, useSelector} from 'react-redux';
-import {getmyprofile, updatemyprofile} from '../../Services/Services';
+import {
+  getmyprofile,
+  updatemyprofile,
+  deleteuser,
+} from '../../Services/Services';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {setProfileArr} from '../../Store/Slices/ProfileSlice';
 import ImagePicker from 'react-native-image-crop-picker';
 import {FILESBASEURL, trimString} from '../../Utilities/Constants';
 import Loader from '../AuthLayout/Loader';
+import {removeToken} from '../../Methods';
 
 const Manageprofile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -61,7 +67,7 @@ const Manageprofile = ({navigation}) => {
             address: refData.address,
             city: refData.city,
             pincode: refData.pincode,
-            profile_image: values.profile_image,
+            profile_image: refData.profile_image,
             mobile: refData.mobile,
           });
           dispatch(setProfileArr(refData));
@@ -101,6 +107,30 @@ const Manageprofile = ({navigation}) => {
         }
       })
       .catch(error => console.log(error, 'updateprofile Error'));
+  };
+
+  const handleDeleteUserPopup = id => {
+    Alert.alert('Delete Account', 'Are you sure to delete this account?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('cancelled'),
+        style: 'cancel',
+      },
+      {text: 'DELETE', onPress: () => handleDeleteUser()},
+    ]);
+  };
+
+  const handleDeleteUser = () => {
+    const formData = new FormData();
+    formData.append('token', myToken);
+    deleteuser(formData)
+      .then(res => {
+        if (res.data.status === 1) {
+          removeToken(dispatch);
+          console.log('Successfully deleted');
+        }
+      })
+      .catch(err => console.log(err, 'error'));
   };
 
   const onRefresh = () => {
@@ -228,24 +258,28 @@ const Manageprofile = ({navigation}) => {
             />
 
             <Button
+              activeOpacity={0.8}
               customStyles={{marginBottom: 6, height: 40}}
               title="Update profile"
               onPressButton={handleSubmit}
             />
 
             <Button
+              activeOpacity={0.8}
               customStyles={{height: 40, marginBottom: 6}}
               title="Manage Vehicle"
               onPressButton={() => navigation.navigate('ManageVehicle')}
             />
 
             <Button
+              activeOpacity={0.8}
               customStyles={{
                 marginBottom: 20,
                 backgroundColor: 'red',
                 height: 40,
               }}
               title="Delete Account"
+              onPressButton={handleDeleteUserPopup}
             />
           </>
         )}
@@ -259,7 +293,7 @@ export default Manageprofile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 25,
+    marginHorizontal: 15,
     marginTop: 20,
     marginBottom: 60,
   },

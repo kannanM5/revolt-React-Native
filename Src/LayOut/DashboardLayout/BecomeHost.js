@@ -47,7 +47,7 @@ export default BecomeHost;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 25,
+    marginHorizontal: 15,
   },
   box: {
     borderBottomWidth: 2,

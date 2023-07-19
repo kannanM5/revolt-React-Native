@@ -8,7 +8,7 @@ const CustomTopNavigation = ({state, descriptors, navigation}) => {
       style={{
         flexDirection: 'row',
         paddingTop: 20,
-        marginHorizontal: 25,
+        marginHorizontal: 15,
       }}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];

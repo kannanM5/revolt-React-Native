@@ -36,7 +36,7 @@ export default BookRestRoom;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 25,
+    marginHorizontal: 15,
     marginTop: 10,
     marginBottom: 20,
   },

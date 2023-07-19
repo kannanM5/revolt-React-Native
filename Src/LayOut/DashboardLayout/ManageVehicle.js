@@ -163,7 +163,6 @@ const ManageVehicle = ({navigation}) => {
             vehicle_model: item.vehicle_model,
             vehicle_number: item.vehicle_number,
           });
-          console.log('editVehcle');
         }
       })
       .catch(err => console.log(err, 'error'));
@@ -276,7 +275,7 @@ const ManageVehicle = ({navigation}) => {
                 <View
                   style={{
                     height: 80,
-                    elevation: 2,
+                    elevation: 1,
                     borderWidth: 1,
                     borderColor: 'rgba(0,0,0,0.05)',
                     backgroundColor: '#FFFFFF',
@@ -286,6 +285,7 @@ const ManageVehicle = ({navigation}) => {
                     justifyContent: 'space-between',
                     paddingHorizontal: 10,
                     alignItems: 'center',
+                    borderRadius: 5,
                   }}>
                   <View>
                     {/* <Image source={{uri: dataArr.url}} /> */}
@@ -321,7 +321,7 @@ export default ManageVehicle;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 25,
+    marginHorizontal: 15,
   },
   noData: {
     fontFamily: FONTS.Andika.regular,

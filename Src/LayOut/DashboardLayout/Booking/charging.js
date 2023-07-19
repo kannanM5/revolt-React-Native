@@ -45,7 +45,7 @@ export default Chargings;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 25,
+    marginHorizontal: 15,
     paddingVertical: 15,
   },
   contents: {
