@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  Keyboard,
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -182,7 +181,7 @@ const ManageVehicle = ({navigation}) => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
               <TouchableOpacity
-                style={{position: 'relative', backgroundColor: 'white'}}
+                style={{position: 'relative'}}
                 activeOpacity={1}
                 onPress={() => {
                   setIsOpen(!isOpen);

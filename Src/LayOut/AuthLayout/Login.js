@@ -11,7 +11,7 @@ import {COLORS} from '../../Utilities/Colors';
 import {EMAIL_REGEX} from '../../Utilities/Constants';
 import {login, sociallogin} from '../../Services/Services';
 import DeviceInfo from 'react-native-device-info';
-import {getAuthCode, storeToken} from '../../Methods';
+import {getAuthCode, storeToken} from '../../Utilities/Methods';
 import {useDispatch} from 'react-redux';
 
 const Login = () => {
@@ -72,8 +72,6 @@ const Login = () => {
     console.log(formData);
     sociallogin(formData)
       .then(res => {
-        console.log(res, '--');
-        S;
         if (res.data.status === 1) {
           console.log(res.data, '---sucess');
         }

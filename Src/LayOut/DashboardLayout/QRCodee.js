@@ -48,7 +48,11 @@ const QRCodee = ({navigation}) => {
         </View>
 
         <View style={{width: '100%'}}>
-          <Button title="Scan Qr code" onPressButton={openChandleOpencamera} />
+          <Button
+            title="Scan Qr code"
+            onPressButton={openChandleOpencamera}
+            activeOpacity={0.8}
+          />
         </View>
 
         <View style={styles.lines}>
@@ -75,6 +79,7 @@ const QRCodee = ({navigation}) => {
             borderRadius: 50,
             marginBottom: 100,
           }}
+          activeOpacity={0.8}
         />
       </ScrollView>
     </>

@@ -23,11 +23,18 @@ const SubHeader = ({
       <Text style={styles.title}>{titleName}</Text>
 
       {show ? (
-        <Button
-          title="+Add"
-          customStyles={{height: 35, width: 60, marginLeft: 35}}
-          onPressButton={handlepress}
-        />
+        <View style={{alignSelf: 'center', position: 'absolute', right: 20}}>
+          <Button
+            title="+Add"
+            customStyles={{
+              height: 40,
+              width: 60,
+              aligSelf: 'flex-end',
+            }}
+            onPressButton={handlepress}
+            activeOpacity={0.8}
+          />
+        </View>
       ) : null}
     </View>
   );
@@ -45,6 +52,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     // paddingVertical: 10,
     alignItems: 'center',
+    // justifyContent: 'space-between',
   },
   image: {
     width: 10,

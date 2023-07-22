@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import React, {useState} from 'react';
 import {starDataArray} from '../../SharedComponents/Arrays';
 import InputBox from '../../Components/InputBox';
@@ -9,6 +16,7 @@ import {review} from '../../Services/Services';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useToken} from '../../Utilities/Constants';
+import Toast from 'react-native-simple-toast';
 
 const Reviews = ({navigation}) => {
   const [myArr, setMyArr] = useState(starDataArray);
@@ -43,13 +51,30 @@ const Reviews = ({navigation}) => {
       },
       validationSchema: SignupSchema,
       onSubmit: values => {
-        handleReview(values);
+        handleReviewPopUp(values);
         resetForm();
 
         refData.map(ele => (ele.pressed = false));
         setMyArr(refData);
       },
     });
+
+  const handleReviewPopUp = data => {
+    Alert.alert('Submit review', 'Are you sure to review this app?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('cancelled'),
+        style: 'cancel',
+      },
+      {
+        text: 'Submit',
+        onPress: () => {
+          handleReview(data);
+          Toast.show('Succesfully submitted');
+        },
+      },
+    ]);
+  };
 
   const handleReview = data => {
     const formData = new FormData();
@@ -129,7 +154,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 34,
     marginBottom: 5,
-    width: 302,
+    width: 370,
     fontFamily: FONTS.Andika.bold,
   },
   titleContent: {

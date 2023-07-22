@@ -14,7 +14,7 @@ import {FONTS} from '../../Utilities/Fonts';
 import {walletbalance, mywallethistory} from '../../Services/Services';
 import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment';
-import {setWalletAmount, setHistoryArr} from '../../Store/Slices/WalletSlice';
+import {setWalletAmount} from '../../Store/Slices/WalletSlice';
 import {useToken} from '../../Utilities/Constants';
 
 var currentPage = 1;

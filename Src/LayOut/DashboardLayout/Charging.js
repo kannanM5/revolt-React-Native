@@ -66,12 +66,10 @@ const Charging = ({navigation}) => {
 
     neareststations(formData)
       .then(res => {
-        console.log(res, '------success');
         if (res.data.status === 1) {
           let refData = [...res.data.stations];
           refData = refData.map(e => e);
           dispatch(setHomeList(refData));
-          console.log(refData);
         }
       })
       .catch(error => console.log(error, 'error'));
@@ -271,7 +269,9 @@ const Charging = ({navigation}) => {
               ? styles.zoomAfter
               : null,
           ]}>
-          <TouchableOpacity onPress={() => navigation.navigate('QRCodee')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('QRCodee')}
+            activeOpacity={0.8}>
             <Image
               style={
                 activeItem === 'parking' || activeItem === 'charging'
@@ -463,6 +463,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderRadius: 30,
     paddingVertical: 12,
+    marginBottom: 7,
   },
   zoom: {
     position: 'absolute',

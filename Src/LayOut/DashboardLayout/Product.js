@@ -26,6 +26,7 @@ const Product = ({navigation, route}) => {
   const SETQUANTITY = () => {
     const ind = productArr.findIndex(ele => ele.id === product.id);
     let myQty = productArr[ind].Qty;
+
     return myQty;
   };
 

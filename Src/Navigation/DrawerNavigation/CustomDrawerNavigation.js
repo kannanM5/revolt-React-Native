@@ -15,7 +15,7 @@ import {FONTS} from '../../Utilities/Fonts';
 import {COLORS} from '../../Utilities/Colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../Services/Services';
-import {getUrlWithPrefix, removeToken} from '../../Methods';
+import {getUrlWithPrefix, removeToken} from '../../Utilities/Methods';
 import Toast from 'react-native-simple-toast';
 import {FILESBASEURL, trimString} from '../../Utilities/Constants';
 import {useToken} from '../../Utilities/Constants';
@@ -76,7 +76,7 @@ const DrawerDetails = [
   {
     img: require('../../Assets/Png/logout.png'),
     label: 'Logout',
-    pressFun: 'Logout',
+    // pressFun: 'Logout',
   },
 ];
 

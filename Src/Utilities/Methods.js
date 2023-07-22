@@ -1,7 +1,7 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {setToken} from './Store/Slices/AuthSlice';
-import {SALT_KEY} from './Services/ServiceConstants';
-import {FILESBASEURL} from './Utilities/Constants';
+import {setToken} from '../Store/Slices/AuthSlice';
+import {SALT_KEY} from '../Services/ServiceConstants';
+import {FILESBASEURL} from '../Utilities/Constants';
 
 export const storeToken = async (token, dispatch) => {
   try {

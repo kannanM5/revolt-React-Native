@@ -25,7 +25,7 @@ import {setProfileArr} from '../../Store/Slices/ProfileSlice';
 import ImagePicker from 'react-native-image-crop-picker';
 import {FILESBASEURL, trimString} from '../../Utilities/Constants';
 import Loader from '../AuthLayout/Loader';
-import {removeToken} from '../../Methods';
+import {removeToken} from '../../Utilities/Methods';
 
 const Manageprofile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -202,6 +202,7 @@ const Manageprofile = ({navigation}) => {
                       color: ' rgba(0, 0, 0, 0.6)',
                       fontFamily: FONTS.Andika.bold,
                       marginBottom: -6,
+                      marginLeft: 18,
                     },
                   ]}>
                   Hello
@@ -258,21 +259,18 @@ const Manageprofile = ({navigation}) => {
             />
 
             <Button
-              activeOpacity={0.8}
               customStyles={{marginBottom: 6, height: 40}}
               title="Update profile"
               onPressButton={handleSubmit}
             />
 
             <Button
-              activeOpacity={0.8}
               customStyles={{height: 40, marginBottom: 6}}
               title="Manage Vehicle"
               onPressButton={() => navigation.navigate('ManageVehicle')}
             />
 
             <Button
-              activeOpacity={0.8}
               customStyles={{
                 marginBottom: 20,
                 backgroundColor: 'red',
@@ -294,7 +292,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 15,
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 60,
   },
   containImg: {

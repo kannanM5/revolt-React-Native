@@ -13,7 +13,7 @@ const Button = ({
   return (
     <TouchableOpacity
       onPress={onPressButton}
-      activeOpacity={activeOpacity}
+      activeOpacity={0.9}
       style={[styles.button, {...customStyles}]}>
       <Text style={[styles.BtnTextColor, {...customStylesText}]}>{title}</Text>
     </TouchableOpacity>

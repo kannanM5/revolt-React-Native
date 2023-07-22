@@ -15,7 +15,7 @@ import {useFormik} from 'formik';
 import DeviceInfo from 'react-native-device-info';
 import {resendotpverify, mobileotpverify} from '../../Services/Services';
 import {useDispatch, useSelector} from 'react-redux';
-import {storeToken} from '../../Methods';
+import {storeToken} from '../../Utilities/Methods';
 
 const OtpVerify = ({navigation, route}) => {
   const {refid, timer, email} = route.params.refid;
