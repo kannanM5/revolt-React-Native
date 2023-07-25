@@ -363,15 +363,6 @@ export const bookingdata = [
 
 export const pageScreens = [
   {
-    img: require('../Assets/Png/img1.png'),
-    title: 'Choose from 3 subscribtion packs to enjoy limitless benefits',
-    id: 1,
-    btnName: 'Done',
-    option: 'Skip',
-    imgc: require('../Assets/Png/c.png'),
-    imgd: require('../Assets/Png/d.png'),
-  },
-  {
     img: require('../Assets/Png/img2.png'),
     title: 'Scan the QR code to start',
     id: 2,
@@ -385,6 +376,15 @@ export const pageScreens = [
     title: 'Find Charging Stations, Parking Spots and Restrooms near you',
     id: 3,
     btnName: 'Next',
+    option: 'Skip',
+    imgc: require('../Assets/Png/c.png'),
+    imgd: require('../Assets/Png/d.png'),
+  },
+  {
+    img: require('../Assets/Png/img1.png'),
+    title: 'Choose from 3 subscribtion packs to enjoy limitless benefits',
+    id: 1,
+    btnName: 'Done',
     option: 'Skip',
     imgc: require('../Assets/Png/c.png'),
     imgd: require('../Assets/Png/d.png'),

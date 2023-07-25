@@ -1,16 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './Src/Stacks/RootStack';
 import MainStack from './Src/Stacks/MainStack';
+import IntroStack from './Src/Stacks/IntroStack';
 import {useDispatch, useSelector} from 'react-redux';
-import {storeToken} from './Src/Utilities/Methods';
+import {storeIsIntro, storeToken} from './Src/Utilities/Methods';
 import Loader from './Src/LayOut/AuthLayout/Loader';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {removeToken} from './Src/Utilities/Methods';
 import instance from './Src/Services/Axios';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   const myToken = useSelector(state => state.auth.token);
+  const isIntro = useSelector(state => state.auth.intro);
+
   const dispatch = useDispatch();
   const [isLoading, setisLoading] = useState(true);
 
@@ -30,9 +34,10 @@ const App = () => {
       if (token) {
         await storeToken(token, dispatch);
       }
-      setisLoading(false);
+      SplashScreen.hide();
+      // setisLoading(false);
     } catch (error) {
-      setisLoading(false);
+      // setisLoading(false);
       console.log(error);
     }
   };
@@ -41,13 +46,13 @@ const App = () => {
     checkLoginStatus();
   }, []);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <NavigationContainer>
-      {myToken ? <MainStack /> : <RootStack />}
+      {isIntro ? myToken ? <MainStack /> : <RootStack /> : <IntroStack />}
     </NavigationContainer>
   );
 };

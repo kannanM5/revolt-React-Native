@@ -16,6 +16,8 @@ import DeviceInfo from 'react-native-device-info';
 import {resendotpverify, mobileotpverify} from '../../Services/Services';
 import {useDispatch, useSelector} from 'react-redux';
 import {storeToken} from '../../Utilities/Methods';
+import {setIntro} from '../../Store/Slices/AuthSlice';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const OtpVerify = ({navigation, route}) => {
   const {refid, timer, email} = route.params.refid;
@@ -77,11 +79,12 @@ const OtpVerify = ({navigation, route}) => {
 
     mobileotpverify(formData)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.status === 1) {
           storeToken(res.data.token, dispatch);
-
-          console.log('data got from api response', res.data);
+          if (authState.token) {
+            dispatch(setIntro(true));
+          }
         }
       })
       .catch(err => console.log(err, 'error'));

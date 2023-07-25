@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View, ScrollView} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import InputBox from '../../Components/InputBox';
 import Button from '../../Components/Button';
 import {useNavigation} from '@react-navigation/native';
@@ -49,7 +49,6 @@ const Login = () => {
     formData.append('password', data.password);
     formData.append('devicetype', 1);
     formData.append('deviceid', deviceId);
-    // console.log(formData);
     login(formData)
       .then(res => {
         if (res.data.status === 1) {

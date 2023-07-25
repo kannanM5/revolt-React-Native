@@ -1,5 +1,5 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {setToken} from '../Store/Slices/AuthSlice';
+import {setToken, setIntro} from '../Store/Slices/AuthSlice';
 import {SALT_KEY} from '../Services/ServiceConstants';
 import {FILESBASEURL} from '../Utilities/Constants';
 
@@ -7,6 +7,15 @@ export const storeToken = async (token, dispatch) => {
   try {
     await EncryptedStorage.setItem('ISLOGIN', token);
     dispatch(setToken(token));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const storeIsIntro = async (isIntro, dispatch) => {
+  try {
+    await EncryptedStorage.setItem('ISINTRO', isIntro);
+    dispatch(setIntro(isIntro));
   } catch (error) {
     console.log(error);
   }

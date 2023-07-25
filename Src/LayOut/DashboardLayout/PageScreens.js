@@ -6,23 +6,29 @@ import {
   Image,
   useWindowDimensions,
   Animated,
-  TouchableOpacity,
-  Alert,
 } from 'react-native';
 import React, {useRef} from 'react';
 import {pageScreens} from '../../SharedComponents/Arrays';
 import {FONTS} from '../../Utilities/Fonts';
 import Button from '../../Components/Button';
+import {useDispatch, useSelector} from 'react-redux';
+import {setIntro} from '../../Store/Slices/AuthSlice';
 
 const PageScreens = () => {
   const flatListRef = useRef(0);
   const {width: windowWidth} = useWindowDimensions();
   const scrollX = useRef(new Animated.Value(0)).current;
+  const isIntro = useSelector(state => state.auth.intro);
+  const dispatch = useDispatch();
 
   const handleNextPage = (id, i) => {
     if (flatListRef.current) {
       if (i < 2)
         flatListRef.current.scrollToIndex({index: i + 1, animated: true});
+      else if (i === 2) {
+        dispatch(setIntro(true));
+        console.log('else if');
+      }
     }
   };
 
@@ -39,7 +45,8 @@ const PageScreens = () => {
           <View style={[styles.content, {width: windowWidth}]}>
             <Text
               onPress={() => {
-                handleNextPage(item.id, index);
+                dispatch(setIntro(true));
+                console.log('------------');
               }}
               style={styles.option}>
               {item.option}

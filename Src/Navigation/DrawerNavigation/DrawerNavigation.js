@@ -20,6 +20,7 @@ import HostBookingScreen from '../../LayOut/DashboardLayout/HostBooking/HostBook
 import {ParkingScreen} from '../../LayOut/DashboardLayout/Parking/ParkingScreen';
 import ChargingScreen from '../../LayOut/DashboardLayout/Charging/ChargingScreen';
 import QRCodee from '../../LayOut/DashboardLayout/QRCodee';
+import PageScreens from '../../LayOut/DashboardLayout/PageScreens';
 
 const DrawerNavigation = () => {
   const Drawer = createDrawerNavigator();

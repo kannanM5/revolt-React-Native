@@ -132,7 +132,7 @@ const ManageVehicle = ({navigation}) => {
     deletevehicle(formData)
       .then(res => {
         if (res.data.status === 1) {
-          arr.splice(id, 1);
+          dataArr.splice(id, 1);
           handleListVehicle();
         }
       })
@@ -144,12 +144,10 @@ const ManageVehicle = ({navigation}) => {
 
     const formData = new FormData();
     formData.append('token', myToken);
-
     formData.append('vehicle_id', item.vehicle_id);
     formData.append('vehicle_make', item.vehicle_make);
     formData.append('vehicle_model', item.vehicle_model);
     formData.append('vehicle_number', item.vehicle_number);
-
     formData.append('vehicle_type', item.vehicle_type);
 
     editvehicle(formData)
@@ -162,6 +160,8 @@ const ManageVehicle = ({navigation}) => {
             vehicle_model: item.vehicle_model,
             vehicle_number: item.vehicle_number,
           });
+
+          // let ind = dataArr.findIndex(e => e.vehicle_id === item.vehicle_id);
         }
       })
       .catch(err => console.log(err, 'error'));
@@ -270,7 +270,7 @@ const ManageVehicle = ({navigation}) => {
               ListEmptyComponent={
                 <Text style={styles.noData}>No data found</Text>
               }
-              renderItem={({item}) => (
+              renderItem={({item}, index) => (
                 <View
                   style={{
                     height: 80,
